@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/admin"
+        android:title="Admin"
+        android:icon="@drawable/ic_baseline_admin_panel_settings_24"
+        app:cnb_backgroundColor="@color/tabcolor"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"/>
+
+    <item
+        android:id="@+id/mapping"
+        android:title="Mapping"
+        android:icon="@drawable/ic_baseline_map_24"
+        app:cnb_backgroundColor="@color/tabcolor"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"/>
+
+    <item
+        android:id="@+id/testing"
+        android:title="Testing"
+        android:icon="@drawable/ic_baseline_bug_report_24"
+        app:cnb_backgroundColor="@color/tabcolor"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"/>
+
+
+
+
+
+</menu>
