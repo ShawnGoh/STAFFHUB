@@ -31,6 +31,10 @@ public class AdminHome extends AppCompatActivity {
         if (savedInstanceState == null){
             menu_bottom.setItemSelected(R.id.admin, true);
             fragmentManager = getSupportFragmentManager();
+            MiscAdminFragment miscAdminFragment = new MiscAdminFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.adminhome_fragment_container, miscAdminFragment)
+                    .commit();
         }
 
         //Changing of fragments when using bottom nav bar
@@ -40,20 +44,20 @@ public class AdminHome extends AppCompatActivity {
                 Fragment fragment = null;
                 switch(id) {
                     case R.id.admin:
-
+                        fragment = new MiscAdminFragment();
                         break;
                     case R.id.mapping:
-
+                        fragment = new MappingFragment();
                         break;
                     case R.id.testing:
-//                        fragment = new MyProjectsFragment();
+                        fragment = new TestingFragment();
                         break;
                 }
 
                 if (fragment != null){
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
+                            .replace(R.id.adminhome_fragment_container, fragment)
                             .commit();
                 }
                 else {

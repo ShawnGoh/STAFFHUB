@@ -30,7 +30,12 @@ public class UserHome extends AppCompatActivity {
         if (savedInstanceState == null){
             menu_bottom.setItemSelected(R.id.checkin, true);
             fragmentManager = getSupportFragmentManager();
+            CheckInCheckOutFragment checkInCheckOutFragment = new CheckInCheckOutFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.userhome_fragment_container, checkInCheckOutFragment)
+                    .commit();
         }
+        menu_bottom.showBadge(R.id.checkin);
 
         //Changing of fragments when using bottom nav bar
         menu_bottom.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
@@ -39,20 +44,20 @@ public class UserHome extends AppCompatActivity {
                 Fragment fragment = null;
                 switch(id) {
                     case R.id.checkin:
-
+                        fragment = new CheckInCheckOutFragment();
                         break;
                     case R.id.navigation:
-
+                        fragment = new NavigationFragment();
                         break;
                     case R.id.profile:
-//                        fragment = new MyProjectsFragment();
+                        fragment = new ProfileFragment();
                         break;
                 }
 
                 if (fragment != null){
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
+                            .replace(R.id.userhome_fragment_container, fragment)
                             .commit();
                 }
                 else {
