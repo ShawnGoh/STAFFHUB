@@ -8,4 +8,31 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="tabcolor">#7E2196F3</color>
+
+
+    <color name="grey">#bfbfbf</color>
+    <color name="link_blue">#005ce6</color>
+
+
+    <color name="colorPrimary">#BF0000</color>
+    <color name="colorPrimaryDark">#BF0000</color>
+    <color name="colorAccent">#FF4D4D</color>
+
+    <color name="colorGradientDark">#611111</color>
+    <color name="colorGradientLight">#E30808</color>
+
+    <color name="transparent">#00FFFFFF</color>
+
+
+    <!-- button style colors -->
+    <color name="gradient_start">#BF0000</color>
+    <color name="gradient_end">#FF4D4D</color>
+
+
+    <!-- tab and screen text color-->
+    <color name="tab_indicator_grey">#c0c0c0</color>
+    <color name="intro_title_color">#3E2117</color>
+    <color name="intro_desc_color">#502B1E</color>
+
+
 </resources>

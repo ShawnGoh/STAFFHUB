@@ -20,6 +20,7 @@ public class UserHome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: userhome");
         setContentView(R.layout.activity_user_home);
 
         //Instantiate widgets
@@ -66,4 +67,6 @@ public class UserHome extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -18,6 +18,8 @@ public class AdminHome extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreate: adminhome");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
 

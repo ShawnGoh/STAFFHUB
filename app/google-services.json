@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "693232615957",
+    "project_id": "blewifiterm5",
+    "storage_bucket": "blewifiterm5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693232615957:android:0f71fff0937a2feca8041c",
+        "android_client_info": {
+          "package_name": "com.example.blewifiterm5project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693232615957-v81icg8ajj7gu2ddl1rqk1lscfmdrr5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5L9zthtQH23z_DhY4ta_GD1VVjOMjyCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693232615957-v81icg8ajj7gu2ddl1rqk1lscfmdrr5p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.blewifiterm5project.SignInSignup;
+package com.example.blewifiterm5project.AdminWorld;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.blewifiterm5project.R;
 
-public class SignInSignUp extends AppCompatActivity {
+public class CreateNewUser extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in_sign_up);
+        setContentView(R.layout.activity_create_new_user);
     }
 }

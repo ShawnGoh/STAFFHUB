@@ -1,30 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInSignup.SignIn">
+    tools:context=".SignInSignup.SignIn"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:padding="20dp"
+    android:id="@+id/signinscreen"
+    android:transitionName="screentransit"
+    android:theme="@style/SignupinTheme"
+    >
+
+    <ImageView
+        android:id="@+id/logoimagesignin"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/hotel_logo"
+        android:transitionName="LogoSignInUp"/>
+
+    <TextView
+        android:id="@+id/welcomesignin"
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Hello there,\nWelcome back"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="30sp"
+        android:transitionName="WelcomeSignInUp"/>
+
+    <TextView
+        android:id="@+id/instrusignin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign in to continue where you left off!"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:transitionName="InstruSignInUp"/>
+
+
+    <LinearLayout
+        android:id="@+id/signintextinputs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Emailsignin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:paddingTop="10dp"
+        android:transitionName="emailtrans">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Passwordsignin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:passwordToggleEnabled="true"
+        android:transitionName="passwordtrans">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/adminbutton"
-        android:layout_width="wrap_content"
+        android:id="@+id/signinconfirmbutton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="64dp"
-        android:text="Admin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/userbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="64dp"
-        android:text="User"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="10dp"
+        android:text="Sign In"
+        android:background="@drawable/roundedrectangleblack"
+        android:layout_gravity="end"
+        android:textColor="@color/white"
+        android:elevation="3dp"
+        android:transitionName="signupsigninbutton"
+        />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:indeterminateDrawable="@drawable/progressbarstyle"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
