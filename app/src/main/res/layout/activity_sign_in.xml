@@ -63,6 +63,11 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
+<!--    <EditText-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/passwordbackground"></EditText>-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/Passwordsignin"
         android:layout_width="match_parent"
@@ -77,7 +82,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

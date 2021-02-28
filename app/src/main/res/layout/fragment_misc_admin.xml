@@ -44,19 +44,33 @@
         android:gravity="center_horizontal|top"
         />
 
-    <Button
-        android:id="@+id/dashboard_button_1"
+    <TextView
         android:layout_width="153.72dp"
         android:layout_height="58dp"
+        android:background="@drawable/roundedrectanglewhite"
+        android:elevation="10dp"
+        android:fontFamily="@font/arial_rounded_mt_bold_font"
+        android:gravity="center"
+        android:text="21"
+        android:textAppearance="@style/widget_button_text"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="37.16dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="133dp"
-        android:background="@drawable/dashboard_widget_button"
-        android:text="21"
-        android:textAppearance="@style/widget_button_text"
-        android:fontFamily="@font/arial_rounded_mt_bold_font"
-        android:elevation="60dp"/>
+        android:layout_marginTop="133dp"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/dashboard_button_1"-->
+<!--        android:layout_width="153.72dp"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:layout_marginLeft="37.16dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_marginTop="133dp"-->
+<!--        android:background="@drawable/dashboard_widget_button"-->
+<!--        android:text="21"-->
+<!--        android:textAppearance="@style/widget_button_text"-->
+<!--        android:fontFamily="@font/arial_rounded_mt_bold_font"-->
+<!--        android:elevation="60dp"/>-->
 
     <Button
         android:id="@+id/adminsignoutbutton"
