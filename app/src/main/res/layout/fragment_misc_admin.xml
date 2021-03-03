@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,50 +13,81 @@
 <!--        android:text="Misc Admin Fragment"-->
 <!--        android:textAlignment="center"/>-->
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical"
+        android:layout_margin="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
     <TextView
         android:id="@+id/welcome_bac"
-        android:layout_width="244dp"
-        android:layout_height="28dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="36dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:text="@string/welcome_bac"
         android:textAppearance="@style/welcome_bac"
         android:fontFamily="@font/arial_rounded_mt_bold_font"
-        android:gravity="center_horizontal|center_vertical"
         />
 
     <!-- TODO: Convert this to an XML widget file -->
 
-    <TextView
-        android:id="@+id/active_empl"
-        android:layout_width="202dp"
-        android:layout_height="17dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="13dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="104dp"
-        android:fontFamily="@font/arial_rounded_mt_bold_font"
-        android:text="Active Employees"
-        android:textAppearance="@style/dashboard_widget_title"
-        android:gravity="center_horizontal|top"
-        />
+        <TextView
+            android:id="@+id/active_empl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arial_rounded_mt_bold_font"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="Active Employees"
+            android:textAppearance="@style/dashboard_widget_title" />
 
-    <TextView
-        android:layout_width="153.72dp"
-        android:layout_height="58dp"
-        android:background="@drawable/roundedrectanglewhite"
-        android:elevation="10dp"
-        android:fontFamily="@font/arial_rounded_mt_bold_font"
-        android:gravity="center"
-        android:text="21"
-        android:textAppearance="@style/widget_button_text"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="37.16dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="133dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/roundedrectanglewhite"
+            android:elevation="10dp"
+            android:fontFamily="@font/arial_rounded_mt_bold_font"
+            android:text="21"
+            android:gravity="center"
+            android:textAppearance="@style/widget_button_text"
+            android:layout_marginTop="12dp"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/mapped_area_count"-->
+<!--        android:layout_width="202dp"-->
+<!--        android:layout_height="17dp"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:layout_marginLeft="191dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_marginTop="104dp"-->
+<!--        android:fontFamily="@font/arial_rounded_mt_bold_font"-->
+<!--        android:text="Mapped Areas"-->
+<!--        android:textAppearance="@style/dashboard_widget_title"-->
+<!--        android:gravity="center_horizontal|top"-->
+<!--        />-->
+
+<!--    <TextView-->
+<!--        android:layout_width="153.72dp"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:background="@drawable/roundedrectanglewhite"-->
+<!--        android:elevation="10dp"-->
+<!--        android:fontFamily="@font/arial_rounded_mt_bold_font"-->
+<!--        android:gravity="center"-->
+<!--        android:text="2"-->
+<!--        android:textAppearance="@style/widget_button_text"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:layout_marginLeft="215.16dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_marginTop="133dp"/>-->
 
 <!--    <Button-->
 <!--        android:id="@+id/dashboard_button_1"-->
@@ -72,6 +103,23 @@
 <!--        android:fontFamily="@font/arial_rounded_mt_bold_font"-->
 <!--        android:elevation="60dp"/>-->
 
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/feed_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:padding="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <Button
         android:id="@+id/adminsignoutbutton"
         android:layout_width="match_parent"
@@ -79,7 +127,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/roundedrectanglered"
+        android:background="@drawable/roundedrectanglepurple"
         android:elevation="8dp"
         android:padding="8dp"
         android:text="Sign Out"
@@ -93,4 +141,4 @@
 
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

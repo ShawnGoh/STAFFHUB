@@ -48,11 +48,11 @@ public class AdminHome extends AppCompatActivity {
                     case R.id.admin:
                         fragment = new MiscAdminFragment();
                         break;
+                    case R.id.staff:
+                        fragment = new TestingFragment();
+                        break;
                     case R.id.mapping:
                         fragment = new MappingFragment();
-                        break;
-                    case R.id.testing:
-                        fragment = new TestingFragment();
                         break;
                 }
 
