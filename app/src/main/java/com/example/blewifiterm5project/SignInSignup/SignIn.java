@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -34,7 +37,7 @@ public class SignIn extends AppCompatActivity {
 
     Button signinbutton;
     TextView welcomesignin, signininstru;
-    TextInputLayout emailsignin, passwordsignin;
+    EditText emailsignin, passwordsignin;
     ImageView Logoimage;
     LinearLayout signinscreen;
     ProgressBar loadingwheel;
@@ -50,12 +53,14 @@ public class SignIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
         //initialize UI elements
         signinbutton = findViewById(R.id.signinconfirmbutton);
         emailsignin = findViewById(R.id.Emailsignin);
         passwordsignin = findViewById(R.id.Passwordsignin);
         welcomesignin = findViewById(R.id.welcomesignin);
-        signininstru = findViewById(R.id.instrusignin);
+
         signinscreen = findViewById(R.id.signinscreen);
         loadingwheel = findViewById(R.id.progressBar);
 
@@ -102,8 +107,8 @@ public class SignIn extends AppCompatActivity {
                 Log.d(TAG, "OnClick: Attempting to login");
 
 
-                String email = emailsignin.getEditText().getText().toString();
-                String password = passwordsignin.getEditText().getText().toString();
+                String email = emailsignin.getText().toString();
+                String password = passwordsignin.getText().toString();
 
                 if(!isStringNUll(email) && !isStringNUll(password)) {
                     loadingwheel.setVisibility(View.VISIBLE);
