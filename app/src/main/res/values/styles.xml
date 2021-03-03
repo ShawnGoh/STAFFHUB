@@ -30,4 +30,20 @@
             @color/purple_500
         </item>
     </style>
+
+    <style name="sign_in">
+
+        <item name="android:textSize">
+            36sp
+        </item>
+
+        <item name="android:letterSpacing">
+            -0.04
+        </item>
+
+        <item name="android:textColor">
+            #2C2929
+        </item>
+
+    </style>
 </resources>
