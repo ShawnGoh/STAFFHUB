@@ -13,12 +13,7 @@
     android:theme="@style/SignupinTheme"
     >
 
-    <ImageView
-        android:id="@+id/logoimagesignin"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/hotel_logo"
-        android:transitionName="LogoSignInUp"/>
+
 
     <TextView
         android:id="@+id/welcomesignin"
@@ -46,28 +41,29 @@
         android:id="@+id/signintextinputs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+
+        >
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/Emailsignin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
+
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:paddingTop="10dp"
+
         android:transitionName="emailtrans">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:inputType="textEmailAddress"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
 
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@drawable/passwordbackground"></EditText>-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/Passwordsignin"
         android:layout_width="match_parent"
@@ -77,6 +73,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:passwordToggleEnabled="true"
+
         android:transitionName="passwordtrans">
 
         <com.google.android.material.textfield.TextInputEditText

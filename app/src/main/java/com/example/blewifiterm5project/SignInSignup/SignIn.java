@@ -54,7 +54,6 @@ public class SignIn extends AppCompatActivity {
         signinbutton = findViewById(R.id.signinconfirmbutton);
         emailsignin = findViewById(R.id.Emailsignin);
         passwordsignin = findViewById(R.id.Passwordsignin);
-        Logoimage = findViewById(R.id.logoimagesignin);
         welcomesignin = findViewById(R.id.welcomesignin);
         signininstru = findViewById(R.id.instrusignin);
         signinscreen = findViewById(R.id.signinscreen);
