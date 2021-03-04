@@ -18,7 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.blewifiterm5project.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class WiFiScannerActivity extends AppCompatActivity {
 
@@ -29,7 +35,7 @@ public class WiFiScannerActivity extends AppCompatActivity {
     private List<ScanResult> results;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter adapter;
-    private List<ScanResult> nearestThree;
+    private HashMap<String, Double> wifiDataAPs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,7 @@ public class WiFiScannerActivity extends AppCompatActivity {
         listView = findViewById(R.id.wifiList);
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        // If WiFi is not already enabled, request for it to be turned on
+        // if WiFi is not already enabled, turn it on and inform admin/user
         if (!wifiManager.isWifiEnabled()) {
             Toast.makeText(this,"WiFi is disabled ... enabling it now", Toast.LENGTH_LONG).show();
             wifiManager.setWifiEnabled(true);
@@ -57,9 +63,10 @@ public class WiFiScannerActivity extends AppCompatActivity {
         scanWifi();
     }
 
-    // scan for available wifi points
+    // scan for available wifi points, clearing old results before the scan
     public void scanWifi() {
         arrayList.clear();
+        wifiDataAPs.clear();
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
         Toast.makeText(this,"Scanning WiFi ...", Toast.LENGTH_SHORT).show();
@@ -79,17 +86,41 @@ public class WiFiScannerActivity extends AppCompatActivity {
                 double distanceInM = calculateDistance(signalLevel, frequency);
                 //arrayList.add(scanResult.SSID + " - " + scanResult.capabilities);
                 arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
-                // nearestThree.add()
+                wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
                 adapter.notifyDataSetChanged();
             }
         }
     };
 
-    // rough approximation of current distance to nearby wifi access points
+    // function for calculating rough approximation of current distance to nearby wifi access points
     public double calculateDistance(double signalLevel, double frequency) {
         double exp = (27.55 - (20 * Math.log10(frequency)) + Math.abs(signalLevel)) / 20.0;
         return (double) Math.round(Math.pow(10.0, exp) * 1000d / 1000d);
     }
+
+    // function to return WiFi APs based on descending distance to admin/user
+    public HashMap<String, Double> sortWiFiData() {
+
+        HashMap<String, Double> sortedWiFiData = new LinkedHashMap<>();
+
+        // create a list "wifiDataList" from elements of HashMap "wifiDataAPs"
+        List<Map.Entry<String, Double>> wifiDataList = new LinkedList<>(wifiDataAPs.entrySet());
+
+        // sort the list "wifiDataList"
+        Collections.sort(wifiDataList, new Comparator<Map.Entry<String, Double>>() {
+            @Override
+            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                return (o1.getValue().compareTo(o2.getValue()));
+            }
+        });
+
+        // put data from sorted list to new HashMap "sortedWiFiData"
+        for (Map.Entry<String, Double> dataPoint : wifiDataList) {
+            sortedWiFiData.put(dataPoint.getKey(), dataPoint.getValue());
+        }
+        return sortedWiFiData;
+    }
+
 }
 
     // Attempt 2
