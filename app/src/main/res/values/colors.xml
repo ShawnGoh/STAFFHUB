@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="tabcolor">#7E2196F3</color>
+    <color name="tabcolor">#7041EE</color>
     <color name="background">#FAFBFD</color>
 
 
@@ -15,7 +15,7 @@
     <color name="link_blue">#005ce6</color>
 
 
-    <color name="colorPrimary">#BF0000</color>
+    <color name="colorPrimary">#7041EE</color>
     <color name="colorPrimaryDark">#BF0000</color>
     <color name="colorAccent">#FF4D4D</color>
 
