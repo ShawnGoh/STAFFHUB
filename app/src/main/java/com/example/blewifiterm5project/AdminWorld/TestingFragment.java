@@ -3,12 +3,18 @@ package com.example.blewifiterm5project.AdminWorld;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.blewifiterm5project.Adapter.AdminNotificationAdapter;
+import com.example.blewifiterm5project.Adapter.StaffAdapter;
 import com.example.blewifiterm5project.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +31,10 @@ public class TestingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    StaffAdapter myAdapter;
+    RecyclerView recyclerView;
+    ArrayList<String> staffList;
 
     public TestingFragment() {
         // Required empty public constructor
@@ -61,6 +71,19 @@ public class TestingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_testing, container, false);
+        LayoutInflater inflator =LayoutInflater.from(container.getContext());
+        View view = inflator.inflate(R.layout.fragment_testing, container, false);
+
+        staffList = new ArrayList<>();
+        staffList.add("Qi Yan Seah");
+        staffList.add("Jing Sen Tjoa");
+
+        recyclerView = view.findViewById(R.id.staff_recycler);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        myAdapter = new StaffAdapter(staffList);
+        recyclerView.setAdapter(myAdapter);
+        return view;
     }
 }
