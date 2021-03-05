@@ -45,18 +45,18 @@ public class MiscAdminFragment extends Fragment {
         mcontext = getActivity();
         mAuth=FirebaseAuth.getInstance();
 
+        recyclerView = view.findViewById(R.id.feed_recycler);
+        signoutbutton = view.findViewById(R.id.adminsignoutbutton);
+
         notificationsList = new ArrayList<>();
         notificationsList.add("Qi Yan has clocked in");
         notificationsList.add("testing recycler");
 
-        recyclerView = view.findViewById(R.id.feed_recycler);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
         myAdapter = new AdminNotificationAdapter(notificationsList);
         recyclerView.setAdapter(myAdapter);
 
-        signoutbutton = view.findViewById(R.id.adminsignoutbutton);
+
 
         signoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
