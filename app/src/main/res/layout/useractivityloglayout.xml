@@ -14,21 +14,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:text="time"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/activtydesc"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/activtydesc" />
+
 
     <TextView
         android:id="@+id/activtydesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="desc"
-        android:textStyle=""
+        android:fontFamily="@font/arial_rounded_mt_bold_font"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activitytime"

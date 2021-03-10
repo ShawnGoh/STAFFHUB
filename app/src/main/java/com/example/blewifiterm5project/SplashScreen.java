@@ -121,7 +121,6 @@ public class SplashScreen extends AppCompatActivity {
 
                                                 if(userClass.getEmail().equals(email) && userClass.getAdmin().equals("N")){
                                                     Log.d(TAG, "admin = " + user[0].getAdmin());
-                                                    Toast.makeText(getApplicationContext(), "Authentication Passed.", Toast.LENGTH_SHORT).show();
                                                     startActivity(new Intent(getApplicationContext(), UserHome.class));
                                                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                                     finish();
@@ -130,7 +129,6 @@ public class SplashScreen extends AppCompatActivity {
                                                     Log.d(TAG, "admin = " + userClass.getAdmin());
                                                     Log.d(TAG, "email = " + userClass.getEmail());
                                                     Log.d(TAG, "entered email = " + email);
-                                                    Toast.makeText(getApplicationContext(), "Authentication Passed.", Toast.LENGTH_SHORT).show();
                                                     startActivity(new Intent(getApplicationContext(), AdminHome.class));
                                                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                                     finish();
