@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ChooseImageActivity extends AppCompatActivity {
 
+    public static final int REQUEST_APPLY = 2000;
+
     private RecyclerView mRecycleView;
     private ChooseMapRecycleViewAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
@@ -34,7 +36,7 @@ public class ChooseImageActivity extends AppCompatActivity {
         //Create layout manager
         mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         //Create adapter
-        mAdapter = new ChooseMapRecycleViewAdapter(mList);
+        mAdapter = new ChooseMapRecycleViewAdapter(mList, this);
         //Set layout manager
         mRecycleView.setLayoutManager(mLinearLayoutManager);
         //Set adapter

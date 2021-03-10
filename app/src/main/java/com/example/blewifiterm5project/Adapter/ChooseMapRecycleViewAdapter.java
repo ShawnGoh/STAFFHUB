@@ -1,5 +1,6 @@
 package com.example.blewifiterm5project.Adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import java.util.List;
 public class ChooseMapRecycleViewAdapter extends RecyclerView.Adapter<ChooseMapRecycleViewAdapter.MyHolder> {
 
     private List mList;//Data source
+    private Activity activity;
 
-    public ChooseMapRecycleViewAdapter(List list) {
-        mList = list;
+    public ChooseMapRecycleViewAdapter(List list, Activity activity) {
+        this.mList = list;
+        this.activity = activity;
     }
 
     //Create viewholder
@@ -37,7 +40,9 @@ public class ChooseMapRecycleViewAdapter extends RecyclerView.Adapter<ChooseMapR
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(), AdminHome.class));
+                System.out.println("ENDACTIVITY");
+                activity.setResult(activity.RESULT_OK);
+                activity.finish();
 //                System.out.println("Test");
 //                Intent intent = new Intent();
 //                intent.setClass(v.getContext(), MappingFragment.class);

@@ -28,6 +28,8 @@ import java.net.URL;
 public class MappingFragment extends Fragment {
 
 
+    //public static final int RESULT_DONE = 1000;
+    //public static final int REQUEST = 2000;
 
     // Components
     PhotoView photoView;
@@ -54,11 +56,19 @@ public class MappingFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //TODO: in the final project, it should 2 arguments: 1.boolean 2.url in string
+    public MappingFragment(boolean test) {
+        if(test){
+            thread.start();
+        }
+    }
+
     // Working thread to download the image from url and apply to photoview
     Thread thread = new Thread(){
         @Override
         public void run() {
             super.run();
+            System.out.println("Working thread running");
             try {
                 // Define URL
                 URL url = new URL("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/download.jpg?alt=media&token=be62b98e-dff1-4135-b234-8951a4b0d66d");
@@ -101,19 +111,20 @@ public class MappingFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), ChooseImageActivity.class);
-                getActivity().startActivity(intent);
+                getActivity().startActivityForResult(intent, ChooseImageActivity.REQUEST_APPLY);
             }
         });
 
         //Test intent with extra value
-        Intent intent = getActivity().getIntent();
+        /*Intent intent = getActivity().getIntent();
         System.out.println("Test intent: "+intent.toString());
         if (intent!=null){
             boolean test = intent.getBooleanExtra("Test", false);
             if (test==true){
                 thread.start();
             }
-        }
+        }*/
+
         return view;
     }
 }
