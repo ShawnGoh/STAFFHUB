@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.blewifiterm5project.AdminWorld.AdminHome;
 import com.example.blewifiterm5project.AdminWorld.MappingFragment;
 import com.example.blewifiterm5project.R;
 
@@ -36,11 +37,12 @@ public class ChooseMapRecycleViewAdapter extends RecyclerView.Adapter<ChooseMapR
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Test");
-                Intent intent = new Intent();
-                intent.setClass(v.getContext(), MappingFragment.class);
-                intent.putExtra("Test", true);
-                v.getContext().startActivity(intent);
+                v.getContext().startActivity(new Intent(v.getContext(), AdminHome.class));
+//                System.out.println("Test");
+//                Intent intent = new Intent();
+//                intent.setClass(v.getContext(), MappingFragment.class);
+//                intent.putExtra("Test", true);
+//                v.getContext().startActivity(intent);
             }
         });
     }
