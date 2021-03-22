@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,12 +52,13 @@ public class TestingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_testing, container, false);
         listView = view.findViewById(R.id.wifiList);
         buttonScan = view.findViewById(R.id.scanButton);
-        wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         mcontext = getActivity();
+        wifiManager = (WifiManager) mcontext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
         buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                Log.i("Testing", "94554278 button PRESSED");
                 scanWifi();
             }
         });
@@ -66,13 +68,14 @@ public class TestingFragment extends Fragment {
             Toast.makeText(mcontext,"WiFi is disabled ... enabling it now", Toast.LENGTH_LONG).show();
             wifiManager.setWifiEnabled(true);
         }
+        arrayList.add("hello");
+        arrayList.add("testing");
 
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(adapter);
-        scanWifi();
+//        scanWifi();
         return view;
     }
-
 
         // scan for available wifi points, clearing old results before the scan
     public void scanWifi() {
@@ -80,6 +83,7 @@ public class TestingFragment extends Fragment {
         wifiDataAPs.clear();
         mcontext.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
+        Log.i("Testing", "94554278 scanning for WIFI!");
         Toast.makeText(mcontext,"Scanning WiFi ...", Toast.LENGTH_SHORT).show();
     }
 
@@ -87,15 +91,17 @@ public class TestingFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             results = wifiManager.getScanResults();
-            mcontext.unregisterReceiver(this);
+            context.unregisterReceiver(this);
+            Log.i("Testing", "94554278 wifiReceiver !!!");
 
             // for every result found via scanWifi, store the wifi SSID and approximate distance to it in an array
             for (ScanResult scanResult : results) {
                 //int signalLevel = wifiManager.calculateSignalLevel(scanResult.level);
-                double signalLevel = scanResult.level;
+                double signalLevel = scanResult.level; //RSSI value of wifi
                 double frequency = scanResult.frequency;
                 double distanceInM = calculateDistance(signalLevel, frequency);
                 //arrayList.add(scanResult.SSID + " - " + scanResult.capabilities);
+                Log.i("Testing", scanResult.SSID);
                 arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
                 wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
                 adapter.notifyDataSetChanged();
@@ -131,4 +137,20 @@ public class TestingFragment extends Fragment {
         }
         return sortedWiFiData;
     }
+
+    // attach x-y coordinate values this singular mapping
+
+    // repeat mapping process 20 times?
+
+    // when in testing -
+    // calculate difference in RSSI with previous RSSI stored for each AP in database
+
+    // estimate position by finding centroid?
+
+    // OR second filtering
+    // find average variance in diff in RSSI vals of RP to current reading
+    // if varies too much, remove that RP (outlier)
+
+    // find estimated position using formula
+
 }
