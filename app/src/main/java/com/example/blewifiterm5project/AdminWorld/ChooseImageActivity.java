@@ -15,6 +15,9 @@ import java.util.List;
 
 public class ChooseImageActivity extends AppCompatActivity {
 
+    public static final int REQUEST_APPLY = 2000;
+    public static final int RESULT_DONE = 3000;
+
     private RecyclerView mRecycleView;
     private ChooseMapRecycleViewAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
@@ -34,16 +37,20 @@ public class ChooseImageActivity extends AppCompatActivity {
         //Create layout manager
         mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         //Create adapter
-        mAdapter = new ChooseMapRecycleViewAdapter(mList);
+        mAdapter = new ChooseMapRecycleViewAdapter(mList, this);
         //Set layout manager
         mRecycleView.setLayoutManager(mLinearLayoutManager);
         //Set adapter
         mRecycleView.setAdapter(mAdapter);
     }
 
+    // Hardcode for testing
+    // TODO: Apply database before the last meeting
     public void initData(List list) {
-        for (int i = 1; i <= 40; i++) {
-            list.add("Data " + i);
-        }
+        list.add("Building 2 Level 1");
+        list.add("Building 2 Level 2");
+        list.add("Floor WAP 1");
+        list.add("Floor WAP 2");
+        list.add("Test Doggy");
     }
 }

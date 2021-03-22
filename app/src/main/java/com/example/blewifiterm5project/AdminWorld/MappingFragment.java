@@ -1,119 +1,109 @@
 package com.example.blewifiterm5project.AdminWorld;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.R;
-import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MappingFragment extends Fragment {
 
-
-
     // Components
+    ImageDotLayout imageDotLayout;
     PhotoView photoView;
     Button button;
-    Bitmap bitmap;
+
+    String url;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    // Message handler
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 0x1234) {
-                photoView.setImageBitmap(bitmap);
-            }
-        }
-    };
-
-
     public MappingFragment() {
-        // Required empty public constructor
+        // Empty public constructor
     }
 
-    // Working thread to download the image from url and apply to photoview
-    Thread thread = new Thread(){
-        @Override
-        public void run() {
-            super.run();
-            try {
-                // Define URL
-                URL url = new URL("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/download.jpg?alt=media&token=be62b98e-dff1-4135-b234-8951a4b0d66d");
-                // Open the input stream
-                InputStream is = url.openStream();
-                // Get image bitmap from inputstream
-                bitmap = BitmapFactory.decodeStream(is);
-                // Send message to handler
-                handler.sendEmptyMessage(0x1234);
-                is.close();
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    };
-
+    //TODO: in the final project, it may contain 2 arguments: 1.boolean 2.url in string
+    public MappingFragment(String url) {
+        this.url = url;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        // Create fragment and views' instance
         View view = inflater.inflate(R.layout.fragment_mapping, container, false);
-        photoView = view.findViewById(R.id.map);
+        imageDotLayout = view.findViewById(R.id.map);
         button = view.findViewById(R.id.mappingbutton);
 
-        photoView.setOnPhotoTapListener(new OnPhotoTapListener() {
+        // Set click listener to imageDotLayout
+        imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
             @Override
-            public void onPhotoTap(ImageView view, float x, float y) {
-                System.out.println(x+", "+y);
+            public void onImageClick(ImageDotLayout.IconBean bean) {
+                // Can add some other functions here
+                imageDotLayout.addIcon(bean);
             }
         });
 
+        // Set click listener to icons
+        imageDotLayout.setOnIconClickListener(new ImageDotLayout.OnIconClickListener() {
+            @Override
+            public void onIconClick(View v) {
+                ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
+                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Set image of photoView from url
+        if (url!=null){
+            imageDotLayout.setImage(url);
+        }
+
+        // Initialize icons
+        initIcon();
+
+        // Button to choose image from ChooseImageActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), ChooseImageActivity.class);
-                getActivity().startActivity(intent);
+                getActivity().startActivityForResult(intent, ChooseImageActivity.REQUEST_APPLY);
             }
         });
 
-        //Test intent with extra value
-        Intent intent = getActivity().getIntent();
-        System.out.println("Test intent: "+intent.toString());
-        if (intent!=null){
-            boolean test = intent.getBooleanExtra("Test", false);
-            if (test==true){
-                thread.start();
-            }
-        }
         return view;
+    }
+
+    private void initIcon() {
+        final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+
+        // Initialize
+        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
+        iconBeanList.add(bean);
+        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
+        iconBeanList.add(bean);
+
+        // Check the image is ready or not
+        imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+            @Override
+            public void onLayoutReady() {
+                imageDotLayout.addIcons(iconBeanList);
+            }
+        });
     }
 }
