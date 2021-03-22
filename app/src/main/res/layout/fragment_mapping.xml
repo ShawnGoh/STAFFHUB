@@ -7,7 +7,7 @@
     tools:context=".AdminWorld.MappingFragment">
 
 
-    <com.github.chrisbanes.photoview.PhotoView
+    <com.example.blewifiterm5project.Layout.ImageDotLayout
         android:id="@+id/map"
         android:layout_width="380dp"
         android:layout_height="380dp"
@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.059"
         tools:srcCompat="@drawable/floorplantemp" />
-
 
     <Button
         android:id="@+id/mappingbutton"
