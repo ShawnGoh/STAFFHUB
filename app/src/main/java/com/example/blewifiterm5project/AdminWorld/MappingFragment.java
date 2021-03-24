@@ -1,5 +1,6 @@
 package com.example.blewifiterm5project.AdminWorld;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.R;
+import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,11 @@ public class MappingFragment extends Fragment {
     Button button;
 
     String url;
+
+    private Context mcontext;
+    private WifiScanner wifiScanner;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -48,6 +56,8 @@ public class MappingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mapping, container, false);
         imageDotLayout = view.findViewById(R.id.map);
         button = view.findViewById(R.id.mappingbutton);
+        mcontext = getActivity();
+        wifiScanner = new WifiScanner(mcontext);
 
         // Set click listener to imageDotLayout
         imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
@@ -63,6 +73,10 @@ public class MappingFragment extends Fragment {
             @Override
             public void onIconClick(View v) {
                 ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
+                wifiScanner.scanWifi();
+                // wifiDataAPs = wifiScanner.sortWiFiData(wifiDataAPs);
+                db.collection("datapoints").document()
+                        .set("Testing");
                 Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
             }
         });

@@ -7,19 +7,18 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class WifiScanner {
 
@@ -81,6 +80,28 @@ public class WifiScanner {
     public double calculateDistance(double signalLevel, double frequency) {
         double exp = (27.55 - (20 * Math.log10(frequency)) + Math.abs(signalLevel)) / 20.0;
         return (double) Math.round(Math.pow(10.0, exp) * 1000d / 1000d);
+    }
+
+    public HashMap<String, Double> sortWiFiData(HashMap<String, Double> wifiDataAPs) {
+
+        HashMap<String, Double> sortedWiFiData = new LinkedHashMap<>();
+
+        // create a list "wifiDataList" from elements of HashMap "wifiDataAPs"
+        List<Map.Entry<String, Double>> wifiDataList = new LinkedList<>(wifiDataAPs.entrySet());
+
+        // sort the list "wifiDataList"
+        Collections.sort(wifiDataList, new Comparator<Map.Entry<String, Double>>() {
+            @Override
+            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                return (o1.getValue().compareTo(o2.getValue()));
+            }
+        });
+
+        // put data from sorted list to new HashMap "sortedWiFiData"
+        for (Map.Entry<String, Double> dataPoint : wifiDataList) {
+            sortedWiFiData.put(dataPoint.getKey(), dataPoint.getValue());
+        }
+        return sortedWiFiData;
     }
 
 }
