@@ -8,6 +8,8 @@ public class UserClass {
     private String status="offline";
     private String admin = "N";
     private String email;
+    private int paid_leave;
+    private int sick_leave;
 
     public UserClass(String name, String profile_picture, String email) {
         this.name = name;

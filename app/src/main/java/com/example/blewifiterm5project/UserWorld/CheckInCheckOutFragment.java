@@ -1,66 +1,88 @@
 package com.example.blewifiterm5project.UserWorld;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.blewifiterm5project.Adapter.AdminNotificationAdapter;
+import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
 import com.example.blewifiterm5project.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CheckInCheckOutFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Date;
+
 public class CheckInCheckOutFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    TextView paidleave, sickleave;
+    RecyclerView activitylog;
+    Button clockin, clockout;
+    Context mcontext;
+    UserActivityLogRecyclerAdapter activityLogRecyclerAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CheckInCheckOutFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CheckInCheckOutFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CheckInCheckOutFragment newInstance(String param1, String param2) {
-        CheckInCheckOutFragment fragment = new CheckInCheckOutFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_check_in_check_out, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_check_in_check_out, container, false);
+
+        mcontext = getActivity();
+        mAuth= FirebaseAuth.getInstance();
+
+        paidleave = view.findViewById(R.id.paidleavetextview);
+        sickleave = view.findViewById(R.id.sickleavetextview);
+        clockin = view.findViewById(R.id.clockinbutton);
+        clockout = view.findViewById(R.id.clockoutbutton);
+        activitylog = view.findViewById(R.id.useractivitylog);
+
+
+        ArrayList<String> notificationsList = new ArrayList<>();
+        ArrayList<Date> timelist = new ArrayList<>();
+        timelist.add(new Date());
+
+
+        activitylog.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, timelist, mcontext);
+        activitylog.setAdapter(activityLogRecyclerAdapter);
+
+        clockin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationsList.add(0,"You clocked in");
+
+                timelist.add(0,new Date());
+                clockout.setVisibility(View.VISIBLE);
+                clockin.setVisibility(View.GONE);
+                timelist.set((timelist.size()-1), new Date());
+                activitylog.setAdapter(activityLogRecyclerAdapter);
+            }
+        });
+
+        clockout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationsList.add(0,"You clocked out");
+                timelist.add(0,new Date());
+                clockin.setVisibility(View.VISIBLE);
+                clockout.setVisibility(View.GONE);
+                timelist.set((timelist.size()-1), new Date());
+                activitylog.setAdapter(activityLogRecyclerAdapter);
+
+            }
+        });
+        return view;
     }
 }
