@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".UserWorld.UserHome" />
         <activity android:name=".AdminWorld.AdminHome" />
+        <activity android:name=".AdminWorld.ChooseImageActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashScreen">
 

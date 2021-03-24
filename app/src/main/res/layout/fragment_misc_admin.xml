@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
-        android:text="@string/welcome_bac"
+        android:text="Welcome back Admin"
         android:textAppearance="@style/welcome_bac"
         android:fontFamily="@font/arial_rounded_mt_bold_font"
         />
