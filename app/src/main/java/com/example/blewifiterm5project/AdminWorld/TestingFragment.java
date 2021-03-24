@@ -31,6 +31,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.example.blewifiterm5project.Utils.WifiScanner;
+
 
 public class TestingFragment extends Fragment {
 
@@ -43,6 +45,7 @@ public class TestingFragment extends Fragment {
     private ArrayAdapter adapter;
     private HashMap<String, Double> wifiDataAPs = new HashMap<>();
     private Context mcontext;
+    private WifiScanner wifiScanner;
 
     @SuppressLint("WifiManagerPotentialLeak")
     @Override
@@ -53,67 +56,59 @@ public class TestingFragment extends Fragment {
         listView = view.findViewById(R.id.wifiList);
         buttonScan = view.findViewById(R.id.scanButton);
         mcontext = getActivity();
-        wifiManager = (WifiManager) mcontext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        wifiScanner = new WifiScanner(mcontext);
 
         buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("Testing", "94554278 button PRESSED");
-                scanWifi();
+                wifiScanner.scanWifi();
             }
         });
 
-        // if WiFi is not already enabled, turn it on and inform admin/user
-        if (!wifiManager.isWifiEnabled()) {
-            Toast.makeText(mcontext,"WiFi is disabled ... enabling it now", Toast.LENGTH_LONG).show();
-            wifiManager.setWifiEnabled(true);
-        }
-        arrayList.add("hello");
-        arrayList.add("testing");
-
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, arrayList);
-        listView.setAdapter(adapter);
+        listView.setAdapter(wifiScanner.getWifiAdapter());
 //        scanWifi();
+
         return view;
     }
 
-        // scan for available wifi points, clearing old results before the scan
-    public void scanWifi() {
-        arrayList.clear();
-        wifiDataAPs.clear();
-        mcontext.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifiManager.startScan();
-        Log.i("Testing", "94554278 scanning for WIFI!");
-        Toast.makeText(mcontext,"Scanning WiFi ...", Toast.LENGTH_SHORT).show();
-    }
-
-    final BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            results = wifiManager.getScanResults();
-            context.unregisterReceiver(this);
-            Log.i("Testing", "94554278 wifiReceiver !!!");
-
-            // for every result found via scanWifi, store the wifi SSID and approximate distance to it in an array
-            for (ScanResult scanResult : results) {
-                //int signalLevel = wifiManager.calculateSignalLevel(scanResult.level);
-                double signalLevel = scanResult.level; //RSSI value of wifi
-                double frequency = scanResult.frequency;
-                double distanceInM = calculateDistance(signalLevel, frequency);
-                //arrayList.add(scanResult.SSID + " - " + scanResult.capabilities);
-                Log.i("Testing", scanResult.SSID);
-                arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
-                wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
-                adapter.notifyDataSetChanged();
-            }
-        }
-    };
-
-    // function for calculating rough approximation of current distance to nearby wifi access points
-    public double calculateDistance(double signalLevel, double frequency) {
-        double exp = (27.55 - (20 * Math.log10(frequency)) + Math.abs(signalLevel)) / 20.0;
-        return (double) Math.round(Math.pow(10.0, exp) * 1000d / 1000d);
-    }
+//        // scan for available wifi points, clearing old results before the scan
+//    public void scanWifi() {
+//        arrayList.clear();
+//        wifiDataAPs.clear();
+//        mcontext.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+//        wifiManager.startScan();
+//        Log.i("Testing", "94554278 scanning for WIFI!");
+//        Toast.makeText(mcontext,"Scanning WiFi ...", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    final BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            results = wifiManager.getScanResults();
+//            context.unregisterReceiver(this);
+//            Log.i("Testing", "94554278 wifiReceiver !!!");
+//
+//            // for every result found via scanWifi, store the wifi SSID and approximate distance to it in an array
+//            for (ScanResult scanResult : results) {
+//                //int signalLevel = wifiManager.calculateSignalLevel(scanResult.level);
+//                double signalLevel = scanResult.level; //RSSI value of wifi
+//                double frequency = scanResult.frequency;
+//                double distanceInM = calculateDistance(signalLevel, frequency);
+//                //arrayList.add(scanResult.SSID + " - " + scanResult.capabilities);
+//                Log.i("Testing", scanResult.SSID);
+//                arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
+//                wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
+//                adapter.notifyDataSetChanged();
+//            }
+//        }
+//    };
+//
+//    // function for calculating rough approximation of current distance to nearby wifi access points
+//    public double calculateDistance(double signalLevel, double frequency) {
+//        double exp = (27.55 - (20 * Math.log10(frequency)) + Math.abs(signalLevel)) / 20.0;
+//        return (double) Math.round(Math.pow(10.0, exp) * 1000d / 1000d);
+//    }
 
         // function to return WiFi APs based on descending distance to admin/user
     public HashMap<String, Double> sortWiFiData() {
