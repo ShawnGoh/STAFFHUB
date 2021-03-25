@@ -27,6 +27,7 @@ public class WifiScanner {
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter adapter;
     private HashMap<String, Double> wifiDataAPs = new HashMap<>();
+    private HashMap<String, ArrayList<Double>> macRssi = new HashMap<>();
     private Context mcontext;
 
     public WifiScanner(Context context){
@@ -48,6 +49,7 @@ public class WifiScanner {
 
         arrayList.clear();
         wifiDataAPs.clear();
+        macRssi.clear();
         mcontext.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
         Log.i("Testing", "94554278 scanning for WIFI!");
@@ -67,10 +69,14 @@ public class WifiScanner {
                 double signalLevel = scanResult.level; //RSSI value of wifi
                 double frequency = scanResult.frequency;
                 double distanceInM = calculateDistance(signalLevel, frequency);
+                ArrayList<Double> rssiValue = new ArrayList<>();
+                rssiValue.add(signalLevel);
+                rssiValue.add(distanceInM);
                 //arrayList.add(scanResult.SSID + " - " + scanResult.capabilities);
                 Log.i("Testing", scanResult.SSID);
                 arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
                 wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
+                macRssi.put(scanResult.SSID + " (" + scanResult.BSSID + ")", rssiValue);
                 adapter.notifyDataSetChanged();
             }
         }
@@ -80,6 +86,14 @@ public class WifiScanner {
     public double calculateDistance(double signalLevel, double frequency) {
         double exp = (27.55 - (20 * Math.log10(frequency)) + Math.abs(signalLevel)) / 20.0;
         return (double) Math.round(Math.pow(10.0, exp) * 1000d / 1000d);
+    }
+
+    public HashMap<String, Double> getWifiDataAPs() {
+        return wifiDataAPs;
+    }
+
+    public HashMap<String, ArrayList<Double>> getMacRssi() {
+        return macRssi;
     }
 
     public HashMap<String, Double> sortWiFiData(HashMap<String, Double> wifiDataAPs) {

@@ -18,6 +18,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -34,6 +35,23 @@ public class MappingFragment extends Fragment {
     private WifiScanner wifiScanner;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private ArrayList<Float> coordinates;
+    private String documentName;
+    private HashMap<String, ArrayList<Double>> dataValues;
+    private HashMap<ArrayList<Float>, HashMap<String, ArrayList<Double>>> dataPoint;
+
+//    public class DataPoint {
+//        Float X;
+//        Float Y;
+//        HashMap<String, ArrayList<Double>> dataValues;
+//
+//        DataPoint(Float X, Float Y, HashMap<String, ArrayList<Double>> dataValues){
+//            this.X = X;
+//            this.Y = Y;
+//            this.dataValues = dataValues;
+//        }
+//    }
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -64,6 +82,7 @@ public class MappingFragment extends Fragment {
             @Override
             public void onImageClick(ImageDotLayout.IconBean bean) {
                 // Can add some other functions here
+                wifiScanner.scanWifi();
                 imageDotLayout.addIcon(bean);
             }
         });
@@ -73,10 +92,12 @@ public class MappingFragment extends Fragment {
             @Override
             public void onIconClick(View v) {
                 ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
-                wifiScanner.scanWifi();
-                // wifiDataAPs = wifiScanner.sortWiFiData(wifiDataAPs);
-                db.collection("datapoints").document()
-                        .set("Testing");
+                dataValues = wifiScanner.getMacRssi();
+//                coordinates.add(bean.sx);
+//                coordinates.add(bean.sy);
+                documentName = bean.sx + "," + bean.sy;
+                db.collection("datapoints").document(documentName)
+                        .set(dataValues);
                 Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
             }
         });
