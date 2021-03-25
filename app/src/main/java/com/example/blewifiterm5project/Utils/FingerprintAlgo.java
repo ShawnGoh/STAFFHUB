@@ -3,8 +3,6 @@ package com.example.blewifiterm5project.Utils;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class FingerprintAlgo {
 
