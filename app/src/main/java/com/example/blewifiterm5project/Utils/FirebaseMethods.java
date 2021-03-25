@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.blewifiterm5project.Models.UserClass;
+import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,21 +73,28 @@ public class FirebaseMethods {
         return userClass;
     }
 
-    public void getData() {
-        db.collection("cities")
+    public dbdatapoint getData() {
+        dbdatapoint dbdatapoint = new dbdatapoint();
+        db.collection("datapoints")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Data obtained", document.getId() + " => " + document.getData());
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+
+                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
+                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
+                                break;
                             }
                         } else {
-                            Log.d("NULL", "Error getting documents: ", task.getException());
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+        return dbdatapoint;
     }
 
 //    //updates the display name of the user by updating the name field in the database.
