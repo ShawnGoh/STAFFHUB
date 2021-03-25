@@ -11,6 +11,7 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.graphics.drawable.Icon;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -252,8 +253,9 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
     /**
      * Remove icon
      */
-    public void removeIcon(ImageView icon) {
-        removeView(icon);
+    public void removeIcon(IconBean bean) {
+        iconList.remove(findViewWithTag(bean));
+        removeView(findViewWithTag(bean));
     }
 
     /**

@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.blewifiterm5project.Adapter.ChooseMapRecycleViewAdapter;
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.Utils.WifiScanner;
@@ -28,6 +34,8 @@ public class MappingFragment extends Fragment {
     ImageDotLayout imageDotLayout;
     PhotoView photoView;
     Button button;
+    Button confirmscanbutton;
+    Spinner mapDropdown;
 
     String url;
 
@@ -40,6 +48,13 @@ public class MappingFragment extends Fragment {
     private String documentName;
     private HashMap<String, ArrayList<Double>> dataValues;
     private HashMap<ArrayList<Float>, HashMap<String, ArrayList<Double>>> dataPoint;
+    private ChooseMapRecycleViewAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+    private List mList;
+
+    float x_coordinates = 0;
+    float y_coordinates = 0;
+    ImageDotLayout.IconBean moving_bean = null;
 
 //    public class DataPoint {
 //        Float X;
@@ -74,16 +89,38 @@ public class MappingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mapping, container, false);
         imageDotLayout = view.findViewById(R.id.map);
         button = view.findViewById(R.id.mappingbutton);
+        confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
         wifiScanner = new WifiScanner(mcontext);
+
+//        mList = new ArrayList();
+//        mAdapter = new ChooseMapRecycleViewAdapter(mList, getActivity());
+//
+//        mapDropdown = view.findViewById(R.id.map_dropdown);
+//        mapDropdown.setAdapter((SpinnerAdapter) mAdapter);
+//
+//        mList.add("Building 2 Level 1");
+//        mList.add("Building 2 Level 2");
+//
+//        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mList);
+//
+//        mapDropdown.setAdapter();
+
+        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         // Set click listener to imageDotLayout
         imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
             @Override
             public void onImageClick(ImageDotLayout.IconBean bean) {
                 // Can add some other functions here
-                wifiScanner.scanWifi();
+                if (moving_bean != null){
+                    imageDotLayout.removeIcon(moving_bean);
+                }
                 imageDotLayout.addIcon(bean);
+                moving_bean = bean;
+                x_coordinates = bean.sx;
+                y_coordinates = bean.sy;
+                wifiScanner.scanWifi();
             }
         });
 
@@ -96,8 +133,8 @@ public class MappingFragment extends Fragment {
 //                coordinates.add(bean.sx);
 //                coordinates.add(bean.sy);
                 documentName = bean.sx + "," + bean.sy;
-                db.collection("datapoints").document(documentName)
-                        .set(dataValues);
+//                db.collection("datapoints").document(documentName)
+//                        .set(dataValues);
                 Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
             }
         });
@@ -117,6 +154,19 @@ public class MappingFragment extends Fragment {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), ChooseImageActivity.class);
                 getActivity().startActivityForResult(intent, ChooseImageActivity.REQUEST_APPLY);
+            }
+        });
+
+        confirmscanbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                ImageDotLayout.IconBean bean = (ImageDotLayout.IconBean) v.getTag();
+                dataValues = wifiScanner.getMacRssi();
+                documentName = x_coordinates + "," + y_coordinates;
+                db.collection("datapoints").document(documentName)
+                        .set(dataValues);
+//                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Position = "+x_coordinates+", "+y_coordinates+" has been added!", Toast.LENGTH_SHORT).show();
             }
         });
 
