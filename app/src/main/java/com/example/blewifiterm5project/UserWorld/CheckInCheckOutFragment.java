@@ -13,14 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.blewifiterm5project.Adapter.AdminNotificationAdapter;
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
+import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class CheckInCheckOutFragment extends Fragment {
 
@@ -68,6 +69,18 @@ public class CheckInCheckOutFragment extends Fragment {
                 clockin.setVisibility(View.GONE);
                 timelist.set((timelist.size()-1), new Date());
                 activitylog.setAdapter(activityLogRecyclerAdapter);
+
+//                HashMap<String, ArrayList<String>> map = new HashMap<>();
+//                ArrayList<String> wifi1info = new ArrayList<>();
+//                wifi1info.add("mac Address");
+//                wifi1info.add("number");
+//                map.put("wifi 1", wifi1info);
+//
+//
+//
+//                dbdatapoint data = new dbdatapoint(map, wifi1info);
+
+//                db.collection("clockinout").add(data);
             }
         });
 

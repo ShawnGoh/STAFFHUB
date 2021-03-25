@@ -22,6 +22,7 @@ import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.blewifiterm5project.Models.dbdatapoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,11 +131,15 @@ public class MappingFragment extends Fragment {
             public void onIconClick(View v) {
                 ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
                 dataValues = wifiScanner.getMacRssi();
-//                coordinates.add(bean.sx);
-//                coordinates.add(bean.sy);
+                ArrayList<Float> coordarray = new ArrayList<>();
+
+                coordarray.add(bean.sx);
+                coordarray.add(bean.sy);
+                dbdatapoint newdatapoint = new dbdatapoint(dataValues, coordarray);
                 documentName = bean.sx + "," + bean.sy;
 //                db.collection("datapoints").document(documentName)
 //                        .set(dataValues);
+                // db.collection("datapoints").add(newdatapoint);
                 Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
             }
         });
@@ -163,8 +168,9 @@ public class MappingFragment extends Fragment {
 //                ImageDotLayout.IconBean bean = (ImageDotLayout.IconBean) v.getTag();
                 dataValues = wifiScanner.getMacRssi();
                 documentName = x_coordinates + "," + y_coordinates;
-                db.collection("datapoints").document(documentName)
-                        .set(dataValues);
+                // db.collection("datapoints").document(documentName)
+                //         .set(dataValues);
+                db.collection("datapoints").add(newdatapoint);
 //                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Position = "+x_coordinates+", "+y_coordinates+" has been added!", Toast.LENGTH_SHORT).show();
             }
