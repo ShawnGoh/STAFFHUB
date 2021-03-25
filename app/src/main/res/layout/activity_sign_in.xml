@@ -101,6 +101,7 @@
         />
 
     <TextView
+        android:id="@+id/forgotpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Forgot your pasword?"
@@ -109,6 +110,27 @@
         android:textAlignment="center"
         android:textAppearance="@style/forgot_your"/>
 
+    <TextView
+        android:id="@+id/errormessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Forgot your pasword?"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        android:textAppearance="@style/loginerror"/>
+
+    <TextView
+        android:id="@+id/attemptsleft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Forgot your pasword?"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        android:textAppearance="@style/loginerror"/>
 
 
     <ProgressBar

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserWorld.UserHome">
+    tools:context=".UserWorld.UserHome"
+    android:id="@+id/userhomeactivity">
 
     <FrameLayout
         android:id="@+id/userhome_fragment_container"

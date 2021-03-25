@@ -58,4 +58,14 @@
         </item>
 
     </style>
+
+    <style name="loginerror">
+
+        <item name="android:textSize">
+            15sp
+        </item>
+
+        <item name="android:textColor">#E8F65656</item>
+
+    </style>
 </resources>
