@@ -20,7 +20,9 @@
         android:layout_height="50dp"
         android:layout_gravity="bottom"
         android:layout_margin="15dp"
-        android:background="@android:color/holo_red_light"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:background="@drawable/roundedrectanglepurple"
         android:text="Scan WiFi"/>
 
 </LinearLayout>
