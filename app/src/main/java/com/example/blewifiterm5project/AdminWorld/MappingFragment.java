@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class MappingFragment extends Fragment {
+public class MappingFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     // Components
     ImageDotLayout imageDotLayout;
@@ -49,7 +50,7 @@ public class MappingFragment extends Fragment {
     private String documentName;
     private HashMap<String, ArrayList<Double>> dataValues;
     private HashMap<ArrayList<Float>, HashMap<String, ArrayList<Double>>> dataPoint;
-    private ChooseMapRecycleViewAdapter mAdapter;
+//    SpinnerAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private List mList;
 
@@ -89,23 +90,23 @@ public class MappingFragment extends Fragment {
         // Create fragment and views' instance
         View view = inflater.inflate(R.layout.fragment_mapping, container, false);
         imageDotLayout = view.findViewById(R.id.map);
-        button = view.findViewById(R.id.mappingbutton);
+//        button = view.findViewById(R.id.mappingbutton);
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
         wifiScanner = new WifiScanner(mcontext);
 
-//        mList = new ArrayList();
-//        mAdapter = new ChooseMapRecycleViewAdapter(mList, getActivity());
-//
-//        mapDropdown = view.findViewById(R.id.map_dropdown);
-//        mapDropdown.setAdapter((SpinnerAdapter) mAdapter);
-//
-//        mList.add("Building 2 Level 1");
-//        mList.add("Building 2 Level 2");
-//
+        mList = new ArrayList();
+        mList.add("Building 2 Level 1");
+        mList.add("Building 2 Level 2");
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mList);
-//
-//        mapDropdown.setAdapter();
+
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(mcontext,
+                android.R.layout.simple_spinner_item,mList);
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mapDropdown = view.findViewById(R.id.map_dropdown);
+        mapDropdown.setAdapter(mAdapter);
+        mapDropdown.setOnItemSelectedListener(this);
 
         imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
@@ -147,15 +148,15 @@ public class MappingFragment extends Fragment {
         // Initialize icons
         initIcon();
 
-        // Button to choose image from ChooseImageActivity
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), ChooseImageActivity.class);
-                getActivity().startActivityForResult(intent, ChooseImageActivity.REQUEST_APPLY);
-            }
-        });
+//        // Button to choose image from ChooseImageActivity
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setClass(getActivity(), ChooseImageActivity.class);
+//                getActivity().startActivityForResult(intent, ChooseImageActivity.REQUEST_APPLY);
+//            }
+//        });
 
         confirmscanbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,5 +196,28 @@ public class MappingFragment extends Fragment {
                 imageDotLayout.addIcons(iconBeanList);
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //TODO: LOAD MAPPED PINS ON IMAGES from database
+        switch (position) {
+            case 0:
+                // Whatever you want to happen when the first item gets selected
+                // Building 2 Level 1 Image
+                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
+                break;
+            case 1:
+                // Whatever you want to happen when the second item gets selected
+                // Building 2 Level 2 Image
+                System.out.println("choosing image 2");
+                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_2.png?alt=media&token=e194f391-373b-4337-acc1-682258a62970");
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
