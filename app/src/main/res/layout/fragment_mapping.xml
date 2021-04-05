@@ -6,80 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".AdminWorld.MappingFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:orientation="vertical"
-        android:layout_margin="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:tabIndicatorColor="@color/purple_500"
+        app:tabRippleColor="@color/transparent">
 
+    </com.google.android.material.tabs.TabLayout>
 
-        <TextView
-        android:id="@+id/welcome_bac"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:text="Set Up Area Mapping"
-        android:textAppearance="@style/welcome_bac"
-        android:fontFamily="@font/arial_rounded_mt_bold_font"
-        />
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:background="@drawable/shadowinverted"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
-        <Spinner
-            android:id="@+id/map_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:spinnerMode="dropdown"/>
-
-<!--        <Button-->
-<!--            android:id="@+id/mappingbutton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="choose"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-    </LinearLayout>
-
-    <com.example.blewifiterm5project.Layout.ImageDotLayout
-        android:id="@+id/map"
-        android:layout_width="380dp"
-        android:layout_height="380dp"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout"
-        android:layout_marginTop="10dp"
-        app:layout_constraintVertical_bias="0.059"
-        tools:srcCompat="@drawable/floorplantemp" />
-
-    <Button
-        android:id="@+id/confirmlocation_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/roundedrectanglepurple"
-        android:elevation="8dp"
-        android:padding="8dp"
-        android:text="Confirm and Scan Wifi"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/map"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="@id/map"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_alignParentBottom="true"/>
+        app:layout_constraintTop_toBottomOf="@+id/view">
+    </androidx.viewpager.widget.ViewPager>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
