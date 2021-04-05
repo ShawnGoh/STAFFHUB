@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:layout_margin="5dp"
+    android:elevation="5dp"
+    android:background="@drawable/roundedrectanglewhite">
+
+    <TextView
+        android:id="@+id/stafflistrowname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/arial_rounded_mt_bold_font"
+        android:text="Name"
+        android:textAppearance="@style/welcome_bac"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+
+        android:id="@+id/stafflistrowstatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="12dp"
+        android:text="status"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stafflistrowname"
+        app:layout_constraintVertical_bias="0.147" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/statusindicatoruseritemonline"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="7dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:visibility="gone"
+        app:civ_border_color="#05df29"
+        app:civ_border_width="10dp"
+        app:civ_circle_background_color="#05df29"
+        app:layout_constraintBottom_toBottomOf="@+id/stafflistrowname"
+        app:layout_constraintStart_toEndOf="@+id/stafflistrowname"
+        app:layout_constraintTop_toTopOf="@+id/stafflistrowname" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/statusindicatoruseritemoffline"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="7dp"
+        app:layout_constraintBottom_toBottomOf="@+id/stafflistrowname"
+        app:layout_constraintStart_toEndOf="@+id/stafflistrowname"
+        app:layout_constraintTop_toTopOf="@+id/stafflistrowname"
+        android:src="@mipmap/ic_launcher_round"
+        android:visibility="gone"
+        app:civ_border_color="#bfbfbf"
+        app:civ_border_width="10dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_baseline_chevron_right_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

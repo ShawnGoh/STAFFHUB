@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".AdminWorld.MiscAdminFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="Misc Admin Fragment"-->
-<!--        android:textAlignment="center"/>-->
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -124,9 +117,10 @@
         android:id="@+id/adminsignoutbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/roundedrectanglepurple"
         android:elevation="8dp"
         android:padding="8dp"
@@ -136,8 +130,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_alignParentBottom="true"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 
