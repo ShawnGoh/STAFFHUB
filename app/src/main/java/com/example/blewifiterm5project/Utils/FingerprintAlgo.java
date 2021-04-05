@@ -12,7 +12,6 @@ public class FingerprintAlgo {
     // MACk stands for the physical address of the kth WiFi access point.
     // AVGk means the average value of the kth original WiFi signal strength.
     // PAVGk means the average value of the kth processed WiFi signal strength.
-    //
 
     private ArrayList<dataPoint> dataSet = new ArrayList<>();
     private ArrayList<dataEntry> wifiResults = new ArrayList<>();
@@ -66,8 +65,7 @@ public class FingerprintAlgo {
     private double AVGk;
     private double DEVk;
 
-    // needs a method to pull from database
-    // placeholder method
+    // method to pull from database
 
     public double getFLAG() {
         // average RSSI value received at user's location

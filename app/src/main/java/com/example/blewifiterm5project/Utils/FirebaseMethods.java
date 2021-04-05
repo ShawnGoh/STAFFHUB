@@ -16,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 public class FirebaseMethods {
 
     final String TAG = "FirebaseMethods";
@@ -73,8 +75,9 @@ public class FirebaseMethods {
         return userClass;
     }
 
-    public dbdatapoint getData() {
+    public ArrayList<dbdatapoint> getData() {
         dbdatapoint dbdatapoint = new dbdatapoint();
+        ArrayList<dbdatapoint> allData = new ArrayList<>();
         db.collection("datapoints")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -87,6 +90,7 @@ public class FirebaseMethods {
 
                                 dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
                                 dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
+                                allData.add(dbdatapoint);
                                 break;
                             }
                         } else {
@@ -94,7 +98,7 @@ public class FirebaseMethods {
                         }
                     }
                 });
-        return dbdatapoint;
+        return allData;
     }
 
 //    //updates the display name of the user by updating the name field in the database.
