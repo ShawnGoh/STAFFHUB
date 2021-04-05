@@ -68,8 +68,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 //        }
 //    }
 
-
-    //TODO: in the final project, it may contain 2 arguments: 1.boolean 2.url in string
+    // Initialize the fragment with url of the default image
     public ChildMappingFragment(String url) {
         this.url = url;
     }
