@@ -45,7 +45,7 @@ public class AdminHomeTest {
     public void changeFragmentTest() {
         ActivityScenario scenario = ActivityScenario.launch(AdminHome.class);
         onView(withId(R.id.staff)).perform(click());
-        onView(withId(R.id.testingFragment)).check(matches(isDisplayed()));
+        onView(withId(R.id.staffFragment)).check(matches(isDisplayed()));
         onView(withId(R.id.mapping)).perform(click());
         onView(withId(R.id.mappingFragment)).check(matches(isDisplayed()));
     }
@@ -63,7 +63,7 @@ public class AdminHomeTest {
                     break;
                 case 1:
                     onView(withId(R.id.staff)).perform(click());
-                    onView(withId(R.id.testingFragment)).check(matches(isDisplayed()));
+                    onView(withId(R.id.staffFragment)).check(matches(isDisplayed()));
                     break;
                 case 2:
                     onView(withId(R.id.mapping)).perform(click());
