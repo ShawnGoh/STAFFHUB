@@ -6,6 +6,8 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.widget.ListView;
 
 import com.example.blewifiterm5project.Adapter.AdminNotificationAdapter;
 import com.example.blewifiterm5project.Adapter.StaffListReyclerAdapter;
+import com.example.blewifiterm5project.Models.UserClass;
 import com.example.blewifiterm5project.R;
 
 import java.util.ArrayList;
@@ -32,12 +35,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.blewifiterm5project.Utils.WifiScanner;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class StaffListFragment extends Fragment {
 
-
+    private static final String TAG = "Admin StaffListFragment";
     StaffListReyclerAdapter myAdapter;
     RecyclerView recyclerView;
     ArrayList<String> staffnamelist, staffstatuslist, stafficonstauslist;
@@ -46,6 +53,11 @@ public class StaffListFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     Context mcontext;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,8 +75,7 @@ public class StaffListFragment extends Fragment {
         initstafflists();
 
 
-        myAdapter = new StaffListReyclerAdapter(staffnamelist,staffstatuslist,stafficonstauslist,mcontext);
-        recyclerView.setAdapter(myAdapter);
+
 
 
 
@@ -77,6 +88,32 @@ public class StaffListFragment extends Fragment {
         stafficonstauslist = new ArrayList<>();
         staffnamelist = new ArrayList<>();
         staffstatuslist = new ArrayList<>();
+        UserClass user = new UserClass();
+
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                UserClass userClassfromdoc = document.toObject(UserClass.class);
+
+                                staffnamelist.add(userClassfromdoc.getName());
+                                staffstatuslist.add("Active - Working");
+                                stafficonstauslist.add(userClassfromdoc.getStatus());
+
+                            }
+                            myAdapter = new StaffListReyclerAdapter(staffnamelist,staffstatuslist,stafficonstauslist,mcontext);
+                            recyclerView.setAdapter(myAdapter);
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+
 
         staffnamelist.add("Qi Yan Seah");
         staffstatuslist.add("Active - Working");
