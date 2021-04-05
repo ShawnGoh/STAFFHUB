@@ -6,16 +6,8 @@ import com.example.blewifiterm5project.Models.dbdatapoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class FingerprintAlgo {
-
-    // Data in database
-    // (ID, X, Y, MACk, AVGk, PAVGk, DEVk), k = 1, 2, …, n
-    // (ID, X, Y) represents the location of one collecting point.
-    // MACk stands for the physical address of the kth WiFi access point.
-    // AVGk means the average value of the kth original WiFi signal strength.
-    // PAVGk means the average value of the kth processed WiFi signal strength.
 
     private ArrayList<dbdatapoint> dataSet = new ArrayList<>();
     private dbdatapoint wifiResults;
@@ -26,50 +18,6 @@ public class FingerprintAlgo {
         // from wifiResults
         this.wifiResults = wifiResults;
     }
-
-//    private class dataPoint {
-//        String ID;
-//        double X;
-//        double Y;
-//        ArrayList<dataEntry> APdata;
-//
-//        dataPoint(String ID, double X, double Y, ArrayList<dataEntry> APdata){
-//            this.ID = ID;
-//            this.X = X;
-//            this.Y = Y;
-//            this.APdata = APdata;
-//        }
-//    }
-//
-//    private class dataEntry {
-//        String ID;
-////        double X;
-////        double Y;
-//        String MACk;
-//        double AVGk;
-//        double PAVGk;
-//        double DEVk;
-//
-//        dataEntry(String ID, double X, double Y, String MACk, double AVGk, double PAVGk, double DEVk) {
-//            this.ID = ID;
-////            this.X = X;
-////            this.Y = Y;
-//            this.MACk = MACk;
-//            this.AVGk = AVGk;
-//            this.PAVGk = PAVGk;
-//            this.DEVk = DEVk;
-//        }
-//
-//    }
-
-    // Data received:
-    // (MACk, AVGk, PAVGk, DEVk) where k = 1, 2, …, m
-
-    private String MACk;
-    private double AVGk;
-    private double DEVk;
-
-    // method to pull from database
 
     public double getFLAG() {
         // average RSSI value received at user's location
@@ -105,13 +53,6 @@ public class FingerprintAlgo {
     public double getEuclideanDistance(dbdatapoint dataPoint, dbdatapoint wifiResults) {
         // to be run on individual datapoints in the databased
         ArrayList<String> nearbyAPs = sortMAC(); //TODO: put into main function
-
-//        ArrayList effectiveDataSet = new ArrayList();
-//        List list = new ArrayList(Arrays.asList(effectiveDataSet)); //returns a list view of an array
-//        //trim list of datapoints in dataset to only include those w MAC Address nearby
-//        for (int i = 0; i < nearbyData.size(); i++){
-//            list.addAll(Arrays.asList(dataSet).contains(nearbyData.get(i).ID));
-//        }
 
         double total = 0;
         for (HashMap.Entry<String, ArrayList<Double>> dbaccessPoint : dataPoint.getAccesspoints().entrySet()) {
