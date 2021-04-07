@@ -47,7 +47,7 @@ public class StaffListFragment extends Fragment {
     private static final String TAG = "Admin StaffListFragment";
     StaffListReyclerAdapter myAdapter;
     RecyclerView recyclerView;
-    ArrayList<String> staffnamelist, staffstatuslist, stafficonstauslist;
+    ArrayList<String> staffnamelist, staffstatuslist, stafficonstauslist, docidlist = new ArrayList<>();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -70,15 +70,7 @@ public class StaffListFragment extends Fragment {
         mcontext = getActivity();
 
 
-
-
         initstafflists();
-
-
-
-
-
-
 
         return view;
     }
@@ -99,29 +91,20 @@ public class StaffListFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 UserClass userClassfromdoc = document.toObject(UserClass.class);
-
-                                staffnamelist.add(userClassfromdoc.getName());
-                                staffstatuslist.add(userClassfromdoc.getStatusmessage());
-                                stafficonstauslist.add(userClassfromdoc.getStatus());
-
+                                if(userClassfromdoc.getAdmin().equals("N")){
+                                    staffnamelist.add(userClassfromdoc.getName());
+                                    staffstatuslist.add(userClassfromdoc.getStatusmessage());
+                                    stafficonstauslist.add(userClassfromdoc.getStatus());
+                                    docidlist.add(document.getId());
+                                }
                             }
-                            myAdapter = new StaffListReyclerAdapter(staffnamelist,staffstatuslist,stafficonstauslist,mcontext);
+                            myAdapter = new StaffListReyclerAdapter(staffnamelist,staffstatuslist,stafficonstauslist,mcontext, docidlist);
                             recyclerView.setAdapter(myAdapter);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
-
-
-
-        staffnamelist.add("Qi Yan Seah");
-        staffstatuslist.add("Active - Working");
-        stafficonstauslist.add("online");
-
-        staffnamelist.add("Jing Sen Tjoa");
-        staffstatuslist.add("Inactive - Off-work");
-        stafficonstauslist.add("offline");
 
     }
 

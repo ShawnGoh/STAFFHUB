@@ -20,14 +20,18 @@ import android.widget.Toast;
 
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
 import com.example.blewifiterm5project.AdminWorld.AdminHome;
+import com.example.blewifiterm5project.Models.ActivityLog;
 import com.example.blewifiterm5project.Models.UserClass;
 import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.SignInSignup.SignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,6 +51,8 @@ public class CheckInCheckOutFragment extends Fragment {
     Context mcontext;
     UserActivityLogRecyclerAdapter activityLogRecyclerAdapter;
 
+    ArrayList<String> notificationsList = new ArrayList<>();
+    ArrayList<String> notificationsdateList = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
 
@@ -66,13 +72,14 @@ public class CheckInCheckOutFragment extends Fragment {
         activitylog = view.findViewById(R.id.useractivitylog);
 
         initwidgets();
-        ArrayList<String> notificationsList = new ArrayList<>();
-        ArrayList<Date> timelist = new ArrayList<>();
-        timelist.add(new Date());
+
+        notificationsdateList.add(String.valueOf(new Date().getTime()));
+        notificationsList.add("Hello");
+
 
 
         activitylog.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, timelist, mcontext);
+        activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, notificationsdateList, mcontext);
         activitylog.setAdapter(activityLogRecyclerAdapter);
 
         clockin.setOnClickListener(new View.OnClickListener() {
@@ -80,13 +87,10 @@ public class CheckInCheckOutFragment extends Fragment {
             public void onClick(View v) {
                 Calendar clockincal = Calendar.getInstance();
                 String newstring = String.format("Clocked in on %s", clockincal.getTime());
-                notificationsList.add(0,newstring);
-                timelist.add(0,clockincal.getTime());
+//                notificationsList.add(0,newstring);
                 clockout.setVisibility(View.VISIBLE);
                 clockin.setVisibility(View.GONE);
-                timelist.set((timelist.size()-1), new Date());
-                activitylog.setAdapter(activityLogRecyclerAdapter);
-                checkinout(newstring);
+                checkinout(newstring, clockincal.getTime());
             }
         });
 
@@ -95,14 +99,10 @@ public class CheckInCheckOutFragment extends Fragment {
             public void onClick(View v) {
                 Calendar clockoutcal = Calendar.getInstance();
                 String newstring = String.format("Clocked out on %s", clockoutcal.getTime());
-                notificationsList.add(0,newstring);
-                timelist.add(0,clockoutcal.getTime());
+//                notificationsList.add(0,newstring);
                 clockin.setVisibility(View.VISIBLE);
                 clockout.setVisibility(View.GONE);
-                timelist.set((timelist.size()-1), new Date());
-                activitylog.setAdapter(activityLogRecyclerAdapter);
-                checkinout(newstring);
-
+                checkinout(newstring, clockoutcal.getTime());
             }
         });
         return view;
@@ -129,6 +129,13 @@ public class CheckInCheckOutFragment extends Fragment {
                                     System.out.println(newuser[0].getPaid_leave());
                                     paidleave.setText(String.valueOf(newuser[0].getPaid_leave()));
                                     sickleave.setText(String.valueOf(newuser[0].getSick_leave()));
+                                    notificationsList = newuser[0].getActivitylist();
+                                    System.out.println(notificationsList);
+                                    notificationsdateList = newuser[0].getActivitydatelist();
+                                    System.out.println(notificationsdateList);
+
+                                    UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
+                                    activitylog.setAdapter(newadapter);
                                 }
                             }
 
@@ -138,7 +145,7 @@ public class CheckInCheckOutFragment extends Fragment {
                     }
                 });}
 
-    private void checkinout(String statustobeset){
+    private void checkinout(String statustobeset, Date date){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
         System.out.println(email);
@@ -158,9 +165,26 @@ public class CheckInCheckOutFragment extends Fragment {
 
                                 if(userClass.getEmail().equals(email)){
                                     newuser[0].setStatusmessage(statustobeset);
-                                    db.collection("users").document(docid).set(newuser[0]);
                                     Toast.makeText(mcontext, statustobeset, Toast.LENGTH_SHORT).show();
 
+                                    notificationsList = newuser[0].getActivitylist();
+                                    notificationsList.add(statustobeset);
+                                    System.out.println(notificationsList);
+
+                                    notificationsdateList = newuser[0].getActivitydatelist();
+                                    notificationsdateList.add(String.valueOf(date.getTime()));
+                                    System.out.println(notificationsdateList);
+
+                                    UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
+                                    activitylog.setAdapter(newadapter);
+
+
+                                    newuser[0].setActivitydatelist(notificationsdateList);
+                                    newuser[0].setActivitylist(notificationsList);
+                                    db.collection("users").document(docid).set(newuser[0]);
+
+
+                                    break;
                                 }
                             }
 

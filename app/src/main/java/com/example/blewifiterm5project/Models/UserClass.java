@@ -1,6 +1,7 @@
 package com.example.blewifiterm5project.Models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserClass {
     private String name;
@@ -11,6 +12,8 @@ public class UserClass {
     private String statusmessage;
     private int paid_leave;
     private int sick_leave;
+    private ArrayList<String> Activitylist = new ArrayList<>();
+    private ArrayList<String> Activitydatelist = new ArrayList<>();
 
     public UserClass(String name, String profile_picture, String email) {
         this.name = name;
@@ -27,6 +30,26 @@ public class UserClass {
         this.email = userClass.getEmail();
         this.admin = userClass.getAdmin();
     }
+
+    public void setActivitylist(ArrayList<String> activitylist) {
+        Activitylist = activitylist;
+    }
+
+    public void setActivitydatelist(ArrayList<String> activitydatelist) {
+        Activitydatelist = activitydatelist;
+    }
+
+    public ArrayList<String> getActivitydatelist() {
+        return Activitydatelist;
+    }
+
+
+
+    public ArrayList<String> getActivitylist() {
+        return Activitylist;
+    }
+
+
 
     public String getStatusmessage() {
         return statusmessage;

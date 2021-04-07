@@ -132,6 +132,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 dbdatapoint wifiResults = new dbdatapoint();
                 wifiResults.setCoordinates(coordarray);
                 wifiResults.setAccesspoints(dataValues);
+//                System.out.println("datasetpos0: "+dataSet.get(0).getAccesspoints());
 //                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
 //                ArrayList<dbdatapoint> dataSet = firebaseMethods.getData();
 
