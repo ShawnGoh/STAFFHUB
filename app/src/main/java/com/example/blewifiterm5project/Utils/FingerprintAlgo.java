@@ -64,6 +64,7 @@ public class FingerprintAlgo {
                 }
             }
         }
+        System.out.println("Finishing getting Euclidean Distance!");
         return Math.sqrt(total);
     }
 

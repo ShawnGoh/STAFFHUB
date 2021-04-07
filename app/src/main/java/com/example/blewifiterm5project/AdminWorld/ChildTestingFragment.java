@@ -2,16 +2,13 @@ package com.example.blewifiterm5project.AdminWorld;
 
 import android.content.Context;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.util.Pair;
-=======
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
->>>>>>> 1437a63f5e25d3f10617356ce3142f0b810dbe25
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +107,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 y_coordinates = bean.sy;
                 wifiScanner.scanWifi();
                 FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
-                dataSet = firebaseMethods.getData();
+//                dataSet = firebaseMethods.getData();
             }
         });
 
@@ -137,6 +134,36 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 wifiResults.setAccesspoints(dataValues);
 //                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
 //                ArrayList<dbdatapoint> dataSet = firebaseMethods.getData();
+
+                // START OF LONG METHOD
+
+                ArrayList<dbdatapoint> dataSet = new ArrayList<>();
+                db.collection("datapoints")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+
+//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
+//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
+                                        dataSet.add(dbdatapointFromDoc);
+                                    }
+                                    System.out.println(dataSet);
+
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
+
+                // END OF LONG METHOD
+
+
                 FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
                 Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
                 float sx = resultCoordinates.first.floatValue();
