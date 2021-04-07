@@ -2,10 +2,7 @@ package com.example.blewifiterm5project.AdminWorld;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +12,20 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
+import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
+import com.example.blewifiterm5project.Utils.FingerprintAlgo;
+import com.example.blewifiterm5project.Utils.FirebaseMethods;
 import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -45,7 +49,10 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
     float y_coordinates = 0;
     ImageDotLayout.IconBean moving_bean = null;
 
+    final String TAG = "FirebaseMethods";
+    ArrayList<dbdatapoint> dataSet;
 
+    private HashMap<String, ArrayList<Double>> dataValues;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -53,8 +60,9 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
         imageDotLayout = view.findViewById(R.id.map);
 //        button = view.findViewById(R.id.mappingbutton);
-        locatemebutton = view.findViewById(R.id.confirmlocation_button);
+        locatemebutton = view.findViewById(R.id.Locatemebutton);
         mcontext = getActivity();
+        wifiScanner = new WifiScanner(mcontext);
 
         mList = new ArrayList();
         mList.add("Building 2 Level 1");
@@ -67,7 +75,6 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         mapDropdown = view.findViewById(R.id.map_dropdown_testing);
         mapDropdown.setAdapter(mAdapter);
         mapDropdown.setOnItemSelectedListener(this);
-
 
 
         imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
@@ -86,7 +93,9 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 moving_bean = bean;
                 x_coordinates = bean.sx;
                 y_coordinates = bean.sy;
-                //wifiScanner.scanWifi();
+                wifiScanner.scanWifi();
+                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
+                dataSet = firebaseMethods.getData();
             }
         });
 
@@ -94,12 +103,32 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onIconClick(View v) {
                 ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
-//                dataValues = wifiScanner.getMacRssi();
-//                documentName = bean.sx + "," + bean.sy;
-//                db.collection("datapoints").document(documentName)
-//                        .set(dataValues);
-                // db.collection("datapoints").add(newdatapoint);
                 Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        locatemebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dataValues = wifiScanner.getMacRssi();
+                ArrayList<Float> coordarray = new ArrayList<>();
+
+                coordarray.add(x_coordinates);
+                coordarray.add(y_coordinates);
+                System.out.println(coordarray);
+                dbdatapoint wifiResults = new dbdatapoint();
+                wifiResults.setCoordinates(coordarray);
+                wifiResults.setAccesspoints(dataValues);
+//                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
+//                ArrayList<dbdatapoint> dataSet = firebaseMethods.getData();
+                FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
+                Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
+                float sx = resultCoordinates.first.floatValue();
+                float sy = resultCoordinates.second.floatValue();
+                System.out.println(resultCoordinates);
+                ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
+                imageDotLayout.addIcon(location);
             }
         });
 
@@ -143,6 +172,32 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
 
 }
+
+//    public ArrayList<dbdatapoint> getData() {
+//        dbdatapoint dbdatapoint = new dbdatapoint();
+//        ArrayList<dbdatapoint> allData = new ArrayList<>();
+//        db.collection("datapoints")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+//
+//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
+//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
+//                                allData.add(dbdatapoint);
+//                                // break;
+//                            }
+//                        } else {
+//                            Log.d(TAG, "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+//        return allData;
+//    }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
