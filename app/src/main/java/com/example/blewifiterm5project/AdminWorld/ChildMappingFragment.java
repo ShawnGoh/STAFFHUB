@@ -147,11 +147,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         }
 
         // Initialize icons
-        try {
-            initIcon();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        initIcon();
 
 //        // Button to choose image from ChooseImageActivity
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +180,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         return view;
     }
 
-    private void initIcon() throws InterruptedException {
+    private void initIcon() {
         final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
         // Initialized
