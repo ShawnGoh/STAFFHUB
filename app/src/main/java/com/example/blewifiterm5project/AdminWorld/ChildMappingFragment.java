@@ -3,10 +3,12 @@ package com.example.blewifiterm5project.AdminWorld;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +21,21 @@ import android.widget.Toast;
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
+import com.example.blewifiterm5project.Utils.FirebaseMethods;
 import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class ChildMappingFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     // Components
@@ -43,6 +52,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     private WifiScanner wifiScanner;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseMethods firebaseMethods;
 
     private ArrayList<Float> coordinates;
     private String documentName;
@@ -82,6 +92,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
         wifiScanner = new WifiScanner(mcontext);
+        firebaseMethods = new FirebaseMethods(mcontext);
 
         mList = new ArrayList();
         mList.add("Building 2 Level 1");
@@ -134,7 +145,11 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         }
 
         // Initialize icons
-        initIcon();
+        try {
+            initIcon();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 //        // Button to choose image from ChooseImageActivity
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -167,14 +182,61 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         return view;
     }
 
-    private void initIcon() {
+    private void initIcon() throws InterruptedException {
         final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
-        // Initialize
-        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
-        iconBeanList.add(bean);
-        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
-        iconBeanList.add(bean);
+        // Initialized
+        // get datapoint coordinates from database and create beans
+
+        ArrayList<dbdatapoint> allData = new ArrayList<>();
+        db.collection("datapoints")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+
+//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
+//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
+                                allData.add(dbdatapointFromDoc);
+                            }
+                            System.out.println(allData);
+                            int count = 0;
+                            for (dbdatapoint dbdatapoint : allData){
+                                System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
+                                ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
+                                iconBeanList.add(bean);
+                                count++;
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        System.out.println("finished populating");
+
+//        ArrayList<dbdatapoint> datapoints = firebaseMethods.getData();
+//        System.out.println(datapoints);
+//        int count = 0;
+//        System.out.println("testing124u3ty89304t1");
+
+//        for (dbdatapoint dbdatapoint : datapoints){
+//            System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
+//            ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
+//            iconBeanList.add(bean);
+//            count++;
+//        }
+
+
+//        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
+//        iconBeanList.add(bean);
+//        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
+//        iconBeanList.add(bean);
 
         // Check the image is ready or not
         imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
