@@ -1,6 +1,7 @@
 package com.example.blewifiterm5project.Models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserClass {
     private String name;
@@ -8,8 +9,11 @@ public class UserClass {
     private String status="offline";
     private String admin = "N";
     private String email;
+    private String statusmessage;
     private int paid_leave;
     private int sick_leave;
+    private ArrayList<String> Activitylist = new ArrayList<>();
+    private ArrayList<String> Activitydatelist = new ArrayList<>();
 
     public UserClass(String name, String profile_picture, String email) {
         this.name = name;
@@ -25,6 +29,50 @@ public class UserClass {
         this.profile_picture = userClass.getProfile_picture();
         this.email = userClass.getEmail();
         this.admin = userClass.getAdmin();
+    }
+
+    public void setActivitylist(ArrayList<String> activitylist) {
+        Activitylist = activitylist;
+    }
+
+    public void setActivitydatelist(ArrayList<String> activitydatelist) {
+        Activitydatelist = activitydatelist;
+    }
+
+    public ArrayList<String> getActivitydatelist() {
+        return Activitydatelist;
+    }
+
+
+
+    public ArrayList<String> getActivitylist() {
+        return Activitylist;
+    }
+
+
+
+    public String getStatusmessage() {
+        return statusmessage;
+    }
+
+    public void setStatusmessage(String statusmessage) {
+        this.statusmessage = statusmessage;
+    }
+
+    public int getPaid_leave() {
+        return paid_leave;
+    }
+
+    public void setPaid_leave(int paid_leave) {
+        this.paid_leave = paid_leave;
+    }
+
+    public int getSick_leave() {
+        return sick_leave;
+    }
+
+    public void setSick_leave(int sick_leave) {
+        this.sick_leave = sick_leave;
     }
 
     public String getEmail() {

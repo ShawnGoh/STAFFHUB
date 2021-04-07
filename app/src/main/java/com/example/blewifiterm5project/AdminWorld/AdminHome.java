@@ -50,10 +50,10 @@ public class AdminHome extends AppCompatActivity {
                         fragment = new MiscAdminFragment();
                         break;
                     case R.id.staff:
-                        fragment = new TestingFragment();
+                        fragment = new StaffListFragment();
                         break;
                     case R.id.mapping:
-                        fragment = new MappingFragment();
+                        fragment = new MappingFragment("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
                         break;
                 }
 

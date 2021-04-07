@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,15 +17,15 @@ import java.util.Date;
 
 public class UserActivityLogRecyclerAdapter extends RecyclerView.Adapter<UserActivityLogRecyclerAdapter.Viewholder> {
 
-    private ArrayList<String> userlog;
+    private ArrayList<String> activityLogs;
+    private ArrayList<String> activitydateLogs;
     private Context mcontext;
-    private ArrayList<Date> timelog;
 
 
-    public UserActivityLogRecyclerAdapter(ArrayList<String> userlog, ArrayList<Date>timelog, Context mcontext) {
-        this.userlog = userlog;
+    public UserActivityLogRecyclerAdapter(ArrayList<String> userlog, ArrayList<String> usertimelog, Context mcontext) {
+        this.activityLogs = userlog;
+        this.activitydateLogs = usertimelog;
         this.mcontext = mcontext;
-        this.timelog = timelog;
     }
 
     public class Viewholder extends RecyclerView.ViewHolder{
@@ -37,8 +36,6 @@ public class UserActivityLogRecyclerAdapter extends RecyclerView.Adapter<UserAct
             super(itemView);
             activityname = itemView.findViewById(R.id.activtydesc);
             activitytime = itemView.findViewById(R.id.activitytime);
-
-
         }
     }
 
@@ -51,12 +48,14 @@ public class UserActivityLogRecyclerAdapter extends RecyclerView.Adapter<UserAct
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        holder.activityname.setText(userlog.get(position));
-        holder.activitytime.setText(String.valueOf((timelog.get(timelog.size()-1).getTime()-timelog.get(position).getTime())/1000)+"s ago");
+        Date newdate = new Date(Long.parseLong(activitydateLogs.get(activitydateLogs.size()-1-position)));
+        holder.activityname.setText(activityLogs.get(activityLogs.size()-1-position));
+        String dateformatting = String.format("%d/%d/%d", newdate.getDate(), newdate.getMonth()+1, newdate.getYear()+1900 );
+        holder.activitytime.setText(dateformatting);
     }
 
     @Override
     public int getItemCount() {
-        return userlog.size();
+        return activityLogs.size();
     }
 }

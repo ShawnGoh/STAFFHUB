@@ -1,42 +1,48 @@
 package com.example.blewifiterm5project.AdminWorld;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.blewifiterm5project.Adapter.ChooseMapRecycleViewAdapter;
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.R;
+import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.blewifiterm5project.Models.dbdatapoint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
-public class MappingFragment extends Fragment {
+public class MappingFragment extends Fragment  {
 
-    // Components
-    ImageDotLayout imageDotLayout;
-    PhotoView photoView;
-    Button button;
-
+    TabLayout tabLayout;
+    ViewPager viewPager;
     String url;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public MappingFragment() {
-        // Empty public constructor
-    }
-
-    //TODO: in the final project, it may contain 2 arguments: 1.boolean 2.url in string
     public MappingFragment(String url) {
         this.url = url;
     }
@@ -47,63 +53,57 @@ public class MappingFragment extends Fragment {
 
         // Create fragment and views' instance
         View view = inflater.inflate(R.layout.fragment_mapping, container, false);
-        imageDotLayout = view.findViewById(R.id.map);
-        button = view.findViewById(R.id.mappingbutton);
 
-        // Set click listener to imageDotLayout
-        imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
-            @Override
-            public void onImageClick(ImageDotLayout.IconBean bean) {
-                // Can add some other functions here
-                imageDotLayout.addIcon(bean);
-            }
-        });
+        //childfragmentmanager used to instantiate and populate nested child fragments
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        // Set click listener to icons
-        imageDotLayout.setOnIconClickListener(new ImageDotLayout.OnIconClickListener() {
-            @Override
-            public void onIconClick(View v) {
-                ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
-                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
-            }
-        });
+        tabLayout = view.findViewById(R.id.tabLayout);
+        viewPager = view.findViewById(R.id.viewpager);
 
-        // Set image of photoView from url
-        if (url!=null){
-            imageDotLayout.setImage(url);
-        }
+        tabLayout.setupWithViewPager(viewPager);
 
-        // Initialize icons
-        initIcon();
-
-        // Button to choose image from ChooseImageActivity
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), ChooseImageActivity.class);
-                getActivity().startActivityForResult(intent, ChooseImageActivity.REQUEST_APPLY);
-            }
-        });
+        viewPagerAdapter.addFragment(new ChildMappingFragment(url), "Map");
+        viewPagerAdapter.addFragment(new ChildTestingFragment(), "Test");
+        viewPager.setAdapter(viewPagerAdapter);
 
         return view;
     }
 
-    private void initIcon() {
-        final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
-        // Initialize
-        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
-        iconBeanList.add(bean);
-        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
-        iconBeanList.add(bean);
+    class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        // Check the image is ready or not
-        imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
-            @Override
-            public void onLayoutReady() {
-                imageDotLayout.addIcons(iconBeanList);
-            }
-        });
+        private ArrayList<Fragment> fragments;
+        private ArrayList<String> titles;
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+            this.fragments = new ArrayList<>();
+            this.titles = new ArrayList<>();
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        public void addFragment(Fragment frag, String title){
+            fragments.add(frag);
+            titles.add(title);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
+        }
     }
+
+
+
 }

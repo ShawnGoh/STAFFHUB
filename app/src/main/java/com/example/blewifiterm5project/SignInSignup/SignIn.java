@@ -36,11 +36,13 @@ public class SignIn extends AppCompatActivity {
     private static final String TAG = "SignIn";
 
     Button signinbutton;
-    TextView welcomesignin, signininstru;
+    TextView welcomesignin, errormessage, attemptmessage;
     EditText emailsignin, passwordsignin;
     ImageView Logoimage;
     LinearLayout signinscreen;
     ProgressBar loadingwheel;
+
+    int attemptcount = 0;
 
     //firebase auth
     private FirebaseAuth mAuth;
@@ -63,7 +65,8 @@ public class SignIn extends AppCompatActivity {
 
         signinscreen = findViewById(R.id.signinscreen);
         loadingwheel = findViewById(R.id.progressBar);
-
+        errormessage = findViewById(R.id.errormessage);
+        attemptmessage = findViewById(R.id.attemptsleft);
         Log.d(TAG, "onCreate Started");
 
         loadingwheel.setVisibility(View.GONE);
@@ -171,6 +174,41 @@ public class SignIn extends AppCompatActivity {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 loadingwheel.setVisibility(View.GONE);
+                                final UserClass[] userClass = new UserClass[1];
+                                final boolean[] foundemail = {false};
+                                db.collection("users")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                                        //Checking if user is admin or normal user
+                                                        userClass[0] = document.toObject(UserClass.class);
+                                                        if(userClass[0].getEmail().equals(email)){
+                                                            foundemail[0] = true;
+                                                        }
+
+                                                    }
+                                                    if(foundemail[0]){
+                                                        errormessage.setText("Incorrect Password");
+                                                        attemptcount+=1;
+                                                        attemptmessage.setText("Attempts left: "+ (5-attemptcount));
+                                                        errormessage.setVisibility(View.VISIBLE);
+                                                        attemptmessage.setVisibility(View.VISIBLE);
+                                                    }
+                                                    else{
+                                                        errormessage.setText("Account not in system. Contact Admin");
+                                                        errormessage.setVisibility(View.VISIBLE);
+                                                    }
+
+
+                                                } else {
+                                                    Log.w(TAG, "Error getting documents.", task.getException());
+                                                }
+                                            }
+                                        });
                                 Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                             }
                             loadingwheel.setVisibility(View.GONE);
