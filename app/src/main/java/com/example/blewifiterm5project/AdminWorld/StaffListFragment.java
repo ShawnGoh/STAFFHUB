@@ -101,7 +101,7 @@ public class StaffListFragment extends Fragment {
                                 UserClass userClassfromdoc = document.toObject(UserClass.class);
 
                                 staffnamelist.add(userClassfromdoc.getName());
-                                staffstatuslist.add("Active - Working");
+                                staffstatuslist.add(userClassfromdoc.getStatusmessage());
                                 stafficonstauslist.add(userClassfromdoc.getStatus());
 
                             }

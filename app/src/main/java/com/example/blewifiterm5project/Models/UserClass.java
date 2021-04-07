@@ -8,6 +8,7 @@ public class UserClass {
     private String status="offline";
     private String admin = "N";
     private String email;
+    private String statusmessage;
     private int paid_leave;
     private int sick_leave;
 
@@ -25,6 +26,30 @@ public class UserClass {
         this.profile_picture = userClass.getProfile_picture();
         this.email = userClass.getEmail();
         this.admin = userClass.getAdmin();
+    }
+
+    public String getStatusmessage() {
+        return statusmessage;
+    }
+
+    public void setStatusmessage(String statusmessage) {
+        this.statusmessage = statusmessage;
+    }
+
+    public int getPaid_leave() {
+        return paid_leave;
+    }
+
+    public void setPaid_leave(int paid_leave) {
+        this.paid_leave = paid_leave;
+    }
+
+    public int getSick_leave() {
+        return sick_leave;
+    }
+
+    public void setSick_leave(int sick_leave) {
+        this.sick_leave = sick_leave;
     }
 
     public String getEmail() {
