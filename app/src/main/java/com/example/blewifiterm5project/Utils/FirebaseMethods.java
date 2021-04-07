@@ -91,7 +91,6 @@ public class FirebaseMethods {
                                 dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
                                 dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
                                 allData.add(dbdatapoint);
-                                break;
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
