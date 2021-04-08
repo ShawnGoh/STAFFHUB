@@ -94,8 +94,8 @@ public class AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotifica
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        Date newdate = new Date(Long.parseLong(compiledNotificationLog.get(position)));
-        holder.notificationName.setText(notificationList.get(notificationList.size()-1-position));
+        Date newdate = new Date(Long.parseLong(notificationDateList.get(position)));
+        holder.notificationName.setText(notificationList.get(position));
         String dateformatting = String.format("%d/%d/%d", newdate.getDate(), newdate.getMonth()+1, newdate.getYear()+1900 );
         holder.notificationTime.setText(dateformatting);
     }
