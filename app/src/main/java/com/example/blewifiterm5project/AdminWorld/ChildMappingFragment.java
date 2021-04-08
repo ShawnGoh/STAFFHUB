@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.google.firebase.firestore.Query.Direction.ASCENDING;
 
 public class ChildMappingFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     // Components
@@ -60,7 +59,9 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     private HashMap<ArrayList<Float>, HashMap<String, ArrayList<Double>>> dataPoint;
     //    SpinnerAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-    private List mList;
+    private ArrayList<String> mapNameList;
+    private ArrayList<String> mapUrlList;
+    private ArrayAdapter<String> mAdapter;
 
     float x_coordinates = 0;
     float y_coordinates = 0;
@@ -88,24 +89,18 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_child_mapping, container, false);
         imageDotLayout = view.findViewById(R.id.map);
-//        button = view.findViewById(R.id.mappingbutton);
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
         wifiScanner = new WifiScanner(mcontext);
         firebaseMethods = new FirebaseMethods(mcontext);
 
-        mList = new ArrayList();
-        mList.add("Building 2 Level 1");
-        mList.add("Building 2 Level 2");
-        mList.add("Campus Center");
+        mapDropdown = view.findViewById(R.id.map_dropdown);
 
-//        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mList);
+        initMapList();
 
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(mcontext,
-                android.R.layout.simple_spinner_item,mList);
+        mAdapter = new ArrayAdapter<String>(mcontext,android.R.layout.simple_spinner_item, mapNameList);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        mapDropdown = view.findViewById(R.id.map_dropdown);
         mapDropdown.setAdapter(mAdapter);
         mapDropdown.setOnItemSelectedListener(this);
 
@@ -148,16 +143,6 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
         // Initialize icons
         initIcon();
-
-//        // Button to choose image from ChooseImageActivity
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(getActivity(), ChooseImageActivity.class);
-//                getActivity().startActivityForResult(intent, ChooseImageActivity.REQUEST_APPLY);
-//            }
-//        });
 
         confirmscanbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,6 +202,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                 });
 
         System.out.println("finished populating");
+        System.out.println(iconBeanList.size());
 
 //        ArrayList<dbdatapoint> datapoints = firebaseMethods.getData();
 //        System.out.println(datapoints);
@@ -247,30 +233,38 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //TODO: LOAD MAPPED PINS ON IMAGES from database
-        switch (position) {
-            case 0:
-                // Whatever you want to happen when the first item gets selected
-                // Building 2 Level 1 Image
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
-                break;
-            case 1:
-                // Whatever you want to happen when the second item gets selected
-                // Building 2 Level 2 Image
-                System.out.println("choosing image 2");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_2.png?alt=media&token=e194f391-373b-4337-acc1-682258a62970");
-                break;
-            case 2:
-                // Whatever you want to happen when the second item gets selected
-                // Building 2 Level 2 Image
-                System.out.println("choosing image 3");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/blewifiterm5.appspot.com/o/2021-04-08%2014.54.57.jpg?alt=media&token=7293fe67-d235-4cd3-8539-f895312c490e");
-                break;
-        }
+        imageDotLayout.setImage(mapUrlList.get(position));
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void initMapList(){
+        mapNameList = new ArrayList<>();
+        mapUrlList = new ArrayList<>();
+
+        db.collection("maps")
+                .orderBy("name",ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        System.out.println("The task is: "+task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getId() + " => " + document.getData());
+                                mapNameList.add((String)document.getData().get("name"));
+                                mapUrlList.add((String)document.getData().get("url"));
+                            }
+                            System.out.println("NameList: "+ mapNameList);
+                            System.out.println("UrlList: "+ mapUrlList);
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }
