@@ -98,6 +98,9 @@ public class UserHome extends AppCompatActivity {
 
     private void offline(String status){
         FirebaseUser user = mAuth.getCurrentUser();
+        if(user==null){
+            return;
+        }
         String email = user.getEmail();
         System.out.println(email);
         final UserClass[] newuser = {new UserClass()};

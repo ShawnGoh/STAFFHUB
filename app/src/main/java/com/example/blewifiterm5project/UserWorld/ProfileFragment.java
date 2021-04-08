@@ -21,6 +21,7 @@ import com.example.blewifiterm5project.Utils.FirebaseMethods;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -100,6 +101,7 @@ public class ProfileFragment extends Fragment {
         signoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                offline("offline");
                 mAuth.signOut();
                 startActivity(new Intent(mcontext, SignIn.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -109,6 +111,38 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+    private void offline(String status){
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user==null){
+            return;
+        }
+        String email = user.getEmail();
+        System.out.println(email);
+        final UserClass[] newuser = {new UserClass()};
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                //Checking if user is admin or normal user
+                                String docid = document.getId();
+                                UserClass userClass = document.toObject(UserClass.class);
+                                newuser[0] = userClass;
+
+                                if(userClass.getEmail().equals(email)){
+                                    newuser[0].setStatus(status);
+                                    db.collection("users").document(docid).set(newuser[0]);
+                                }
+                                break;
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });}
 
 
 }
