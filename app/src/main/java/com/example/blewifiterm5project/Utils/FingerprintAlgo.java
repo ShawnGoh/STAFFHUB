@@ -52,7 +52,7 @@ public class FingerprintAlgo {
 
     public double getEuclideanDistance(dbdatapoint dataPoint, dbdatapoint wifiResults) {
         // to be run on individual datapoints in the databased
-        ArrayList<String> nearbyAPs = sortMAC(); //TODO: put into main function
+        ArrayList<String> nearbyAPs = sortMAC();
 
         double total = 0;
         for (HashMap.Entry<String, ArrayList<Double>> dbaccessPoint : dataPoint.getAccesspoints().entrySet()) {
