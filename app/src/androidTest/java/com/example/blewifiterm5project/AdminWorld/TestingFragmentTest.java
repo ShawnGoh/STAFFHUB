@@ -1,13 +1,11 @@
 package com.example.blewifiterm5project.AdminWorld;
 
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.blewifiterm5project.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,17 +14,14 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isSelected;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(AndroidJUnit4.class)
-public class MappingFragmentTest {
+public class TestingFragmentTest {
 
     private String emailAdmin = "admin@blewifi.com";
     private String passwordAdmin = "admin123";
@@ -63,8 +58,8 @@ public class MappingFragmentTest {
     }
 
     @Test
-    public void testMapping() throws InterruptedException{
+    public void testTesting() throws InterruptedException{
         Thread.sleep(1000);
-        // TODO: Mapping function test
+        // TODO: Testing function test
     }
 }
