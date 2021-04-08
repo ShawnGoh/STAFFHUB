@@ -3,6 +3,7 @@ package com.example.blewifiterm5project.SignInSignup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.blewifiterm5project.AdminWorld.AdminHome;
+import com.example.blewifiterm5project.AdminWorld.EmployeeReviewActivity;
 import com.example.blewifiterm5project.Models.UserClass;
 import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.UserWorld.UserHome;
@@ -36,7 +38,7 @@ public class SignIn extends AppCompatActivity {
     private static final String TAG = "SignIn";
 
     Button signinbutton;
-    TextView welcomesignin, errormessage, attemptmessage;
+    TextView welcomesignin, errormessage, attemptmessage, forgotpassword;
     EditText emailsignin, passwordsignin;
     ImageView Logoimage;
     LinearLayout signinscreen;
@@ -50,18 +52,22 @@ public class SignIn extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    Context mcontext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        mcontext = getApplicationContext();
 
         //initialize UI elements
         signinbutton = findViewById(R.id.signinconfirmbutton);
         emailsignin = findViewById(R.id.Emailsignin);
         passwordsignin = findViewById(R.id.Passwordsignin);
         welcomesignin = findViewById(R.id.welcomesignin);
+        forgotpassword = findViewById(R.id.forgotpassword);
 
         signinscreen = findViewById(R.id.signinscreen);
         loadingwheel = findViewById(R.id.progressBar);
@@ -74,6 +80,16 @@ public class SignIn extends AppCompatActivity {
         setupfirebaseauth();
 
         init();
+
+        forgotpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mcontext, PasswordResetActivity.class).putExtra("Emailfill", emailsignin.getText().toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mcontext.startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
 
 
 

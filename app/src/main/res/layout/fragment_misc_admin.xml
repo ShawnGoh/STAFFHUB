@@ -124,7 +124,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/roundedrectanglepurple"
+        android:background="@drawable/checkinbutton"
         android:elevation="8dp"
         android:padding="8dp"
         android:text="Sign Out"

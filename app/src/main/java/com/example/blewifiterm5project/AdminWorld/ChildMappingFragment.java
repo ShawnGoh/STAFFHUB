@@ -97,8 +97,8 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         mList = new ArrayList();
         mList.add("Building 2 Level 1");
         mList.add("Building 2 Level 2");
-        mList.add("Campus Center Floor 1");
-        mList.add("Campus Center Floor 2");
+        mList.add("Campus Center");
+
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mList);
 
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(mcontext,
@@ -264,13 +264,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                 // Whatever you want to happen when the second item gets selected
                 // Building 2 Level 2 Image
                 System.out.println("choosing image 3");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
-                break;
-            case 3:
-                // Whatever you want to happen when the second item gets selected
-                // Building 2 Level 2 Image
-                System.out.println("choosing image 4");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_2.png?alt=media&token=e194f391-373b-4337-acc1-682258a62970");
+                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/blewifiterm5.appspot.com/o/2021-04-08%2014.54.57.jpg?alt=media&token=7293fe67-d235-4cd3-8539-f895312c490e");
                 break;
         }
     }

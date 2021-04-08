@@ -35,7 +35,7 @@ public class ProfileFragment extends Fragment {
     Context mcontext;
     Button signoutbutton;
 
-    TextView mName, mEmail, mProfilePic;
+    TextView mName, mEmail, mProfilePic, hoursworked, payentitled;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +57,8 @@ public class ProfileFragment extends Fragment {
         mEmail = view.findViewById(R.id.email);
         mProfilePic = view.findViewById(R.id.profilepic);
         signoutbutton = view.findViewById(R.id.signoutbutton);
+        hoursworked = view.findViewById(R.id.userprofilehoursworked);
+        payentitled = view.findViewById(R.id.userprofilepay);
 
 
         db.collection("users")
@@ -81,6 +83,11 @@ public class ProfileFragment extends Fragment {
                                     mName.setText(userClassfromdoc.getName());
                                     mEmail.setText(userClassfromdoc.getEmail());
                                     mProfilePic.setText(userClassfromdoc.getProfile_picture());
+                                    String hoursworkedstring = String.format("%.1f hours", userClassfromdoc.getHoursthismonth());
+                                    String payentitledstring = String.format("$ %.2f", userClassfromdoc.getPayrate()*userClassfromdoc.getHoursthismonth() );
+
+                                    payentitled.setText(payentitledstring);
+                                    hoursworked.setText(hoursworkedstring);
                                     break;
                                 }
                             }

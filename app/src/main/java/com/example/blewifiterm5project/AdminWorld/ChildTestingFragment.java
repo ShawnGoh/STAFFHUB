@@ -79,6 +79,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         mList = new ArrayList();
         mList.add("Building 2 Level 1");
         mList.add("Building 2 Level 2");
+        mList.add("Campus Center");
 
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(mcontext,
                 android.R.layout.simple_spinner_item,mList);
@@ -264,6 +265,12 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 // Building 2 Level 2 Image
                 System.out.println("choosing image 2");
                 imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_2.png?alt=media&token=e194f391-373b-4337-acc1-682258a62970");
+                break;
+            case 2:
+                // Whatever you want to happen when the second item gets selected
+                // Building 2 Level 2 Image
+                System.out.println("choosing image 3");
+                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/blewifiterm5.appspot.com/o/2021-04-08%2014.54.57.jpg?alt=media&token=7293fe67-d235-4cd3-8539-f895312c490e");
                 break;
     }
 
