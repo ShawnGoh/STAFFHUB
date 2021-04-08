@@ -54,12 +54,12 @@ public class ProfileFragment extends Fragment {
         UserClass user = new UserClass();
 
         //initiate views/widgets
-        mName = view.findViewById(R.id.Name);
-        mEmail = view.findViewById(R.id.email);
+        mName = view.findViewById(R.id.employeereviewname);
+        mEmail = view.findViewById(R.id.employeereviewemail);
         mProfilePic = view.findViewById(R.id.profilepic);
         signoutbutton = view.findViewById(R.id.signoutbutton);
-        hoursworked = view.findViewById(R.id.userprofilehoursworked);
-        payentitled = view.findViewById(R.id.userprofilepay);
+        hoursworked = view.findViewById(R.id.employeereviewhoursworked);
+        payentitled = view.findViewById(R.id.employeereviewpay);
 
 
         db.collection("users")

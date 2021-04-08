@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.blewifiterm5project.Adapter.AdminNotificationAdapter;
 import com.example.blewifiterm5project.Adapter.StaffListReyclerAdapter;
@@ -57,6 +58,7 @@ public class StaffListFragment extends Fragment {
     private static final String TAG = "Admin StaffListFragment";
     StaffListReyclerAdapter myAdapter;
     RecyclerView recyclerView;
+    TextView usercounttext;
     ArrayList<String> staffnamelist, staffstatuslist, stafficonstauslist, docidlist = new ArrayList<>();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -75,14 +77,13 @@ public class StaffListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_stafflist, container, false);
 
         recyclerView = view.findViewById(R.id.stafflist);
+        usercounttext = view.findViewById(R.id.activeusercount);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mcontext = getActivity();
 
 
-        initstafflists();
-        //Firebase Instantiation
-        FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+
         CollectionReference collectionReference = db.collection("users");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -105,6 +106,7 @@ public class StaffListFragment extends Fragment {
         staffnamelist = new ArrayList<>();
         staffstatuslist = new ArrayList<>();
         UserClass user = new UserClass();
+        final int[] usercount = {0};
 
         db.collection("users")
                 .get()
@@ -120,8 +122,12 @@ public class StaffListFragment extends Fragment {
                                     staffstatuslist.add(userClassfromdoc.getStatusmessage());
                                     stafficonstauslist.add(userClassfromdoc.getStatus());
                                     docidlist.add(document.getId());
+                                    if(userClassfromdoc.getStatus().equals("online")){
+                                        usercount[0] +=1;
+                                    }
                                 }
                             }
+                            usercounttext.setText("Active Employees: "+ usercount[0]);
                             myAdapter = new StaffListReyclerAdapter(staffnamelist,staffstatuslist,stafficonstauslist,mcontext, docidlist);
                             recyclerView.setAdapter(myAdapter);
                         } else {

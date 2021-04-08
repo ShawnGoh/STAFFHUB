@@ -11,15 +11,13 @@
 
     <TextView
         android:id="@+id/welcome_bac"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="24dp"
         android:fontFamily="@font/arial_rounded_mt_bold_font"
         android:text="Staff List"
         android:textAppearance="@style/welcome_bac"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +48,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+    <TextView
+        android:id="@+id/activeusercount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Active Employees: 0"
+        android:textColor="@color/white"
+        android:background="@drawable/managebuttonpurple"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/welcome_bac"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/welcome_bac"
+        android:fontFamily="@font/arial_rounded_mt_bold_font"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
