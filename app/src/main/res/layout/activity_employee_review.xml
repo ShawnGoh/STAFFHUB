@@ -241,14 +241,14 @@
             android:id="@+id/employeereviewname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="31dp"
             android:fontFamily="@font/arial_rounded_mt_bold_font"
             android:text="Name"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="36sp"
             app:layout_constraintBottom_toBottomOf="@+id/employeereviewbackbutton"
-            app:layout_constraintStart_toEndOf="@+id/statusindicatoruseritemoffline2"
+            app:layout_constraintStart_toEndOf="@+id/employeereviewbackbutton"
             app:layout_constraintTop_toTopOf="@+id/employeereviewbackbutton"
             app:layout_constraintVertical_bias="0.0" />
 
