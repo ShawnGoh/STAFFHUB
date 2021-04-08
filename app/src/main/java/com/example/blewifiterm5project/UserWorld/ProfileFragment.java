@@ -85,7 +85,6 @@ public class ProfileFragment extends Fragment {
                                     mProfilePic.setText(userClassfromdoc.getProfile_picture());
                                     String hoursworkedstring = String.format("%.1f hours", userClassfromdoc.getHoursthismonth());
                                     String payentitledstring = String.format("$ %.2f", userClassfromdoc.getPayrate()*userClassfromdoc.getHoursthismonth() );
-
                                     payentitled.setText(payentitledstring);
                                     hoursworked.setText(hoursworkedstring);
                                     break;

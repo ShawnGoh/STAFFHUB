@@ -16,7 +16,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/arial_rounded_mt_bold_font"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Where would you like to go?"
+        android:text="Where art thou?"
         android:textAppearance="@style/welcome_bac"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
