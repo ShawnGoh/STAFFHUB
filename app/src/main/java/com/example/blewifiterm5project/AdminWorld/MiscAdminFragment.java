@@ -44,8 +44,8 @@ public class MiscAdminFragment extends Fragment {
     Button signoutbutton;
     AdminNotificationAdapter myAdapter;
     RecyclerView recyclerView;
-    ArrayList<String> notificationsList = new ArrayList<>();
-    ArrayList<String> notificationsDateList = new ArrayList<>();
+    ArrayList<String> notificationsList;
+    ArrayList<String> notificationsDateList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,9 +67,9 @@ public class MiscAdminFragment extends Fragment {
 //        notificationsList.add("Qi Yan has clocked in");
 //        notificationsList.add("testing recycler");
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        myAdapter = new AdminNotificationAdapter(notificationsList, notificationsDateList, mcontext);
-        recyclerView.setAdapter(myAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+//        myAdapter = new AdminNotificationAdapter(notificationsList, notificationsDateList, mcontext);
+//        recyclerView.setAdapter(myAdapter);
 
 
 
@@ -87,6 +87,9 @@ public class MiscAdminFragment extends Fragment {
 
     private void initwidgets(){
 
+        ArrayList<String> notificationsList = new ArrayList<>();
+        ArrayList<String> notificationsDateList = new ArrayList<>();
+
         db.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -98,8 +101,10 @@ public class MiscAdminFragment extends Fragment {
                                 UserClass userClass = document.toObject(UserClass.class);
                                 String admin = userClass.getAdmin();
                                 System.out.println(admin);
+                                System.out.println(userClass.getActivitydatelist());
+                                System.out.println(userClass.getActivitylist());
 
-                                if (admin == "N") {
+                                if (userClass.getAdmin().equals("N")) {
                                     for (String activity: userClass.getActivitylist()) {
                                         System.out.println(activity);
                                         notificationsList.add(userClass.getName()+" "+activity);
@@ -113,14 +118,16 @@ public class MiscAdminFragment extends Fragment {
 
                             }
 
+                            recyclerView.setLayoutManager(new LinearLayoutManager(mcontext));
                             System.out.println("Notif List: "+notificationsList);
                             System.out.println("Notif Date List: "+notificationsDateList);
-                            UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsDateList,mcontext);
+                            AdminNotificationAdapter newadapter = new AdminNotificationAdapter(notificationsList,notificationsDateList,mcontext);
                             recyclerView.setAdapter(newadapter);
 
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
-                });}
+                });
+    }
 }
