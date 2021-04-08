@@ -157,6 +157,7 @@ public class SignIn extends AppCompatActivity {
                                                             if(userClass[0].getEmail().equals(email) && userClass[0].getAdmin().equals("N")){
                                                                 Log.d(TAG, "admin = " + userClass[0].getAdmin());
                                                                 Toast.makeText(getApplicationContext(), "Authentication Passed.", Toast.LENGTH_SHORT).show();
+                                                                userClass[0].setStatus("online");
                                                                 startActivity(new Intent(getApplicationContext(), UserHome.class));
                                                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                                                 finish();

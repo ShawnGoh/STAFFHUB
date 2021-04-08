@@ -12,7 +12,7 @@ public class UserClass {
     private String statusmessage;
     private int paid_leave;
     private int sick_leave;
-    private int payrate = 10;
+    private float payrate = 10;
     private float hoursthismonth = 0;
     private ArrayList<String> Activitylist = new ArrayList<>();
     private ArrayList<String> Activitydatelist = new ArrayList<>();
@@ -37,11 +37,11 @@ public class UserClass {
         this.Activitydatelist = userClass.getActivitydatelist();
     }
 
-    public int getPayrate() {
+    public float getPayrate() {
         return payrate;
     }
 
-    public void setPayrate(int payrate) {
+    public void setPayrate(float payrate) {
         this.payrate = payrate;
     }
 
