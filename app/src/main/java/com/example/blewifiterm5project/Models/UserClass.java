@@ -12,6 +12,8 @@ public class UserClass {
     private String statusmessage;
     private int paid_leave;
     private int sick_leave;
+    private int payrate = 10;
+    private float hoursthismonth = 0;
     private ArrayList<String> Activitylist = new ArrayList<>();
     private ArrayList<String> Activitydatelist = new ArrayList<>();
 
@@ -29,6 +31,26 @@ public class UserClass {
         this.profile_picture = userClass.getProfile_picture();
         this.email = userClass.getEmail();
         this.admin = userClass.getAdmin();
+        this.payrate = userClass.getPayrate();
+        this.hoursthismonth = userClass.getHoursthismonth();
+        this.Activitylist = userClass.getActivitylist();
+        this.Activitydatelist = userClass.getActivitydatelist();
+    }
+
+    public int getPayrate() {
+        return payrate;
+    }
+
+    public void setPayrate(int payrate) {
+        this.payrate = payrate;
+    }
+
+    public float getHoursthismonth() {
+        return hoursthismonth;
+    }
+
+    public void setHoursthismonth(float hoursthismonth) {
+        this.hoursthismonth = hoursthismonth;
     }
 
     public void setActivitylist(ArrayList<String> activitylist) {

@@ -8,96 +8,282 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Name"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/profilepic"
-        app:layout_constraintStart_toStartOf="@+id/profilepic"
-        app:layout_constraintTop_toBottomOf="@+id/profilepic" />
-
-    <TextView
-        android:id="@+id/LeaveApplication"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/arial_rounded_mt_bold_font"
-        android:padding="10dp"
-        android:text="Leave Application"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Name"
-        android:drawableStart="@drawable/ic_baseline_format_align_justify_24"
-        android:drawablePadding="5dp"
-        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"/>
-
-    <TextView
-        android:id="@+id/Settings"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
-        android:fontFamily="@font/arial_rounded_mt_bold_font"
-        android:padding="10dp"
-        android:text="Settings"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:drawableStart="@drawable/ic_baseline_settings_24"
-        android:drawablePadding="5dp"
-        app:layout_constraintTop_toBottomOf="@+id/LeaveApplication" />
-
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="email"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/profilepic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="profilepic"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/email"
-        app:layout_constraintStart_toStartOf="@+id/email"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
-
-    <Button
-        android:id="@+id/signoutbutton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/signoutbutton"
-        android:elevation="8dp"
-        android:padding="8dp"
-        android:text="Sign Out"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="15dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/profilepagebackboard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/userbreakdownconstraint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/roundedrectanglewhite"
+                android:elevation="10dp"
+                android:gravity="center_horizontal"
+                android:padding="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/userprofilehoursworked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arial_rounded_mt_bold_font"
+                        android:text="10.6 hours"
+                        android:textSize="25sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/userprofilepay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="45dp"
+                        android:layout_toRightOf="@id/userprofilehoursworked"
+                        android:fontFamily="@font/arial_rounded_mt_bold_font"
+                        android:text="$169.69"
+                        android:textSize="25sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/userprofilehoursworked"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/userprofilehoursworkedtext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/userprofilehoursworked"
+                        android:layout_marginTop="8dp"
+                        android:text="Number of hours\nworked this month"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="@+id/userprofilehoursworked"
+                        app:layout_constraintStart_toStartOf="@+id/userprofilehoursworked"
+                        app:layout_constraintTop_toBottomOf="@+id/userprofilehoursworked" />
+
+                    <TextView
+                        android:id="@+id/userprofilepaytext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/userprofilepay"
+                        android:layout_marginTop="8dp"
+                        android:layout_toRightOf="@id/userprofilehoursworkedtext"
+                        android:text="Entitled Pay\n this month"
+                        app:layout_constraintEnd_toEndOf="@+id/userprofilepay"
+                        app:layout_constraintStart_toStartOf="@+id/userprofilepay"
+                        app:layout_constraintTop_toBottomOf="@+id/userprofilepay" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/roundedrectanglewhite"
+                android:elevation="10dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userbreakdownconstraint">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingVertical="20dp"
+
+                    >
+
+                    <Button
+                        android:id="@+id/userprofilemcapplicationbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/transparent"
+                        android:drawableTop="@drawable/ic_baseline_home_work_40"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="#E91E63"
+                        android:paddingHorizontal="5dp"
+                        android:text="Submit MC"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        tools:layout_editor_absoluteX="27dp"
+                        tools:layout_editor_absoluteY="124dp" />
+
+                    <Button
+                        android:id="@+id/userprofilefaqbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/transparent"
+                        android:drawableTop="@drawable/ic_baseline_question_answer_40"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="#4CAF50"
+                        android:text="FAQs"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        tools:layout_editor_absoluteX="267dp"
+                        tools:layout_editor_absoluteY="124dp" />
+
+                    <Button
+                        android:id="@+id/userprofilecontactadminbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/transparent"
+                        android:drawableTop="@drawable/ic_baseline_contact_support_40"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="#FF9800"
+                        android:text="Contact\nAdmin"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:layout_editor_absoluteX="141dp" />
+
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingVertical="20dp">
+
+                    <Button
+                        android:id="@+id/userprofileleaveapplicationbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/transparent"
+                        android:drawableTop="@drawable/ic_baseline_airplanemode_active_40"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="#2196F3"
+                        android:text="Leave\nApplication"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        tools:layout_editor_absoluteX="27dp"
+                        tools:layout_editor_absoluteY="124dp" />
+
+                    <Button
+                        android:id="@+id/userprofilesettingsbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/transparent"
+                        android:drawableTop="@drawable/ic_baseline_settings_40"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="#673AB7"
+                        android:text="FAQs"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        tools:layout_editor_absoluteX="267dp"
+                        tools:layout_editor_absoluteY="124dp" />
+
+                    <Button
+                        android:id="@+id/userprofilelocationsettingbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:background="@color/transparent"
+                        android:drawableTop="@drawable/ic_baseline_location_on_40"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="#009688"
+                        android:text="Location\nSettings"
+                        android:textAllCaps="false"
+                        android:textSize="15sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:layout_editor_absoluteX="141dp" />
+
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/signoutbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/signoutbutton"
+                android:elevation="8dp"
+                android:padding="8dp"
+                android:text="Sign Out"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="email"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/Name"
+            app:layout_constraintTop_toBottomOf="@+id/Name" />
+
+        <TextView
+            android:id="@+id/Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/arial_rounded_mt_bold_font"
+            android:text="Name"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profilepic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="profilepic"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            tools:layout_editor_absoluteX="337dp"
+            tools:layout_editor_absoluteY="70dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

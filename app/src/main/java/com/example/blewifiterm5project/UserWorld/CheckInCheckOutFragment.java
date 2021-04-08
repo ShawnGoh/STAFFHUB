@@ -133,6 +133,13 @@ public class CheckInCheckOutFragment extends Fragment {
                                     System.out.println(notificationsList);
                                     notificationsdateList = newuser[0].getActivitydatelist();
                                     System.out.println(notificationsdateList);
+                                    if (notificationsList.size()>0){
+                                        if(notificationsList.get(notificationsList.size()-1).contains("Clocked in")){
+                                            clockin.setVisibility(View.GONE);
+                                            clockout.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+
 
                                     UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
                                     activitylog.setAdapter(newadapter);
@@ -178,6 +185,10 @@ public class CheckInCheckOutFragment extends Fragment {
                                     UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
                                     activitylog.setAdapter(newadapter);
 
+                                    if(statustobeset.contains("Clocked out")){
+                                        long timediff = date.getTime()-new Date(Long.parseLong(notificationsdateList.get(notificationsdateList.size()-2))).getTime();
+                                        newuser[0].setHoursthismonth(newuser[0].getHoursthismonth()+(float)timediff/3600000);
+                                    }
 
                                     newuser[0].setActivitydatelist(notificationsdateList);
                                     newuser[0].setActivitylist(notificationsList);
