@@ -22,7 +22,7 @@ public class ActivityLogTest {
     }
 
     @Test
-    public void testNormalUse(){
+    public void testDefaultUse(){
         activityLog = new ActivityLog(date,message);
         assertEquals(activityLog.getTime(),date);
         assertEquals(activityLog.getMessage(),message);

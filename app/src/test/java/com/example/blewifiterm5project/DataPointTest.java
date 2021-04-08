@@ -35,7 +35,7 @@ public class DataPointTest {
     }
 
     @Test
-    public void testGetter(){
+    public void testDefaultConstructor(){
         DataPoint = new dbdatapoint(accessPoints,coordinates);
         assertEquals(DataPoint.getAccesspoints(),accessPoints);
         assertEquals(DataPoint.getCoordinates(),coordinates);
@@ -46,5 +46,12 @@ public class DataPointTest {
         DataPoint = new dbdatapoint();
         assertNull(DataPoint.getCoordinates());
         assertNull(DataPoint.getAccesspoints());
+    }
+
+    @Test
+    public void testDataPointConstructor() {
+        dbdatapoint DataPoint = new dbdatapoint(this.DataPoint);
+        assertEquals(DataPoint.getAccesspoints(),accessPoints);
+        assertEquals(DataPoint.getCoordinates(),coordinates);
     }
 }
