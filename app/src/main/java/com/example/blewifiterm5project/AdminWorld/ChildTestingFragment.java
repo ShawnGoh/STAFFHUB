@@ -128,7 +128,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
                 coordarray.add(x_coordinates);
                 coordarray.add(y_coordinates);
-                System.out.println(coordarray);
+                System.out.println("Coordinate Array of clicked point: "+coordarray);
                 dbdatapoint wifiResults = new dbdatapoint();
                 wifiResults.setCoordinates(coordarray);
                 wifiResults.setAccesspoints(dataValues);
@@ -153,6 +153,13 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                                         dataSet.add(dbdatapointFromDoc);
                                     }
                                     System.out.println(dataSet);
+                                    FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
+                                    Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
+                                    float sx = resultCoordinates.first.floatValue();
+                                    float sy = resultCoordinates.second.floatValue();
+                                    System.out.println("Result Coordinates are: "+resultCoordinates);
+                                    ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
+                                    imageDotLayout.addIcon(location);
 
                                 } else {
                                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -164,13 +171,13 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 // END OF LONG METHOD
 
 
-                FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-                Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
-                float sx = resultCoordinates.first.floatValue();
-                float sy = resultCoordinates.second.floatValue();
-                System.out.println(resultCoordinates);
-                ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
-                imageDotLayout.addIcon(location);
+//                FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
+//                Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
+//                float sx = resultCoordinates.first.floatValue();
+//                float sy = resultCoordinates.second.floatValue();
+//                System.out.println(resultCoordinates);
+//                ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
+//                imageDotLayout.addIcon(location);
             }
         });
 
