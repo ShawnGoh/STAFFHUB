@@ -79,6 +79,8 @@ public class FingerprintAlgo {
         for (int i = 0; i < dataSet.size(); i++) {
             System.out.println(dataSet.get(i));
             double di = getEuclideanDistance(dataSet.get(i), wifiResults);
+            System.out.println(dataSet.get(i).getAccesspoints());
+            System.out.println(wifiResults.getCoordinates());
             System.out.println("EuclideanDistance is" + di);
             double w = 1/di;
             sum_wx += w*dataSet.get(i).getCoordinates().get(0);

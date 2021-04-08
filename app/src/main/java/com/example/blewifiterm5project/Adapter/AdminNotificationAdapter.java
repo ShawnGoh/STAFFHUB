@@ -48,16 +48,7 @@ public class AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotifica
     @Override
     public void onBindViewHolder(@NonNull myholder holder, int position) {
         holder.mytext1.setText(notificationList.get(position));
-//        holder.mytext2.setText(notificationList.get(position).gettime());
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(v.getContext(), ProjectDetails.class);
-//                intent.putExtra("ProjectID", projectsList.get(position).getProjectID());
-//                v.getContext().startActivity(intent);
-//            }
-//        });
-//        Picasso.get().load(projectsList.get(position).getThumbnail()).into(holder.thumbnail); // external api to load an image into the project thumbnail into the imageview.
+
     }
 
     @Override
@@ -70,13 +61,12 @@ public class AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotifica
     public class myholder extends RecyclerView.ViewHolder {
 
         TextView mytext1;
+
 //        ImageView thumbnail;
 
         public myholder(@NonNull View itemView) {
             super(itemView);
-//            thumbnail = itemView.findViewById(R.id.project_picture);
             mytext1 = itemView.findViewById(R.id.notification_text);
-//            mytext2 = itemView.findViewById(R.id.description);
         }
     }
 }

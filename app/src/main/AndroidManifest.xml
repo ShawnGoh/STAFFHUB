@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BLEWifiTerm5Project">
-        <activity android:name=".SignInSignup.PasswordResetActivity"></activity>
+        <activity android:name=".AdminWorld.EmployeeReviewActivity"></activity>
+        <activity android:name=".SignInSignup.PasswordResetActivity" />
         <activity android:name=".AdminWorld.CreateNewUser" />
         <activity android:name=".SignInSignup.SignIn">
 
