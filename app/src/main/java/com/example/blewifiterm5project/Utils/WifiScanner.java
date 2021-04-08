@@ -52,7 +52,7 @@ public class WifiScanner {
         macRssi.clear();
         mcontext.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
-        Log.i("Testing", "94554278 scanning for WIFI!");
+        Log.i("Testing", "scanning for WIFI!");
         Toast.makeText(mcontext,"Scanning WiFi ...", Toast.LENGTH_SHORT).show();
     }
 
@@ -61,7 +61,7 @@ public class WifiScanner {
         public void onReceive(Context context, Intent intent) {
             results = wifiManager.getScanResults();
             context.unregisterReceiver(this);
-            Log.i("Testing", "94554278 wifiReceiver !!!");
+            Log.i("Testing", "wifiReceiver !!!");
 
             // for every result found via scanWifi, store the wifi SSID and approximate distance to it in an array
             for (ScanResult scanResult : results) {
