@@ -18,9 +18,6 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
@@ -39,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.google.firebase.firestore.Query.Direction.ASCENDING;
 
 
 public class ChildTestingFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -53,7 +51,10 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
     private WifiScanner wifiScanner;
 
     private LinearLayoutManager mLinearLayoutManager;
-    private List mList;
+
+    private ArrayList<String> mapNameList;
+    private ArrayList<String> mapUrlList;
+    private ArrayAdapter<String> mAdapter;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -76,13 +77,9 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         mcontext = getActivity();
         wifiScanner = new WifiScanner(mcontext);
 
-        mList = new ArrayList();
-        mList.add("Building 2 Level 1");
-        mList.add("Building 2 Level 2");
-        mList.add("Campus Center");
+        initMapList();
 
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(mcontext,
-                android.R.layout.simple_spinner_item,mList);
+        mAdapter = new ArrayAdapter<String>(mcontext, android.R.layout.simple_spinner_item, mapNameList);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mapDropdown = view.findViewById(R.id.map_dropdown_testing);
@@ -253,29 +250,9 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //TODO: LOAD MAPPED PINS ON IMAGES from database
-        switch (position) {
-            case 0:
-                // Whatever you want to happen when the first item gets selected
-                // Building 2 Level 1 Image
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
-                break;
-            case 1:
-                // Whatever you want to happen when the second item gets selected
-                // Building 2 Level 2 Image
-                System.out.println("choosing image 2");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_2.png?alt=media&token=e194f391-373b-4337-acc1-682258a62970");
-                break;
-            case 2:
-                // Whatever you want to happen when the second item gets selected
-                // Building 2 Level 2 Image
-                System.out.println("choosing image 3");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/blewifiterm5.appspot.com/o/2021-04-08%2014.54.57.jpg?alt=media&token=7293fe67-d235-4cd3-8539-f895312c490e");
-                break;
+        imageDotLayout.setImage(mapUrlList.get(position));
     }
 
-
-}
 
 //    public ArrayList<dbdatapoint> getData() {
 //        dbdatapoint dbdatapoint = new dbdatapoint();
@@ -306,5 +283,32 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void initMapList(){
+        mapNameList = new ArrayList<>();
+        mapUrlList = new ArrayList<>();
+
+        db.collection("maps")
+                .orderBy("name",ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        System.out.println("The task is: "+task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getId() + " => " + document.getData());
+                                mapNameList.add((String)document.getData().get("name"));
+                                mapUrlList.add((String)document.getData().get("url"));
+                            }
+                            System.out.println("NameList: "+ mapNameList);
+                            System.out.println("UrlList: "+ mapUrlList);
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }
