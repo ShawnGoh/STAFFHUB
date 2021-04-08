@@ -17,8 +17,8 @@ public class dbdatapoint {
     }
 
     public dbdatapoint(dbdatapoint dbdatapoint) {
-        this.accesspoints = getAccesspoints();
-        this.coordinates = getCoordinates();
+        this.accesspoints = dbdatapoint.getAccesspoints();
+        this.coordinates = dbdatapoint.getCoordinates();
     }
 
     public HashMap<String, ArrayList<Double>> getAccesspoints() {
