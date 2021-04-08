@@ -42,7 +42,7 @@ public class AdminHomeTest {
     }
 
     @Test
-    public void changeFragmentTest() {
+    public void testChangeFragment() {
         ActivityScenario scenario = ActivityScenario.launch(AdminHome.class);
         onView(withId(R.id.staff)).perform(click());
         onView(withId(R.id.staffFragment)).check(matches(isDisplayed()));
@@ -51,7 +51,7 @@ public class AdminHomeTest {
     }
 
     @Test
-    public void randomChangeFragmentTest() {
+    public void testRandomChangeFragment() {
         ActivityScenario scenario = ActivityScenario.launch(AdminHome.class);
         Random random = new Random();
         for(int i=0;i<30;i++) {
@@ -72,6 +72,4 @@ public class AdminHomeTest {
             }
         }
     }
-
-
 }
