@@ -51,6 +51,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
     private WifiScanner wifiScanner;
 
     private LinearLayoutManager mLinearLayoutManager;
+    String currentmap = "Building 2 Level 1";
 
     private ArrayList<String> mapNameList;
     private ArrayList<String> mapUrlList;

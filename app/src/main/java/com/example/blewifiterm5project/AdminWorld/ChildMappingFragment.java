@@ -46,6 +46,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
 
     String url;
+    String currentmap = "Building 2 Level 1";
 
     private Context mcontext;
     private WifiScanner wifiScanner;
@@ -142,7 +143,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         }
 
         // Initialize icons
-        initIcon();
+        initIcon(currentmap);
 
         confirmscanbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +158,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                 coordarray.add(x_coordinates);
                 coordarray.add(y_coordinates);
                 dbdatapoint newdatapoint = new dbdatapoint(dataValues, coordarray);
-                db.collection("datapoints").add(newdatapoint);
+                db.collection(currentmap).add(newdatapoint);
 //                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Position = "+x_coordinates+", "+y_coordinates+" has been added!", Toast.LENGTH_SHORT).show();
             }
@@ -165,14 +166,14 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         return view;
     }
 
-    private void initIcon() {
-        final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+    private void initIcon(String collectionname) {
+        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
         // Initialized
         // get datapoint coordinates from database and create beans
 
         ArrayList<dbdatapoint> allData = new ArrayList<>();
-        db.collection("datapoints")
+        db.collection(collectionname)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -194,6 +195,13 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                                 iconBeanList.add(bean);
                                 count++;
                             }
+                            // Check the image is ready or not
+                            imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+                                @Override
+                                public void onLayoutReady() {
+                                    imageDotLayout.addIcons(iconBeanList);
+                                }
+                            });
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -222,18 +230,18 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 //        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
 //        iconBeanList.add(bean);
 
-        // Check the image is ready or not
-        imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
-            @Override
-            public void onLayoutReady() {
-                imageDotLayout.addIcons(iconBeanList);
-            }
-        });
+
+
+
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         imageDotLayout.setImage(mapUrlList.get(position));
+        currentmap = mapNameList.get(position);
+        Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
+        imageDotLayout.removeAllIcon();
+        initIcon(currentmap);
     }
 
     @Override
