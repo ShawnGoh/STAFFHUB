@@ -36,6 +36,9 @@ public class ProfileFragment extends Fragment {
     Context mcontext;
     Button signoutbutton;
 
+    String useremail;
+    UserClass user;
+
     TextView mName, mEmail, mProfilePic, hoursworked, payentitled;
 
     @Override
@@ -49,9 +52,9 @@ public class ProfileFragment extends Fragment {
 
         firebaseMethods = new FirebaseMethods(container.getContext());
         mAuth=FirebaseAuth.getInstance();
-        String userID = mAuth.getUid();
+        useremail = mAuth.getCurrentUser().getEmail();
 
-        UserClass user = new UserClass();
+        user = new UserClass();
 
         //initiate views/widgets
         mName = view.findViewById(R.id.employeereviewname);
@@ -62,40 +65,7 @@ public class ProfileFragment extends Fragment {
         payentitled = view.findViewById(R.id.employeereviewpay);
 
 
-        db.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                //Checking if user is admin or normal user
-
-                                if(userID.equals(document.getId())){
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                    UserClass userClassfromdoc = document.toObject(UserClass.class);
-
-                                    user.setEmail(userClassfromdoc.getEmail());
-                                    user.setName(userClassfromdoc.getName());
-                                    user.setProfile_picture(userClassfromdoc.getProfile_picture());
-                                    System.out.println(":this is the user email" + userClassfromdoc.getEmail());
-
-                                    mName.setText(userClassfromdoc.getName());
-                                    mEmail.setText(userClassfromdoc.getEmail());
-                                    mProfilePic.setText(userClassfromdoc.getProfile_picture());
-                                    String hoursworkedstring = String.format("%.1f hours", userClassfromdoc.getHoursthismonth());
-                                    String payentitledstring = String.format("$ %.2f", userClassfromdoc.getPayrate()*userClassfromdoc.getHoursthismonth() );
-                                    payentitled.setText(payentitledstring);
-                                    hoursworked.setText(hoursworkedstring);
-                                    break;
-                                }
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
+        initwidgets();
 
 
         signoutbutton.setOnClickListener(new View.OnClickListener() {
@@ -144,5 +114,42 @@ public class ProfileFragment extends Fragment {
                     }
                 });}
 
+    private void initwidgets(){
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String docid = document.getId();
+                                UserClass userClassfromdoc = document.toObject(UserClass.class);
+                                //Checking if user is admin or normal user
+
+                                if(useremail.equals(userClassfromdoc.getEmail())){
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+
+
+                                    user.setEmail(userClassfromdoc.getEmail());
+                                    user.setName(userClassfromdoc.getName());
+                                    user.setProfile_picture(userClassfromdoc.getProfile_picture());
+                                    System.out.println(":this is the user email" + userClassfromdoc.getEmail());
+
+                                    mName.setText(userClassfromdoc.getName());
+                                    mEmail.setText(userClassfromdoc.getEmail());
+                                    mProfilePic.setText(userClassfromdoc.getProfile_picture());
+                                    String hoursworkedstring = String.format("%.1f hours", userClassfromdoc.getHoursthismonth());
+                                    String payentitledstring = String.format("$ %.2f", userClassfromdoc.getPayrate()*userClassfromdoc.getHoursthismonth() );
+                                    payentitled.setText(payentitledstring);
+                                    hoursworked.setText(hoursworkedstring);
+                                    break;
+                                }
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
 
 }
