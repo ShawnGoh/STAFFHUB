@@ -54,6 +54,7 @@ public class UserHome extends AppCompatActivity {
                     .commit();
         }
         menu_bottom.showBadge(R.id.checkin);
+        offline("online");
 
         //Changing of fragments when using bottom nav bar
         menu_bottom.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
@@ -116,12 +117,13 @@ public class UserHome extends AppCompatActivity {
                                 String docid = document.getId();
                                 UserClass userClass = document.toObject(UserClass.class);
                                 newuser[0] = userClass;
-
-                                if(userClass.getEmail().equals(email)){
+                                if(newuser[0].getEmail().equals(email)){
+                                    System.out.println("Email found - "+email);
                                     newuser[0].setStatus(status);
                                     db.collection("users").document(docid).set(newuser[0]);
-                                    }
+                                    System.out.println("status set");
                                     break;
+                                    }
                                 }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());

@@ -112,7 +112,6 @@ public class CheckInCheckOutFragment extends Fragment {
     private void initwidgets(){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
-        System.out.println(email);
         final UserClass[] newuser = {new UserClass()};
         db.collection("users")
                 .get()
@@ -126,13 +125,10 @@ public class CheckInCheckOutFragment extends Fragment {
                                 newuser[0] = userClass;
 
                                 if(userClass.getEmail().equals(email)){
-                                    System.out.println(newuser[0].getPaid_leave());
                                     paidleave.setText(String.valueOf(newuser[0].getPaid_leave()));
                                     sickleave.setText(String.valueOf(newuser[0].getSick_leave()));
                                     notificationsList = newuser[0].getActivitylist();
-                                    System.out.println(notificationsList);
                                     notificationsdateList = newuser[0].getActivitydatelist();
-                                    System.out.println(notificationsdateList);
                                     if (notificationsList.size()>0){
                                         if(notificationsList.get(notificationsList.size()-1).contains("Clocked in")){
                                             clockin.setVisibility(View.GONE);
@@ -155,7 +151,6 @@ public class CheckInCheckOutFragment extends Fragment {
     private void checkinout(String statustobeset, Date date){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
-        System.out.println(email);
         final UserClass[] newuser = {new UserClass()};
         db.collection("users")
                 .get()
@@ -176,11 +171,9 @@ public class CheckInCheckOutFragment extends Fragment {
 
                                     notificationsList = newuser[0].getActivitylist();
                                     notificationsList.add(statustobeset);
-                                    System.out.println(notificationsList);
 
                                     notificationsdateList = newuser[0].getActivitydatelist();
                                     notificationsdateList.add(String.valueOf(date.getTime()));
-                                    System.out.println(notificationsdateList);
 
                                     UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
                                     activitylog.setAdapter(newadapter);
