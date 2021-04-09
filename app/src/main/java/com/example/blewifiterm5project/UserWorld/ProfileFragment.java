@@ -105,8 +105,9 @@ public class ProfileFragment extends Fragment {
                                 if(userClass.getEmail().equals(email)){
                                     newuser[0].setStatus(status);
                                     db.collection("users").document(docid).set(newuser[0]);
+                                    break;
                                 }
-                                break;
+
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());

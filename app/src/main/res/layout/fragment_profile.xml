@@ -203,7 +203,7 @@
                         android:drawableTop="@drawable/ic_baseline_settings_40"
                         android:drawablePadding="10dp"
                         android:drawableTint="#673AB7"
-                        android:text="FAQs"
+                        android:text="Settings"
                         android:textAllCaps="false"
                         android:textSize="15sp"
                         tools:layout_editor_absoluteX="267dp"
