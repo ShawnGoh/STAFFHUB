@@ -26,7 +26,9 @@ public class FingerprintAlgo {
         double RSSI_value = 0;
         for (HashMap.Entry<String, ArrayList<Double>> accessPoint : wifiResults.getAccesspoints().entrySet()) {
             RSSI_value = accessPoint.getValue().get(0);
-            total += RSSI_value;
+            if (RSSI_value > -70) {
+                total += RSSI_value;
+            }
             FLAG = total/wifiResults.getAccesspoints().size();
         }
         return FLAG;
