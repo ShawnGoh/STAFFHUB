@@ -14,14 +14,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.blewifiterm5project.Adapter.AdminNotificationAdapter;
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
+import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.Models.UserClass;
+import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.SignInSignup.SignIn;
 import com.example.blewifiterm5project.Utils.FirebaseMethods;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,12 +44,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.google.firebase.firestore.Query.Direction.ASCENDING;
 
 
-public class MiscAdminFragment extends Fragment {
+public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
+
+    // Components
+    ImageDotLayout imageDotLayout;
+    PhotoView photoView;
+    Spinner mapDropdown;
+
+    String url;
+    String currentmap = "Building 2 Level 1";
 
     Context mcontext;
     Button signoutbutton;
@@ -50,6 +66,12 @@ public class MiscAdminFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<String> notificationsList;
     ArrayList<String> notificationsDateList;
+
+    private ArrayList<String> mapNameList;
+    private ArrayList<String> mapUrlList;
+    private ArrayAdapter<String> mAdapter;
+
+    CollectionReference collectionReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,9 +83,21 @@ public class MiscAdminFragment extends Fragment {
         mcontext = getActivity();
         mAuth=FirebaseAuth.getInstance();
 
+        imageDotLayout = view.findViewById(R.id.map);
         recyclerView = view.findViewById(R.id.feed_recycler);
         signoutbutton = view.findViewById(R.id.adminsignoutbutton);
 
+        mapDropdown = view.findViewById(R.id.admin_dropdown);
+
+        initMapList();
+
+        mAdapter = new ArrayAdapter<String>(mcontext,android.R.layout.simple_spinner_item, mapNameList);
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mapDropdown.setAdapter(mAdapter);
+        mapDropdown.setOnItemSelectedListener(this);
+
+        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         CollectionReference collectionReference = db.collection("users");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -74,6 +108,7 @@ public class MiscAdminFragment extends Fragment {
                     return;
                 }
                 initwidgets();
+                initIcon(currentmap);
             }
         }) ;
 
@@ -95,6 +130,76 @@ public class MiscAdminFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void initIcon(String collectionname) {
+        final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+//        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+
+        // Initialized
+        // get datapoint coordinates from database and create beans
+
+        ArrayList<dbdatapoint> allData = new ArrayList<>();
+        db.collection(collectionname)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+
+//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
+//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
+                                allData.add(dbdatapointFromDoc);
+                            }
+                            System.out.println(allData);
+                            int count = 0;
+                            for (dbdatapoint dbdatapoint : allData){
+                                System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
+                                ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
+                                iconBeanList.add(bean);
+                                count++;
+                            }
+                            // Check the image is ready or not
+                            imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+                                @Override
+                                public void onLayoutReady() {
+                                    imageDotLayout.addIcons(iconBeanList);
+                                }
+                            });
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        System.out.println("finished populating");
+        System.out.println(iconBeanList.size());
+
+//        ArrayList<dbdatapoint> datapoints = firebaseMethods.getData();
+//        System.out.println(datapoints);
+//        int count = 0;
+//        System.out.println("testing124u3ty89304t1");
+
+//        for (dbdatapoint dbdatapoint : datapoints){
+//            System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
+//            ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
+//            iconBeanList.add(bean);
+//            count++;
+//        }
+
+
+//        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
+//        iconBeanList.add(bean);
+//        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
+//        iconBeanList.add(bean);
+
+
+
+
     }
 
     private void initwidgets(){
@@ -142,4 +247,60 @@ public class MiscAdminFragment extends Fragment {
                     }
                 });
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        imageDotLayout.setImage(mapUrlList.get(position));
+        currentmap = mapNameList.get(position);
+        Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
+        imageDotLayout.removeAllIcon();
+        initIcon(currentmap);
+
+        collectionReference = db.collection(currentmap);
+        if(collectionReference!=null) {
+            collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        Log.w(TAG, "listen:error", error);
+                        return;
+                    }
+                    initIcon(currentmap);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void initMapList(){
+        mapNameList = new ArrayList<>();
+        mapUrlList = new ArrayList<>();
+
+        db.collection("maps")
+                .orderBy("name",ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        System.out.println("The task is: "+task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getId() + " => " + document.getData());
+                                mapNameList.add((String)document.getData().get("name"));
+                                mapUrlList.add((String)document.getData().get("url"));
+                            }
+                            System.out.println("NameList: "+ mapNameList);
+                            System.out.println("UrlList: "+ mapUrlList);
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
 }
