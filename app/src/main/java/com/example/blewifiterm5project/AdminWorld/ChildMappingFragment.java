@@ -168,6 +168,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
     private void initIcon(String collectionname) {
         final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+//        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
         // Initialized
         // get datapoint coordinates from database and create beans

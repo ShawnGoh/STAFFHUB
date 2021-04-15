@@ -93,30 +93,30 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         initIcon(currentmap);
 
         // Set click listener to imageDotLayout
-//        imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
-//            @Override
-//            public void onImageClick(ImageDotLayout.IconBean bean) {
-//                // Can add some other functions here
-//                if (moving_bean != null){
-//                    imageDotLayout.removeIcon(moving_bean);
-//                }
-//                imageDotLayout.addIcon(bean);
-//                moving_bean = bean;
-//                x_coordinates = bean.sx;
-//                y_coordinates = bean.sy;
-////                wifiScanner.scanWifi();
-//                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
-////                dataSet = firebaseMethods.getData();
-//            }
-//        });
+        imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
+            @Override
+            public void onImageClick(ImageDotLayout.IconBean bean) {
+                // Can add some other functions here
+                if (moving_bean != null){
+                    imageDotLayout.removeIcon(moving_bean);
+                }
+                imageDotLayout.addIcon(bean);
+                moving_bean = bean;
+                x_coordinates = bean.sx;
+                y_coordinates = bean.sy;
+                wifiScanner.scanWifi();
+                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
+//                dataSet = firebaseMethods.getData();
+            }
+        });
 
-//        imageDotLayout.setOnIconClickListener(new ImageDotLayout.OnIconClickListener() {
-//            @Override
-//            public void onIconClick(View v) {
-//                ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
-//                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        imageDotLayout.setOnIconClickListener(new ImageDotLayout.OnIconClickListener() {
+            @Override
+            public void onIconClick(View v) {
+                ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
+                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         locatemebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +186,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
     private void initIcon(String collectionname) {
         final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+//        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
         // Initialized
         // get datapoint coordinates from database and create beans
