@@ -50,6 +50,10 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
     private Matrix photoViewMatrix;
     boolean firstLoadPhotoView = true;
 
+    // Change the dpvalue here to make icon have different size
+    private int dpvalueX = 30;
+    private int dpvalueY = 32;
+
     public Bitmap bitmap;
 
 
@@ -78,7 +82,7 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         }
     };
 
-    private Drawable mIconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.icon_location);
+    private Drawable mIconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.icon_location_purple);
 
     void initView(final Context context) {
         photoView = new PhotoView(context);
@@ -93,8 +97,8 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
                         IconBean bean = (IconBean) icon.getTag();
                         float newX = bean.sx * (rectF.right - rectF.left);
                         float newY = bean.sy * (rectF.bottom - rectF.top);
-                        icon.setX(rectF.left + newX - DensityUtil.dp2px(getContext(), 45) / 2);
-                        icon.setY(rectF.top + newY - DensityUtil.dp2px(getContext(), 48));
+                        icon.setX(rectF.left + newX - DensityUtil.dp2px(getContext(), dpvalueX) / 2);
+                        icon.setY(rectF.top + newY - DensityUtil.dp2px(getContext(), dpvalueY));
                     }
                 }
                 tempRectF = rectF;
@@ -117,7 +121,9 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
                 if (iconList != null && iconList.size() > 0) {
                     id = iconList.size();
                 }
-                IconBean bean = new IconBean(id, v, v1, mIconDrawable);
+                // If want to change the icon of the moveable bean, change drawable here
+                Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.icon_location_red);
+                IconBean bean = new IconBean(id, v, v1, drawable);
                 if (onImageClickListener != null) {
                     onImageClickListener.onImageClick(bean);
                 }
@@ -139,7 +145,7 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
             iconList = new ArrayList<>();
         }
         final ImageView icon = new ImageView(getContext());
-        LayoutParams layoutParams = new LayoutParams(DensityUtil.dp2px(getContext(), 45), DensityUtil.dp2px(getContext(), 48));
+        LayoutParams layoutParams = new LayoutParams(DensityUtil.dp2px(getContext(), dpvalueX), DensityUtil.dp2px(getContext(), dpvalueY));
         icon.setImageDrawable(bean.drawable == null ? mIconDrawable : bean.drawable);
         icon.setTag(bean);
         float newX = bean.sx * (tempRectF.left - tempRectF.right);
