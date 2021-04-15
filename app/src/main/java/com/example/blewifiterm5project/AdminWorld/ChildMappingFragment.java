@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -25,7 +26,10 @@ import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -67,6 +71,8 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     float x_coordinates = 0;
     float y_coordinates = 0;
     ImageDotLayout.IconBean moving_bean = null;
+
+    CollectionReference collectionReference;
 
 //    public class DataPoint {
 //        Float X;
@@ -243,6 +249,20 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
         imageDotLayout.removeAllIcon();
         initIcon(currentmap);
+
+        collectionReference = db.collection(currentmap);
+        if(collectionReference!=null) {
+            collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        Log.w(TAG, "listen:error", error);
+                        return;
+                    }
+                    initIcon(currentmap);
+                }
+            });
+        }
     }
 
     @Override
