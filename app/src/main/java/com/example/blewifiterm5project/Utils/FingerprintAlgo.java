@@ -24,13 +24,17 @@ public class FingerprintAlgo {
         double total = 0;
         double FLAG = 0;
         double RSSI_value = 0;
+        int flagCounter = 0;
         for (HashMap.Entry<String, ArrayList<Double>> accessPoint : wifiResults.getAccesspoints().entrySet()) {
             RSSI_value = accessPoint.getValue().get(0);
             if (RSSI_value > -70) {
                 total += RSSI_value;
+                flagCounter++;
             }
-            FLAG = total/wifiResults.getAccesspoints().size();
+            //FLAG = total/wifiResults.getAccesspoints().size();
+            FLAG = total/flagCounter;
         }
+        System.out.println("FLAG value: " + FLAG);
         return FLAG;
     }
 
@@ -79,10 +83,10 @@ public class FingerprintAlgo {
         double sum_w = 0;
         System.out.println(dataSet.size());
         for (int i = 0; i < dataSet.size(); i++) {
-            System.out.println(dataSet.get(i));
+            //System.out.println(dataSet.get(i));
             double di = getEuclideanDistance(dataSet.get(i), wifiResults);
-            System.out.println(dataSet.get(i).getAccesspoints());
-            System.out.println(wifiResults.getCoordinates());
+            //System.out.println(dataSet.get(i).getAccesspoints());
+            //System.out.println(wifiResults.getCoordinates());
             System.out.println("EuclideanDistance is" + di);
             double w = 1/di;
             sum_w += w;
