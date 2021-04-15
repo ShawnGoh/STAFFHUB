@@ -90,33 +90,33 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
         imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
-        initIcon();
+        initIcon(currentmap);
 
         // Set click listener to imageDotLayout
-        imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
-            @Override
-            public void onImageClick(ImageDotLayout.IconBean bean) {
-                // Can add some other functions here
-                if (moving_bean != null){
-                    imageDotLayout.removeIcon(moving_bean);
-                }
-                imageDotLayout.addIcon(bean);
-                moving_bean = bean;
-                x_coordinates = bean.sx;
-                y_coordinates = bean.sy;
-                wifiScanner.scanWifi();
-                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
-//                dataSet = firebaseMethods.getData();
-            }
-        });
+//        imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
+//            @Override
+//            public void onImageClick(ImageDotLayout.IconBean bean) {
+//                // Can add some other functions here
+//                if (moving_bean != null){
+//                    imageDotLayout.removeIcon(moving_bean);
+//                }
+//                imageDotLayout.addIcon(bean);
+//                moving_bean = bean;
+//                x_coordinates = bean.sx;
+//                y_coordinates = bean.sy;
+////                wifiScanner.scanWifi();
+//                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
+////                dataSet = firebaseMethods.getData();
+//            }
+//        });
 
-        imageDotLayout.setOnIconClickListener(new ImageDotLayout.OnIconClickListener() {
-            @Override
-            public void onIconClick(View v) {
-                ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
-                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        imageDotLayout.setOnIconClickListener(new ImageDotLayout.OnIconClickListener() {
+//            @Override
+//            public void onIconClick(View v) {
+//                ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
+//                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         locatemebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +138,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 // START OF LONG METHOD
 
                 ArrayList<dbdatapoint> dataSet = new ArrayList<>();
-                db.collection("datapoints")
+                db.collection(currentmap)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -184,14 +184,14 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         return view;
     }
 
-    private void initIcon() {
+    private void initIcon(String collectionname) {
         final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
         // Initialized
         // get datapoint coordinates from database and create beans
 
         ArrayList<dbdatapoint> allData = new ArrayList<>();
-        db.collection("datapoints")
+        db.collection(collectionname)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -213,6 +213,13 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                                 iconBeanList.add(bean);
                                 count++;
                             }
+                            // Check the image is ready or not
+                            imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+                                @Override
+                                public void onLayoutReady() {
+                                    imageDotLayout.addIcons(iconBeanList);
+                                }
+                            });
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -240,18 +247,16 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 //        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
 //        iconBeanList.add(bean);
 
-        // Check the image is ready or not
-        imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
-            @Override
-            public void onLayoutReady() {
-                imageDotLayout.addIcons(iconBeanList);
-            }
-        });
+
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         imageDotLayout.setImage(mapUrlList.get(position));
+        currentmap = mapNameList.get(position);
+        Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
+        imageDotLayout.removeAllIcon();
+        initIcon(currentmap);
     }
 
 

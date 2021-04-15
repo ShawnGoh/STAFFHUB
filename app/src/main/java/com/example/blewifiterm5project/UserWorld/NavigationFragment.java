@@ -58,6 +58,10 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     private Context mcontext;
     private WifiScanner wifiScanner;
     private HashMap<String, ArrayList<Double>> dataValues;
+    private ArrayList<String> mapNameList;
+    private ArrayList<String> mapUrlList;
+    private ArrayAdapter<String> mAdapter;
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     float x_coordinates = 0;
