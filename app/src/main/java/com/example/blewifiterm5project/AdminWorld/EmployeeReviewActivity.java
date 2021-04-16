@@ -97,6 +97,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                     Log.w(TAG, "listen:error", error);
                     return;
                 }
+                imageDotLayout.removeAllIcon();
                 initwidgets();
             }
         }) ;
