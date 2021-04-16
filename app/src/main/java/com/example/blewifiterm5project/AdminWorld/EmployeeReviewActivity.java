@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
+import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.Models.UserClass;
 import com.example.blewifiterm5project.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +50,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
     ConstraintLayout managewidow;
     EditText payrate;
     ImageView onlineindicator, offlineindicator;
+    ImageDotLayout locationmap;
 
     UserActivityLogRecyclerAdapter activityLogRecyclerAdapter;
     RecyclerView activitylog;
@@ -57,6 +59,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
     ArrayList<String> notificationsdateList = new ArrayList<>();
 
     String docid;
+    String mapURL;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -81,6 +84,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         hoursworked = findViewById(R.id.employeereviewhoursworked);
         onlineindicator = findViewById(R.id.statusindicatoruseritemonline2);
         offlineindicator = findViewById(R.id.statusindicatoruseritemoffline2);
+        locationmap = findViewById(R.id.employeereviewuserlocation);
         activitylog = findViewById(R.id.employeereviewuseractivitylog);
 
 
@@ -125,6 +129,26 @@ public class EmployeeReviewActivity extends AppCompatActivity {
 
     }
 
+    private void setMapURL(String currentmap) {
+        db.collection("maps").document(currentmap).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        mapURL = (String) document.getData().get("url");
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+    }
+
 
     private void initwidgets(){
         FirebaseUser user = mAuth.getCurrentUser();
@@ -143,6 +167,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                         String hoursworkedstring = String.format("%.1f hours", userClass.getHoursthismonth());
                         String payentitledstring = String.format("$ %.2f", userClass.getPayrate()*userClass.getHoursthismonth() );
                         String payratestring = String.format("%.2f", userClass.getPayrate() );
+                        setMapURL(userClass.getCurrentmap());
                         payrate.setText(payratestring);
                         hoursworked.setText(hoursworkedstring);
                         payentitled.setText(payentitledstring);
@@ -157,6 +182,8 @@ public class EmployeeReviewActivity extends AppCompatActivity {
 
                         UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
                         activitylog.setAdapter(newadapter);
+
+                        locationmap.setImage(mapURL);
 
                     } else {
                         Log.d(TAG, "No such document");

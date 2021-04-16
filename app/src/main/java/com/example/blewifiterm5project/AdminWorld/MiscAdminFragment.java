@@ -132,40 +132,38 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
         return view;
     }
 
-    private void initIcon(String collectionname) {
+    private void initIcon(String currentmap) {
         final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 //        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
-        // Initialized
-        // get datapoint coordinates from database and create beans
-
-        ArrayList<dbdatapoint> allData = new ArrayList<>();
-        db.collection(collectionname)
+        db.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int count = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+                                UserClass userClass = document.toObject(UserClass.class);
 
-//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
-//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
-                                allData.add(dbdatapointFromDoc);
-                            }
-                            System.out.println(allData);
-                            int count = 0;
-                            for (dbdatapoint dbdatapoint : allData){
-                                System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
-                                ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
-                                iconBeanList.add(bean);
-                                count++;
-                            }
+                                if (userClass.getCurrentmap() != null) {
+
+                                    if (userClass.getCurrentmap().equals(currentmap) && userClass.getUsercoordinates() != null) {
+                                        ArrayList<Float> coordinates = userClass.getUsercoordinates();
+                                        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, coordinates.get(0), coordinates.get(1), null);
+                                        iconBeanList.add(bean);
+                                        count++;
+                                        }
+
+                                    }
+                                }
+
                             // Check the image is ready or not
                             imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
                                 @Override
                                 public void onLayoutReady() {
+                                    imageDotLayout.removeAllIcon();
                                     imageDotLayout.addIcons(iconBeanList);
                                 }
                             });
@@ -178,27 +176,6 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
 
         System.out.println("finished populating");
         System.out.println(iconBeanList.size());
-
-//        ArrayList<dbdatapoint> datapoints = firebaseMethods.getData();
-//        System.out.println(datapoints);
-//        int count = 0;
-//        System.out.println("testing124u3ty89304t1");
-
-//        for (dbdatapoint dbdatapoint : datapoints){
-//            System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
-//            ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
-//            iconBeanList.add(bean);
-//            count++;
-//        }
-
-
-//        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
-//        iconBeanList.add(bean);
-//        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
-//        iconBeanList.add(bean);
-
-
-
 
     }
 
