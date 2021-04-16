@@ -86,6 +86,8 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         imageDotLayout = findViewById(R.id.employeereviewuserlocation);
         activitylog = findViewById(R.id.employeereviewuseractivitylog);
 
+//        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
+
 
         CollectionReference collectionReference = db.collection("users");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -104,7 +106,6 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, notificationsdateList, mcontext);
         activitylog.setAdapter(activityLogRecyclerAdapter);
 
-        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,9 +148,16 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                             }
                             System.out.println("MAP URL: "+mapURL);
                             imageDotLayout.setImage(mapURL);
-                            System.out.println("COORDINATES: "+coordinates);
-                            ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, coordinates.get(0), coordinates.get(1), null);
-                            imageDotLayout.addIcon(bean);
+//                            System.out.println("COORDINATES: "+coordinates);
+                            imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+
+                                @Override
+                                public void onLayoutReady() {
+                                    ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, coordinates.get(0), coordinates.get(1), null);
+                                    imageDotLayout.addIcon(bean);
+                                }
+                            });
+
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
