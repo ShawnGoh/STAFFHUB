@@ -158,15 +158,16 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
 
                                     }
                                 }
-
+                            imageDotLayout.removeAllIcon();
+                            imageDotLayout.addIcons(iconBeanList);
                             // Check the image is ready or not
-                            imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
-                                @Override
-                                public void onLayoutReady() {
-                                    imageDotLayout.removeAllIcon();
-                                    imageDotLayout.addIcons(iconBeanList);
-                                }
-                            });
+//                            imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+//                                @Override
+//                                public void onLayoutReady() {
+//                                    imageDotLayout.removeAllIcon();
+//                                    imageDotLayout.addIcons(iconBeanList);
+//                                }
+//                            });
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
