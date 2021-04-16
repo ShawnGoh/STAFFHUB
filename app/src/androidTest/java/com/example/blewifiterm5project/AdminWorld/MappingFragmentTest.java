@@ -45,6 +45,8 @@ public class MappingFragmentTest {
         if(mAuth.getUid()==""){
             mAuth.signInWithEmailAndPassword(emailAdmin,passwordAdmin);
         }
+        onView(withId(R.id.mapping)).perform(click());
+        onView(withId(R.id.mappingFragment)).perform(click());
     }
 
     @Test
