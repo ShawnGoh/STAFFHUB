@@ -78,7 +78,7 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         }
     };
 
-    private Drawable mIconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.icon_location);
+    private Drawable mIconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_location_on_24);
 
     void initView(final Context context) {
         photoView = new PhotoView(context);
