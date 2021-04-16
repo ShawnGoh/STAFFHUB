@@ -2,11 +2,6 @@ package com.example.blewifiterm5project.AdminWorld;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +12,11 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
 import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
@@ -25,7 +25,10 @@ import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -67,6 +70,8 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     float x_coordinates = 0;
     float y_coordinates = 0;
     ImageDotLayout.IconBean moving_bean = null;
+
+    CollectionReference collectionReference;
 
 //    public class DataPoint {
 //        Float X;
@@ -167,7 +172,8 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void initIcon(String collectionname) {
-        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+        final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+//        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
         // Initialized
         // get datapoint coordinates from database and create beans
@@ -190,7 +196,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                             System.out.println(allData);
                             int count = 0;
                             for (dbdatapoint dbdatapoint : allData){
-                                System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
+                                //System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
                                 ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
                                 iconBeanList.add(bean);
                                 count++;
@@ -242,6 +248,20 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
         imageDotLayout.removeAllIcon();
         initIcon(currentmap);
+
+        collectionReference = db.collection(currentmap);
+        if(collectionReference!=null) {
+            collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        Log.w(TAG, "listen:error", error);
+                        return;
+                    }
+                    initIcon(currentmap);
+                }
+            });
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -25,13 +26,20 @@ import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
+import static com.google.firebase.firestore.Query.Direction.ASCENDING;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,13 +61,19 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     ImageDotLayout imageDotLayout;
     Button locatemebutton;
     Spinner mapDropdown;
-    private List mList;
+
+    private String currentmap;
 
     private Context mcontext;
     private WifiScanner wifiScanner;
     private HashMap<String, ArrayList<Double>> dataValues;
+    private ArrayList<String> mapNameList;
+    private ArrayList<String> mapUrlList;
+    private ArrayAdapter<String> mAdapter;
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference collectionReference;
     float x_coordinates = 0;
     float y_coordinates = 0;
 
@@ -108,13 +122,9 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         wifiScanner = new WifiScanner(mcontext);
         wifiScanner.scanWifi();
 
-        mList = new ArrayList();
-        mList.add("Building 2 Level 1");
-        mList.add("Building 2 Level 2");
-        mList.add("Campus Center");
+        initMapList();
 
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(mcontext,
-                android.R.layout.simple_spinner_item,mList);
+        mAdapter = new ArrayAdapter<String>(mcontext, android.R.layout.simple_spinner_item, mapNameList);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mapDropdown = view.findViewById(R.id.map_dropdown_user);
@@ -193,31 +203,42 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        switch (position) {
-            case 0:
-                // Whatever you want to happen when the first item gets selected
-                // Building 2 Level 1 Image
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
-                break;
-            case 1:
-                // Whatever you want to happen when the second item gets selected
-                // Building 2 Level 2 Image
-                System.out.println("choosing image 2");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_2.png?alt=media&token=e194f391-373b-4337-acc1-682258a62970");
-                break;
-            case 2:
-                // Whatever you want to happen when the second item gets selected
-                // Building 2 Level 2 Image
-                System.out.println("choosing image 3");
-                imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/blewifiterm5.appspot.com/o/2021-04-08%2014.54.57.jpg?alt=media&token=7293fe67-d235-4cd3-8539-f895312c490e");
-                break;
-        }
-
+        imageDotLayout.setImage(mapUrlList.get(position));
+        currentmap = mapNameList.get(position);
+        Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
+        imageDotLayout.removeAllIcon();
+        //initIcon(currentmap);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void initMapList(){
+        mapNameList = new ArrayList<>();
+        mapUrlList = new ArrayList<>();
+
+        db.collection("maps")
+                .orderBy("name",ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        System.out.println("The task is: "+task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getId() + " => " + document.getData());
+                                mapNameList.add((String)document.getData().get("name"));
+                                mapUrlList.add((String)document.getData().get("url"));
+                            }
+                            System.out.println("NameList: "+ mapNameList);
+                            System.out.println("UrlList: "+ mapUrlList);
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }
