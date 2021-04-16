@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ConditionVariable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
@@ -50,7 +48,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
     ConstraintLayout managewidow;
     EditText payrate;
     ImageView onlineindicator, offlineindicator;
-    ImageDotLayout locationmap;
+    ImageDotLayout imageDotLayout;
 
     UserActivityLogRecyclerAdapter activityLogRecyclerAdapter;
     RecyclerView activitylog;
@@ -59,6 +57,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
     ArrayList<String> notificationsdateList = new ArrayList<>();
 
     String docid;
+    String currentmap;
     String mapURL;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -84,7 +83,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         hoursworked = findViewById(R.id.employeereviewhoursworked);
         onlineindicator = findViewById(R.id.statusindicatoruseritemonline2);
         offlineindicator = findViewById(R.id.statusindicatoruseritemoffline2);
-        locationmap = findViewById(R.id.employeereviewuserlocation);
+        imageDotLayout = findViewById(R.id.employeereviewuserlocation);
         activitylog = findViewById(R.id.employeereviewuseractivitylog);
 
 
@@ -105,7 +104,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, notificationsdateList, mcontext);
         activitylog.setAdapter(activityLogRecyclerAdapter);
 
-        locationmap.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
+        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,23 +128,31 @@ public class EmployeeReviewActivity extends AppCompatActivity {
 
     }
 
-    private void setMapURL(String currentmap) {
-        db.collection("maps").document(currentmap).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        mapURL = (String) document.getData().get("url");
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d(TAG, "No such document");
+    private void setMapURL(String currentmap, ArrayList<Float> coordinates) {
+
+        db.collection("maps")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+
+                                if (document.getData().get("name").equals(currentmap)) {
+                                    mapURL = (String) document.getData().get("url");
+                                }
+                            }
+                            System.out.println("MAP URL: "+mapURL);
+                            imageDotLayout.setImage(mapURL);
+                            System.out.println("COORDINATES: "+coordinates);
+                            ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, coordinates.get(0), coordinates.get(1), null);
+                            imageDotLayout.addIcon(bean);
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
                     }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+                });
 
     }
 
@@ -167,8 +174,9 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                         String hoursworkedstring = String.format("%.1f hours", userClass.getHoursthismonth());
                         String payentitledstring = String.format("$ %.2f", userClass.getPayrate()*userClass.getHoursthismonth() );
                         String payratestring = String.format("%.2f", userClass.getPayrate() );
-                        setMapURL(userClass.getCurrentmap());
-                        System.out.println("MAP URL: "+mapURL);
+                        System.out.println("CURRENT MAP: "+userClass.getCurrentmap());
+                        System.out.println("USER COORDINATES: "+userClass.getUsercoordinates());
+                        setMapURL(userClass.getCurrentmap(), userClass.getUsercoordinates());
                         payrate.setText(payratestring);
                         hoursworked.setText(hoursworkedstring);
                         payentitled.setText(payentitledstring);
@@ -183,8 +191,8 @@ public class EmployeeReviewActivity extends AppCompatActivity {
 
                         UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
                         activitylog.setAdapter(newadapter);
-
-                        locationmap.setImage(mapURL);
+//
+//                        locationmap.setImage(mapURL);
 
                     } else {
                         Log.d(TAG, "No such document");
