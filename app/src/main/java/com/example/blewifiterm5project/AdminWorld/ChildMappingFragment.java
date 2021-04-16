@@ -120,7 +120,9 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                 if (moving_bean != null){
                     imageDotLayout.removeIcon(moving_bean);
                 }
+                bean.drawable = getResources().getDrawable(R.drawable.ic_baseline_location_on_24_diffcolor);
                 imageDotLayout.addIcon(bean);
+                initIcon(currentmap);
                 moving_bean = bean;
                 x_coordinates = bean.sx;
                 y_coordinates = bean.sy;
@@ -147,8 +149,22 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
             imageDotLayout.setImage(url);
         }
 
+
+
         // Initialize icons
         initIcon(currentmap);
+
+        CollectionReference collectionReference = db.collection(currentmap);
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+                initIcon(currentmap);
+            }
+        }) ;
 
         confirmscanbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +181,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                 dbdatapoint newdatapoint = new dbdatapoint(dataValues, coordarray);
                 db.collection(currentmap).add(newdatapoint);
 //                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+                initIcon(currentmap);
                 Toast.makeText(getActivity(), "Position = "+x_coordinates+", "+y_coordinates+" has been added!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -195,9 +212,16 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                             }
                             System.out.println(allData);
                             int count = 0;
-                            for (dbdatapoint dbdatapoint : allData){
+                            for(int i = 0; i<allData.size(); i++){
+                                dbdatapoint dbdatapoint = allData.get(i);
                                 //System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
-                                ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
+                                ImageDotLayout.IconBean bean;
+                                if(i==allData.size()-1){
+                                    bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24_diffcolor));
+                                }
+                                else{
+                                    bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
+                                }
                                 iconBeanList.add(bean);
                                 count++;
                             }

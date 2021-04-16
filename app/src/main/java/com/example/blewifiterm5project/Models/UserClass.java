@@ -16,6 +16,7 @@ public class UserClass {
     private float hoursthismonth = 0;
     private ArrayList<String> Activitylist = new ArrayList<>();
     private ArrayList<String> Activitydatelist = new ArrayList<>();
+    private ArrayList<Float> usercoordinates;
 
     public UserClass(String name, String profile_picture, String email) {
         this.name = name;
@@ -35,6 +36,14 @@ public class UserClass {
         this.hoursthismonth = userClass.getHoursthismonth();
         this.Activitylist = userClass.getActivitylist();
         this.Activitydatelist = userClass.getActivitydatelist();
+    }
+
+    public ArrayList<Float> getUsercoordinates() {
+        return usercoordinates;
+    }
+
+    public void setUsercoordinates(ArrayList<Float> usercoordinates) {
+        this.usercoordinates = usercoordinates;
     }
 
     public float getPayrate() {

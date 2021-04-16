@@ -26,7 +26,7 @@
             android:id="@+id/welcome_bac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="8dp"
             android:text="Test Mapped Areas"
             android:textAppearance="@style/welcome_bac"
             android:fontFamily="@font/arial_rounded_mt_bold_font"
@@ -36,7 +36,7 @@
             android:id="@+id/map_dropdown_testing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:spinnerMode="dropdown"/>
 
 
@@ -45,14 +45,17 @@
 
     <com.example.blewifiterm5project.Layout.ImageDotLayout
         android:id="@+id/map"
-        android:layout_width="380dp"
-        android:layout_height="380dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/Locatemebutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout"
-        android:layout_marginTop="10dp"
         app:layout_constraintVertical_bias="0.059"
         tools:srcCompat="@drawable/floorplantemp" />
 
@@ -63,7 +66,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/checkinbutton"
         android:elevation="8dp"
         android:padding="8dp"
