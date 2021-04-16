@@ -216,12 +216,12 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                                 dbdatapoint dbdatapoint = allData.get(i);
                                 //System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
                                 ImageDotLayout.IconBean bean;
-                                if(i==allData.size()-1){
-                                    bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24_diffcolor));
-                                }
-                                else{
+//                                if(i==allData.size()-1){
+//                                    bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24_diffcolor));
+//                                }
+//                                else{
                                     bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
-                                }
+//                                }
                                 iconBeanList.add(bean);
                                 count++;
                             }

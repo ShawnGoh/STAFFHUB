@@ -99,6 +99,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                 }
                 imageDotLayout.removeAllIcon();
                 initwidgets();
+
             }
         }) ;
 
