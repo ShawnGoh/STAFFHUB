@@ -21,6 +21,154 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/profilepagebackboard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/employeereviewmanagebutton">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/userbreakdownconstraint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/roundedrectanglewhite"
+                        android:elevation="10dp"
+                        android:gravity="center_horizontal"
+                        android:padding="15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/employeereviewhoursworked"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/arial_rounded_mt_bold_font"
+                                android:text="10.6 hours"
+                                android:textSize="25sp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/employeereviewpay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="45dp"
+                                android:layout_toRightOf="@id/employeereviewhoursworked"
+                                android:fontFamily="@font/arial_rounded_mt_bold_font"
+                                android:text="$169.69"
+                                android:textSize="25sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/employeereviewhoursworked"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/userprofilehoursworkedtext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/employeereviewhoursworked"
+                                android:layout_marginTop="8dp"
+                                android:text="Number of hours\nworked this month"
+                                android:textAlignment="center"
+                                app:layout_constraintEnd_toEndOf="@+id/employeereviewhoursworked"
+                                app:layout_constraintStart_toStartOf="@+id/employeereviewhoursworked"
+                                app:layout_constraintTop_toBottomOf="@+id/employeereviewhoursworked" />
+
+                            <TextView
+                                android:id="@+id/userprofilepaytext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/employeereviewpay"
+                                android:layout_marginTop="8dp"
+                                android:layout_toRightOf="@id/userprofilehoursworkedtext"
+                                android:text="Entitled Pay\n this month"
+                                app:layout_constraintEnd_toEndOf="@+id/employeereviewpay"
+                                app:layout_constraintStart_toStartOf="@+id/employeereviewpay"
+                                app:layout_constraintTop_toBottomOf="@+id/employeereviewpay" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/arial_rounded_mt_bold_font"
+
+                        android:text="Activity Log"
+                        app:layout_constraintStart_toStartOf="@+id/employeereviewuseractivitylog"
+                        app:layout_constraintTop_toBottomOf="@+id/userbreakdownconstraint" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/employeereviewuseractivitylog"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                    <TextView
+                        android:id="@+id/curretlocationtext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Current Location"
+                        app:layout_constraintEnd_toEndOf="@+id/userbreakdownconstraint"
+                        app:layout_constraintStart_toStartOf="@+id/userbreakdownconstraint"
+                        app:layout_constraintTop_toBottomOf="@+id/employeereviewuseractivitylog" />
+
+                    <com.example.blewifiterm5project.Layout.ImageDotLayout
+                        android:id="@+id/employeereviewuserlocation"
+                        android:layout_width="0dp"
+                        android:layout_height="380dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/curretlocationtext"
+                        app:layout_constraintVertical_bias="1.0"
+                        tools:srcCompat="@drawable/floorplantemp" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </ScrollView>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/employeereviewmanagewindow"
             android:layout_width="0dp"
@@ -116,117 +264,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/profilepagebackboard"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/employeereviewmanagewindow"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="0dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/userbreakdownconstraint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/roundedrectanglewhite"
-                android:elevation="10dp"
-                android:gravity="center_horizontal"
-                android:padding="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/employeereviewhoursworked"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/arial_rounded_mt_bold_font"
-                        android:text="10.6 hours"
-                        android:textSize="25sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/employeereviewpay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="45dp"
-                        android:layout_toRightOf="@id/employeereviewhoursworked"
-                        android:fontFamily="@font/arial_rounded_mt_bold_font"
-                        android:text="$169.69"
-                        android:textSize="25sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/employeereviewhoursworked"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/userprofilehoursworkedtext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/employeereviewhoursworked"
-                        android:layout_marginTop="8dp"
-                        android:text="Number of hours\nworked this month"
-                        android:textAlignment="center"
-                        app:layout_constraintEnd_toEndOf="@+id/employeereviewhoursworked"
-                        app:layout_constraintStart_toStartOf="@+id/employeereviewhoursworked"
-                        app:layout_constraintTop_toBottomOf="@+id/employeereviewhoursworked" />
-
-                    <TextView
-                        android:id="@+id/userprofilepaytext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/employeereviewpay"
-                        android:layout_marginTop="8dp"
-                        android:layout_toRightOf="@id/userprofilehoursworkedtext"
-                        android:text="Entitled Pay\n this month"
-                        app:layout_constraintEnd_toEndOf="@+id/employeereviewpay"
-                        app:layout_constraintStart_toStartOf="@+id/employeereviewpay"
-                        app:layout_constraintTop_toBottomOf="@+id/employeereviewpay" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/curretlocationtext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Current Location"
-                app:layout_constraintEnd_toEndOf="@+id/userbreakdownconstraint"
-                app:layout_constraintStart_toStartOf="@+id/userbreakdownconstraint"
-                app:layout_constraintTop_toBottomOf="@+id/userbreakdownconstraint" />
-
-            <com.example.blewifiterm5project.Layout.ImageDotLayout
-                android:id="@+id/employeereviewuserlocation"
-                android:layout_width="0dp"
-                android:layout_height="380dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/curretlocationtext"
-                tools:srcCompat="@drawable/floorplantemp" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--        <TextView-->
+        <!--        <TextView-->
 <!--            android:id="@+id/employeereviewemail"-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->

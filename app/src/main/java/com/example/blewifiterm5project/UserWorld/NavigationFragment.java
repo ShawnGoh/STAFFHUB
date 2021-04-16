@@ -143,6 +143,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                                     imageDotLayout.addIcon(location);
                                     Map<String, Object> coordhashmap = new HashMap<>();
                                     coordhashmap.put("usercoordinates", usercoords);
+                                    coordhashmap.put("currentmap", currentmap);
                                     db.collection("users").document(mAuth.getCurrentUser().getUid()).update(coordhashmap);
 
                                 } else {

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 public class EmployeeReviewActivity extends AppCompatActivity {
 
     private static final String TAG = "EmployeeReviewActivity";
@@ -46,6 +50,11 @@ public class EmployeeReviewActivity extends AppCompatActivity {
     EditText payrate;
     ImageView onlineindicator, offlineindicator;
 
+    UserActivityLogRecyclerAdapter activityLogRecyclerAdapter;
+    RecyclerView activitylog;
+
+    ArrayList<String> notificationsList = new ArrayList<>();
+    ArrayList<String> notificationsdateList = new ArrayList<>();
 
     String docid;
 
@@ -61,6 +70,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         docid = intent.getStringExtra("DocumentId");
         mAuth= FirebaseAuth.getInstance();
+        mcontext = getApplicationContext();
 
         nametextview = findViewById(R.id.employeereviewname);
         backbutton = findViewById(R.id.employeereviewbackbutton);
@@ -71,6 +81,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         hoursworked = findViewById(R.id.employeereviewhoursworked);
         onlineindicator = findViewById(R.id.statusindicatoruseritemonline2);
         offlineindicator = findViewById(R.id.statusindicatoruseritemoffline2);
+        activitylog = findViewById(R.id.employeereviewuseractivitylog);
 
 
         CollectionReference collectionReference = db.collection("users");
@@ -84,6 +95,11 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                 initwidgets();
             }
         }) ;
+
+
+        activitylog.setLayoutManager(new LinearLayoutManager(mcontext));
+        activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, notificationsdateList, mcontext);
+        activitylog.setAdapter(activityLogRecyclerAdapter);
 
 
 
@@ -136,6 +152,11 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                         else {
                             offlineindicator.setVisibility(View.VISIBLE);
                         }
+                        notificationsList = userClass.getActivitylist();
+                        notificationsdateList = userClass.getActivitydatelist();
+
+                        UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
+                        activitylog.setAdapter(newadapter);
 
                     } else {
                         Log.d(TAG, "No such document");
