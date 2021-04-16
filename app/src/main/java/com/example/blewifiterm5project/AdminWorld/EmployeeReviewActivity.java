@@ -105,7 +105,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, notificationsdateList, mcontext);
         activitylog.setAdapter(activityLogRecyclerAdapter);
 
-
+        locationmap.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +168,7 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                         String payentitledstring = String.format("$ %.2f", userClass.getPayrate()*userClass.getHoursthismonth() );
                         String payratestring = String.format("%.2f", userClass.getPayrate() );
                         setMapURL(userClass.getCurrentmap());
+                        System.out.println("MAP URL: "+mapURL);
                         payrate.setText(payratestring);
                         hoursworked.setText(hoursworkedstring);
                         payentitled.setText(payentitledstring);
