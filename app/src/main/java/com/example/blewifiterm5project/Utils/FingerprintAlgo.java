@@ -5,7 +5,14 @@ import android.util.Pair;
 import com.example.blewifiterm5project.Models.dbdatapoint;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class FingerprintAlgo {
 
@@ -41,14 +48,25 @@ public class FingerprintAlgo {
     public ArrayList<String> sortMAC() {
 
         double FLAG = getFLAG();
+
         ArrayList<String> nearbyAPs = new ArrayList<>();
+        HashMap<String, Double> topThree = new HashMap<>();
 
         // only include MAC address of APs near the user
         for (HashMap.Entry<String, ArrayList<Double>> accessPoint : wifiResults.getAccesspoints().entrySet()) {
             if (accessPoint.getValue().get(0) > FLAG) {
-                nearbyAPs.add(accessPoint.getKey());
+                topThree.put(accessPoint.getKey(), accessPoint.getValue().get(0));
             }
         }
+        topThree = sortByValues(topThree);
+        System.out.println("Top Three HashMap: " + topThree);
+        for (HashMap.Entry<String, Double> closestThree : topThree.entrySet()) {
+            if (nearbyAPs.size() < 5) {
+                nearbyAPs.add(closestThree.getKey());
+            }
+        }
+
+        System.out.println("Nearby APs are: " + nearbyAPs);
         return nearbyAPs;
     }
 
@@ -87,8 +105,11 @@ public class FingerprintAlgo {
             double di = getEuclideanDistance(dataSet.get(i), wifiResults);
             //System.out.println(dataSet.get(i).getAccesspoints());
             //System.out.println(wifiResults.getCoordinates());
-            System.out.println("EuclideanDistance is" + di);
-            double w = 1/di;
+            System.out.println("EuclideanDistance is: " + di);
+            double w = 0;
+            if (di > 0) {
+                w = 1 / di;
+            }
             sum_w += w;
             sum_wx += w*dataSet.get(i).getCoordinates().get(0);
             sum_wy += w*dataSet.get(i).getCoordinates().get(1);
@@ -105,6 +126,24 @@ public class FingerprintAlgo {
 
         Pair<Double, Double> coordinates = new Pair<>(X1, Y1);
         return coordinates;
+    }
+
+    public static HashMap sortByValues(HashMap map) {
+        List list = new LinkedList(map.entrySet());
+
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry) (o1)).getValue())
+                        .compareTo(((Map.Entry) (o2)).getValue());
+            }
+        });
+
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
     }
 
 }
