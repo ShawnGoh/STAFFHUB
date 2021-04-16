@@ -100,6 +100,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 if (moving_bean != null){
                     imageDotLayout.removeIcon(moving_bean);
                 }
+                bean.drawable = getContext().getDrawable(R.drawable.ic_baseline_location_on_24_diffcolor);
                 imageDotLayout.addIcon(bean);
                 moving_bean = bean;
                 x_coordinates = bean.sx;
