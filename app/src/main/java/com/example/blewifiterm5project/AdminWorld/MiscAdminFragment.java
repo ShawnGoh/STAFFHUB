@@ -16,9 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.blewifiterm5project.Adapter.AdminNotificationAdapter;
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
@@ -61,7 +60,7 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
     String currentmap = "Building 2 Level 1";
 
     Context mcontext;
-    Button signoutbutton;
+    TextView signoutbutton;
     AdminNotificationAdapter myAdapter;
     RecyclerView recyclerView;
     ArrayList<String> notificationsList;
@@ -228,7 +227,6 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         imageDotLayout.setImage(mapUrlList.get(position));
         currentmap = mapNameList.get(position);
-        Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
         imageDotLayout.removeAllIcon();
         initIcon(currentmap);
 
