@@ -24,8 +24,10 @@ import com.example.blewifiterm5project.Utils.FirebaseMethods;
 import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -70,20 +72,9 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     float x_coordinates = 0;
     float y_coordinates = 0;
     ImageDotLayout.IconBean moving_bean = null;
+    List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
     CollectionReference collectionReference;
-
-//    public class DataPoint {
-//        Float X;
-//        Float Y;
-//        HashMap<String, ArrayList<Double>> dataValues;
-//
-//        DataPoint(Float X, Float Y, HashMap<String, ArrayList<Double>> dataValues){
-//            this.X = X;
-//            this.Y = Y;
-//            this.dataValues = dataValues;
-//        }
-//    }
 
     // Initialize the fragment with url of the default image
     public ChildMappingFragment(String url) {
@@ -94,6 +85,9 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_child_mapping, container, false);
+
+
+        // Instantiating Resources
         imageDotLayout = view.findViewById(R.id.map);
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
@@ -111,6 +105,9 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         mapDropdown.setOnItemSelectedListener(this);
 
         imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
+
+        // Initialize icons
+        initIcon(currentmap);
 
         // Set click listener to imageDotLayout
         imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
@@ -136,23 +133,18 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
             public void onIconClick(View v) {
                 ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
                 dataValues = wifiScanner.getMacRssi();
-//                documentName = bean.sx + "," + bean.sy;
-//                db.collection("datapoints").document(documentName)
-//                        .set(dataValues);
-                // db.collection("datapoints").add(newdatapoint);
-                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy + " Docid="+bean.getDbid(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Set image of photoView from url
-        if (url!=null){
-            imageDotLayout.setImage(url);
-        }
-
-
-
-        // Initialize icons
-        initIcon(currentmap);
+        imageDotLayout.setOnIconLongClickListener(new ImageDotLayout.OnIconLongClickListener() {
+            @Override
+            public void onIconLongClick(View v) {
+                ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
+                String beanid = bean.getDbid();
+                removeicon(beanid);
+            }
+        });
 
         CollectionReference collectionReference = db.collection(currentmap);
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -162,6 +154,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                     Log.w(TAG, "listen:error", error);
                     return;
                 }
+                System.out.println("change in database detected");
                 initIcon(currentmap);
             }
         }) ;
@@ -169,31 +162,65 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         confirmscanbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ImageDotLayout.IconBean bean = (ImageDotLayout.IconBean) v.getTag();
                 dataValues = wifiScanner.getMacRssi();
                 documentName = x_coordinates + "," + y_coordinates;
-                // db.collection("datapoints").document(documentName)
-                //         .set(dataValues);
                 ArrayList<Float> coordarray = new ArrayList<>();
 
                 coordarray.add(x_coordinates);
                 coordarray.add(y_coordinates);
                 dbdatapoint newdatapoint = new dbdatapoint(dataValues, coordarray);
-                db.collection(currentmap).add(newdatapoint);
-//                Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
-                initIcon(currentmap);
-                Toast.makeText(getActivity(), "Position = "+x_coordinates+", "+y_coordinates+" has been added!", Toast.LENGTH_SHORT).show();
+                addicon(newdatapoint);
             }
         });
         return view;
     }
 
-    private void initIcon(String collectionname) {
-        final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
-//        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 
-        // Initialized
-        // get datapoint coordinates from database and create beans
+
+    // ==================================================== Start of custom methods ==============================================================================
+
+    private void addicon(dbdatapoint dbdatapoint){
+        db.collection(currentmap).add(dbdatapoint).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+
+                ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
+                bean.setDbid(documentReference.getId());
+                iconBeanList.add(bean);
+                imageDotLayout.removeAllIcon();
+                imageDotLayout.addIcons(iconBeanList);
+                initIcon(currentmap);
+                Toast.makeText(getActivity(), "Position = " + x_coordinates + ", " + y_coordinates + " has been added!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void removeicon(String beanid){
+        int postoremove = -1;
+        for(int i = 0; i< iconBeanList.size(); i++){
+            if(iconBeanList.get(i).getDbid().equals(beanid)){
+                postoremove = i;
+            }
+        }
+        if(postoremove == -1){
+            Toast.makeText(mcontext, "Bean has already been deleted", Toast.LENGTH_SHORT).show();
+        }else{
+            iconBeanList.remove(postoremove);
+            imageDotLayout.removeAllIcon();
+            imageDotLayout.addIcons(iconBeanList);
+            db.collection(currentmap).document(beanid).delete().addOnSuccessListener(new OnSuccessListener<Void>(){
+                @Override
+                public void onSuccess(Void aVoid) {
+                    initIcon(currentmap);
+                }
+            });
+
+        }
+    }
+
+    private void initIcon(String collectionname) {
+
+        iconBeanList.clear();
 
         ArrayList<dbdatapoint> allData = new ArrayList<>();
         db.collection(collectionname)
@@ -205,23 +232,16 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
-
-//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
-//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
+                                dbdatapointFromDoc.setDocid(document.getId());
                                 allData.add(dbdatapointFromDoc);
                             }
                             System.out.println(allData);
                             int count = 0;
                             for(int i = 0; i<allData.size(); i++){
                                 dbdatapoint dbdatapoint = allData.get(i);
-                                //System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
                                 ImageDotLayout.IconBean bean;
-//                                if(i==allData.size()-1){
-//                                    bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24_diffcolor));
-//                                }
-//                                else{
                                     bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), getResources().getDrawable(R.drawable.ic_baseline_location_on_24));
-//                                }
+                                    bean.setDbid(dbdatapoint.getDocid());
                                 iconBeanList.add(bean);
                                 count++;
                             }
@@ -241,51 +261,14 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
         System.out.println("finished populating");
         System.out.println(iconBeanList.size());
-
-//        ArrayList<dbdatapoint> datapoints = firebaseMethods.getData();
-//        System.out.println(datapoints);
-//        int count = 0;
-//        System.out.println("testing124u3ty89304t1");
-
-//        for (dbdatapoint dbdatapoint : datapoints){
-//            System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
-//            ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
-//            iconBeanList.add(bean);
-//            count++;
-//        }
-
-
-//        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
-//        iconBeanList.add(bean);
-//        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
-//        iconBeanList.add(bean);
-
-
-
-
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         imageDotLayout.setImage(mapUrlList.get(position));
         currentmap = mapNameList.get(position);
-        Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
         imageDotLayout.removeAllIcon();
         initIcon(currentmap);
-
-        collectionReference = db.collection(currentmap);
-        if(collectionReference!=null) {
-            collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
-                        Log.w(TAG, "listen:error", error);
-                        return;
-                    }
-                    initIcon(currentmap);
-                }
-            });
-        }
     }
 
     @Override

@@ -7,6 +7,7 @@ public class dbdatapoint {
 
     HashMap<String, ArrayList<Double>> accesspoints;
     ArrayList<Float> coordinates;
+    String docid = "None";
 
     public dbdatapoint() {
     }
@@ -35,5 +36,13 @@ public class dbdatapoint {
 
     public void setCoordinates(ArrayList<Float> coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public String getDocid() {
+        return docid;
+    }
+
+    public void setDocid(String docid) {
+        this.docid = docid;
     }
 }

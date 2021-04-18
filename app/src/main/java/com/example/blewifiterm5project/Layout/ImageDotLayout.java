@@ -197,12 +197,21 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         public float sx;
         public float sy;
         public Drawable drawable;//Icon
+        public String dbid;
 
         public IconBean(int id, float sx, float sy, Drawable drawable) {
             this.id = id;
             this.sx = sx;
             this.sy = sy;
             this.drawable = drawable;
+        }
+
+        public String getDbid() {
+            return dbid;
+        }
+
+        public void setDbid(String dbid) {
+            this.dbid = dbid;
         }
     }
 

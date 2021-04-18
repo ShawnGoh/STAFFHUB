@@ -81,8 +81,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         imageDotLayout = view.findViewById(R.id.map);
         locatemebutton = view.findViewById(R.id.Locatemebutton);
         mcontext = getActivity();
-        wifiScanner = new WifiScanner(mcontext);
-        wifiScanner.scanWifi();
+
 
         initMapList();
 
@@ -99,7 +98,14 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
             @Override
             public void onClick(View v) {
 
+                wifiScanner = new WifiScanner(mcontext);
+                wifiScanner.scanWifi();
+
                 dataValues = wifiScanner.getMacRssi();
+                while(dataValues==null){
+                    dataValues = wifiScanner.getMacRssi();
+                }
+                System.out.println("brokeoutofloop");
                 ArrayList<Float> coordarray = new ArrayList<>();
 
                 coordarray.add(x_coordinates);

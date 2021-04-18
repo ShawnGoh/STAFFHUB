@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -27,7 +28,10 @@ import com.example.blewifiterm5project.Utils.WifiScanner;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -92,6 +96,18 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
         initIcon(currentmap);
 
+        CollectionReference collectionReference = db.collection(currentmap);
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+                initIcon(currentmap);
+            }
+        }) ;
+
         // Set click listener to imageDotLayout
         imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
             @Override
@@ -116,6 +132,13 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
             public void onIconClick(View v) {
                 ImageDotLayout.IconBean bean= (ImageDotLayout.IconBean) v.getTag();
                 Toast.makeText(getActivity(),"Id="+bean.id+" Position="+bean.sx+", "+bean.sy, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        imageDotLayout.setOnIconLongClickListener(new ImageDotLayout.OnIconLongClickListener() {
+            @Override
+            public void onIconLongClick(View v) {
+
             }
         });
 
@@ -159,7 +182,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                                     float sx = resultCoordinates.first.floatValue();
                                     float sy = resultCoordinates.second.floatValue();
                                     System.out.println("Result Coordinates are: "+resultCoordinates);
-                                    ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
+                                    ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, getResources().getDrawable(R.drawable.ic_baseline_location_on_24_testingbean));
                                     imageDotLayout.addIcon(location);
 
                                 } else {
