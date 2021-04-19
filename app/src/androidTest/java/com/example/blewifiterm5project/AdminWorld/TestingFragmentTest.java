@@ -48,15 +48,14 @@ public class TestingFragmentTest {
 
     @Test
     public void testSpinner() throws InterruptedException {
-        // TODO: Change adapter data
-        /*
+        Thread.sleep(500);
         onView(withId(R.id.map_dropdown_testing)).perform(click());
         onData(is(spinnerData[0])).perform(click());
         onView(withId(R.id.map_dropdown_testing)).check(matches(withSpinnerText(spinnerData[0])));
-        Thread.sleep(1000);
+        Thread.sleep(500);
         onView(withId(R.id.map_dropdown_testing)).perform(click());
         onData(is(spinnerData[1])).perform(click());
-        onView(withId(R.id.map_dropdown_testing)).check(matches(withSpinnerText(spinnerData[1])));*/
+        onView(withId(R.id.map_dropdown_testing)).check(matches(withSpinnerText(spinnerData[1])));
     }
 
     @Test
