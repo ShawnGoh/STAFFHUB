@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import static android.content.ContentValues.TAG;
 import static com.google.firebase.firestore.Query.Direction.ASCENDING;
@@ -51,15 +54,19 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     ImageDotLayout imageDotLayout;
     Button locatemebutton;
     Spinner mapDropdown;
+    ImageView wifirefreshbutton;
 
     private String currentmap;
 
     private Context mcontext;
     private WifiScanner wifiScanner;
     private HashMap<String, ArrayList<Double>> dataValues;
+    ArrayList<Float> coordarray = new ArrayList<>();
     private ArrayList<String> mapNameList;
     private ArrayList<String> mapUrlList;
     private ArrayAdapter<String> mAdapter;
+
+    Semaphore sem = new Semaphore(1);
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -81,6 +88,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         imageDotLayout = view.findViewById(R.id.map);
         locatemebutton = view.findViewById(R.id.Locatemebutton);
         mcontext = getActivity();
+        wifirefreshbutton = view.findViewById(R.id.wifirefreshbutton);
 
 
         initMapList();
@@ -94,75 +102,21 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
 
         imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
+        wifirefreshbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wifiScanner = new WifiScanner(mcontext);
+                wifiScanner.scanWifi();
+                dataValues = wifiScanner.getMacRssi();
+            }
+        });
+
         locatemebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                wifiScanner = new WifiScanner(mcontext);
-                wifiScanner.scanWifi();
-
-                dataValues = wifiScanner.getMacRssi();
-                while(dataValues==null){
-                    dataValues = wifiScanner.getMacRssi();
-                }
-                System.out.println("brokeoutofloop");
-                ArrayList<Float> coordarray = new ArrayList<>();
-
                 coordarray.add(x_coordinates);
                 coordarray.add(y_coordinates);
-                System.out.println("Coordinate Array of clicked point: "+coordarray);
-                dbdatapoint wifiResults = new dbdatapoint();
-                wifiResults.setCoordinates(coordarray);
-                wifiResults.setAccesspoints(dataValues);
-//                System.out.println("datasetpos0: "+dataSet.get(0).getAccesspoints());
-//                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
-//                ArrayList<dbdatapoint> dataSet = firebaseMethods.getData();
-
-                // START OF LONG METHOD
-
-                ArrayList<Float> usercoords = new ArrayList<>();
-
-                ArrayList<dbdatapoint> dataSet = new ArrayList<>();
-                db.collection("datapoints")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d(TAG, document.getId() + " => " + document.getData());
-                                        com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
-
-//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
-//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
-                                        dataSet.add(dbdatapointFromDoc);
-                                    }
-                                    System.out.println(dataSet);
-                                    FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-                                    Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
-                                    float sx = resultCoordinates.first.floatValue();
-                                    float sy = resultCoordinates.second.floatValue();
-                                    usercoords.add(sx);
-                                    usercoords.add(sy);
-                                    System.out.println("Result Coordinates are: "+resultCoordinates);
-                                    ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
-                                    imageDotLayout.addIcon(location);
-                                    Map<String, Object> coordhashmap = new HashMap<>();
-                                    coordhashmap.put("usercoordinates", usercoords);
-                                    coordhashmap.put("currentmap", currentmap);
-                                    db.collection("users").document(mAuth.getCurrentUser().getUid()).update(coordhashmap);
-
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
-
-
-
-                // END OF LONG METHOD
-
-
+                locatememethod();
 //                FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
 //                Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
 //                float sx = resultCoordinates.first.floatValue();
@@ -174,6 +128,48 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         });
 
         return view;
+    }
+
+
+    private void locatememethod() {
+
+        dbdatapoint wifiResults = new dbdatapoint();
+        wifiResults.setCoordinates(coordarray);
+        wifiResults.setAccesspoints(dataValues);
+        ArrayList<Float> usercoords = new ArrayList<>();
+        ArrayList<dbdatapoint> dataSet = new ArrayList<>();
+        db.collection("datapoints")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+                                dataSet.add(dbdatapointFromDoc);
+                            }
+                            System.out.println(dataSet);
+                            FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
+                            Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
+                            float sx = resultCoordinates.first.floatValue();
+                            float sy = resultCoordinates.second.floatValue();
+                            usercoords.add(sx);
+                            usercoords.add(sy);
+                            System.out.println("Result Coordinates are: "+resultCoordinates);
+                            ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
+                            imageDotLayout.addIcon(location);
+                            Map<String, Object> coordhashmap = new HashMap<>();
+                            coordhashmap.put("usercoordinates", usercoords);
+                            coordhashmap.put("currentmap", currentmap);
+                            db.collection("users").document(mAuth.getCurrentUser().getUid()).update(coordhashmap);
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        System.out.println("Finished Locate me method");
     }
 
 

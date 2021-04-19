@@ -6,42 +6,19 @@
     tools:context=".UserWorld.NavigationFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/welcome_bac"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="36dp"
-        android:layout_marginBottom="36dp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/arial_rounded_mt_bold_font"
+        android:text="Where art thou?"
+        android:textAppearance="@style/welcome_bac"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/welcome_bac"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:fontFamily="@font/arial_rounded_mt_bold_font"
-            android:text="Where art thou?"
-            android:textAppearance="@style/welcome_bac" />
-
-        <Spinner
-            android:id="@+id/map_dropdown_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:spinnerMode="dropdown"/>
-
-
-
-    </LinearLayout>
-
-<!--    <ImageView-->
+    <!--    <ImageView-->
 <!--        android:id="@+id/imageView"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
@@ -52,6 +29,17 @@
 <!--        app:layout_constraintTop_toBottomOf="@+id/welcome_bac"-->
 <!--        tools:src="@drawable/floorplantemp" />-->
 
+    <Spinner
+        android:id="@+id/map_dropdown_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/welcome_bac"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_bac" />
+
     <com.example.blewifiterm5project.Layout.ImageDotLayout
         android:id="@+id/map"
         android:layout_width="0dp"
@@ -60,12 +48,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/Locatemebutton"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout"
-        app:layout_constraintVertical_bias="0.059"
+        app:layout_constraintTop_toBottomOf="@+id/map_dropdown_user"
         tools:srcCompat="@drawable/floorplantemp" />
 
     <Button
@@ -79,6 +66,30 @@
         android:text="Locate me"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/wifirefreshbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:src="@drawable/ic_baseline_refresh_24"
+        app:layout_constraintBottom_toBottomOf="@+id/welcome_bac"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/welcome_bac" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        android:text="Press the refresh button to populate\nwifi list before presing locate me"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toTopOf="@+id/Locatemebutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
