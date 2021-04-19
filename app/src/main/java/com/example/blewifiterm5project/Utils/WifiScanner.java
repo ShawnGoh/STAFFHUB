@@ -33,7 +33,6 @@ public class WifiScanner {
     public WifiScanner(Context context){
         mcontext = context;
         wifiManager = (WifiManager) mcontext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        adapter = new ArrayAdapter<>(mcontext, android.R.layout.simple_list_item_1, arrayList);
     }
 
     public ListAdapter getWifiAdapter(){
@@ -56,7 +55,7 @@ public class WifiScanner {
         Toast.makeText(mcontext,"Scanning WiFi ...", Toast.LENGTH_SHORT).show();
     }
 
-    final BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
+    BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             results = wifiManager.getScanResults();
@@ -77,8 +76,9 @@ public class WifiScanner {
                 arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
                 wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
                 macRssi.put(scanResult.SSID + " (" + scanResult.BSSID + ")", rssiValue);
-                adapter.notifyDataSetChanged();
             }
+
+            Toast.makeText(mcontext, "Wifi list populated", Toast.LENGTH_SHORT).show();
         }
     };
 
