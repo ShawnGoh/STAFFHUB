@@ -18,9 +18,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
+import com.example.blewifiterm5project.Models.UserClass;
 import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.Utils.FingerprintAlgo;
@@ -29,7 +31,10 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -54,19 +59,21 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     ImageDotLayout imageDotLayout;
     Button locatemebutton;
     Spinner mapDropdown;
+    TextView errortextmsg;
     ImageView wifirefreshbutton;
 
     private String currentmap;
+    private String usermap = "";
 
     private Context mcontext;
     private WifiScanner wifiScanner;
-    private HashMap<String, ArrayList<Double>> dataValues;
+    private HashMap<String, ArrayList<Double>> dataValues = new HashMap<>();
     ArrayList<Float> coordarray = new ArrayList<>();
     private ArrayList<String> mapNameList;
     private ArrayList<String> mapUrlList;
     private ArrayAdapter<String> mAdapter;
 
-    Semaphore sem = new Semaphore(1);
+    Boolean refreshispressed = false;
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -89,9 +96,11 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         locatemebutton = view.findViewById(R.id.Locatemebutton);
         mcontext = getActivity();
         wifirefreshbutton = view.findViewById(R.id.wifirefreshbutton);
+        errortextmsg = view.findViewById(R.id.errortextnavigation);
 
 
         initMapList();
+        initIcon();
 
         mAdapter = new ArrayAdapter<String>(mcontext, android.R.layout.simple_spinner_item, mapNameList);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -100,7 +109,6 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         mapDropdown.setAdapter(mAdapter);
         mapDropdown.setOnItemSelectedListener(this);
 
-        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         wifirefreshbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +116,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                 wifiScanner = new WifiScanner(mcontext);
                 wifiScanner.scanWifi();
                 dataValues = wifiScanner.getMacRssi();
+                refreshispressed = true;
             }
         });
 
@@ -117,58 +126,71 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                 coordarray.add(x_coordinates);
                 coordarray.add(y_coordinates);
                 locatememethod();
-//                FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-//                Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
-//                float sx = resultCoordinates.first.floatValue();
-//                float sy = resultCoordinates.second.floatValue();
-//                System.out.println(resultCoordinates);
-//                ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
-//                imageDotLayout.addIcon(location);
             }
         });
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        refreshispressed = false;
+        dataValues = new HashMap<>();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        refreshispressed = false;
+        dataValues = new HashMap<>();
+    }
 
     private void locatememethod() {
+        if(dataValues.isEmpty()){
+            if(refreshispressed) {
+                errortextmsg.setText("Please wait for wifi list to finish populating");
+                errortextmsg.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+        }else {
+            errortextmsg.setVisibility(View.INVISIBLE);
+            dbdatapoint wifiResults = new dbdatapoint();
+            wifiResults.setCoordinates(coordarray);
+            wifiResults.setAccesspoints(dataValues);
+            ArrayList<Float> usercoords = new ArrayList<>();
+            ArrayList<dbdatapoint> dataSet = new ArrayList<>();
+            db.collection("datapoints")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                    com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
+                                    dataSet.add(dbdatapointFromDoc);
+                                }
+                                System.out.println(dataSet);
+                                FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
+                                Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
+                                float sx = resultCoordinates.first.floatValue();
+                                float sy = resultCoordinates.second.floatValue();
+                                usercoords.add(sx);
+                                usercoords.add(sy);
+                                System.out.println("Result Coordinates are: " + resultCoordinates);
+                                ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
+                                imageDotLayout.addIcon(location);
+                                Map<String, Object> coordhashmap = new HashMap<>();
+                                coordhashmap.put("usercoordinates", usercoords);
+                                coordhashmap.put("currentmap", currentmap);
+                                db.collection("users").document(mAuth.getCurrentUser().getUid()).update(coordhashmap);
 
-        dbdatapoint wifiResults = new dbdatapoint();
-        wifiResults.setCoordinates(coordarray);
-        wifiResults.setAccesspoints(dataValues);
-        ArrayList<Float> usercoords = new ArrayList<>();
-        ArrayList<dbdatapoint> dataSet = new ArrayList<>();
-        db.collection("datapoints")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
-                                dataSet.add(dbdatapointFromDoc);
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
                             }
-                            System.out.println(dataSet);
-                            FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-                            Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
-                            float sx = resultCoordinates.first.floatValue();
-                            float sy = resultCoordinates.second.floatValue();
-                            usercoords.add(sx);
-                            usercoords.add(sy);
-                            System.out.println("Result Coordinates are: "+resultCoordinates);
-                            ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
-                            imageDotLayout.addIcon(location);
-                            Map<String, Object> coordhashmap = new HashMap<>();
-                            coordhashmap.put("usercoordinates", usercoords);
-                            coordhashmap.put("currentmap", currentmap);
-                            db.collection("users").document(mAuth.getCurrentUser().getUid()).update(coordhashmap);
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
-                    }
-                });
+                    });
+        }
         System.out.println("Finished Locate me method");
     }
 
@@ -180,7 +202,10 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         currentmap = mapNameList.get(position);
         Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
         imageDotLayout.removeAllIcon();
-        //initIcon(currentmap);
+        if (currentmap.equals(usermap)) {
+            initIcon();
+        }
+
     }
 
     @Override
@@ -214,4 +239,36 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                     }
                 });
     }
-}
+
+    private void initIcon() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        ArrayList<dbdatapoint> allData = new ArrayList<>();
+        DocumentReference docRef = db.collection("users").document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()){
+                        UserClass userClass = document.toObject(UserClass.class);
+                        usermap = userClass.getCurrentmap();
+                        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, userClass.getUsercoordinates().get(0), userClass.getUsercoordinates().get(1), null);
+                        imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+                            @Override
+                            public void onLayoutReady() {
+                                imageDotLayout.addIcon(bean);
+                            }
+                        });
+                    }
+
+
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+
+
+
+
+    });
+}}

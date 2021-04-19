@@ -61,6 +61,8 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
     private ArrayList<String> mapUrlList;
     private ArrayAdapter<String> mAdapter;
 
+    private List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     float x_coordinates = 0;
@@ -146,6 +148,9 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
 
+                imageDotLayout.removeAllIcon();
+                imageDotLayout.addIcons(iconBeanList);
+                imageDotLayout.addIcon(moving_bean);
                 dataValues = wifiScanner.getMacRssi();
                 ArrayList<Float> coordarray = new ArrayList<>();
 
@@ -209,12 +214,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void initIcon(String collectionname) {
-        final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
-//        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
-
-        // Initialized
-        // get datapoint coordinates from database and create beans
-
+        iconBeanList.clear();
         ArrayList<dbdatapoint> allData = new ArrayList<>();
         db.collection(collectionname)
                 .get()
@@ -230,7 +230,6 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 //                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
                                 allData.add(dbdatapointFromDoc);
                             }
-                            System.out.println(allData);
                             int count = 0;
                             for (dbdatapoint dbdatapoint : allData){
                                 System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
