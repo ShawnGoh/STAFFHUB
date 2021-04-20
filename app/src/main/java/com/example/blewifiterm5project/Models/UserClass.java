@@ -17,7 +17,7 @@ public class UserClass {
     private ArrayList<String> Activitylist = new ArrayList<>();
     private ArrayList<String> Activitydatelist = new ArrayList<>();
 
-    private String currentmap;
+    private String currentmap = "";
     private ArrayList<Float> usercoordinates;
 
     public UserClass(String name, String profile_picture, String email) {
