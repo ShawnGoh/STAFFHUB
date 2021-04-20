@@ -51,14 +51,11 @@ public class MappingFragmentTest {
 
     @Test
     public void testSpinner() throws InterruptedException {
-        //ActivityScenario scenario = ActivityScenario.launch(AdminHome.class);
-        onView(withId(R.id.mapping)).perform(click());
-        onView(withId(R.id.mappingFragment)).check(matches(isDisplayed()));
-        Thread.sleep(1000);
+        Thread.sleep(500);
         onView(withId(R.id.map_dropdown)).perform(click());
         onData(is(spinnerData[0])).perform(click());
         onView(withId(R.id.map_dropdown)).check(matches(withSpinnerText(spinnerData[0])));
-        Thread.sleep(1000);
+        Thread.sleep(500);
         onView(withId(R.id.map_dropdown)).perform(click());
         onData(is(spinnerData[1])).perform(click());
         onView(withId(R.id.map_dropdown)).check(matches(withSpinnerText(spinnerData[1])));

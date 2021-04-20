@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
 import com.example.blewifiterm5project.Layout.ImageDotLayout;
@@ -121,8 +122,12 @@ public class EmployeeReviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(managewidow.getVisibility() == View.VISIBLE){
-                    updateuser(payrate.getText().toString());
-                    initwidgets();
+                    if(payrate.getText().toString().matches("-[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?")) {
+                        updateuser(payrate.getText().toString());
+                        initwidgets();
+                    }else{
+                        Toast.makeText(mcontext, "Invalid Number", Toast.LENGTH_SHORT).show();
+                    }
                     managewidow.setVisibility(View.GONE);
                 }
                 else{managewidow.setVisibility(View.VISIBLE);}
@@ -236,5 +241,6 @@ public class EmployeeReviewActivity extends AppCompatActivity {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
-        });}
+        });
+    }
 }
