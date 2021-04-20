@@ -87,7 +87,7 @@ public class FingerprintAlgo {
         return (double) counter/nearbyAPs.size();
     }
 
-    public void topKPercentage() {
+    public ArrayList<dbdatapoint> topKPercentage() {
 
         int k = 3;
 
@@ -98,8 +98,17 @@ public class FingerprintAlgo {
             dataScore.put(dataSet.get(i), eachScore);
         }
 
-        HashMap sortedDataScore = sortByValues(dataScore);
-//        for ()
+        HashMap<dbdatapoint, Double> sortedDataScore = sortByValues(dataScore);
+
+        ArrayList<dbdatapoint> topKScores = new ArrayList<>();
+
+        for (dbdatapoint key : sortedDataScore.keySet()) {
+            if (topKScores.size() < k) {
+                topKScores.add(key);
+            }
+        }
+
+        return topKScores;
     }
 
     public double getEuclideanDistance(dbdatapoint dataPoint, dbdatapoint wifiResults) {
@@ -128,10 +137,13 @@ public class FingerprintAlgo {
         double sum_wx = 0;
         double sum_wy = 0;
         double sum_w = 0;
-        System.out.println(dataSet.size());
-        for (int i = 0; i < dataSet.size(); i++) {
+//        System.out.println(dataSet.size());
+
+        ArrayList<dbdatapoint> clearedPercentagePoints = topKPercentage();
+
+        for (int i = 0; i < clearedPercentagePoints.size(); i++) {
             //System.out.println(dataSet.get(i));
-            double di = getEuclideanDistance(dataSet.get(i), wifiResults);
+            double di = getEuclideanDistance(clearedPercentagePoints.get(i), wifiResults);
             //System.out.println(dataSet.get(i).getAccesspoints());
             //System.out.println(wifiResults.getCoordinates());
             System.out.println("EuclideanDistance is: " + di);
