@@ -62,7 +62,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     TextView errortextmsg;
     ImageView wifirefreshbutton;
 
-    private String currentmap;
+    private String currentmap = "Auditorium";
     private String usermap = "";
 
     private Context mcontext;
@@ -129,8 +129,26 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
             }
         });
 
+        final DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    initIcon();
+                }
+            }
+        });
+
         return view;
     }
+
+
 
     @Override
     public void onStart() {
@@ -179,6 +197,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                                 usercoords.add(sy);
                                 System.out.println("Result Coordinates are: " + resultCoordinates);
                                 ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
+                                imageDotLayout.removeAllIcon();
                                 imageDotLayout.addIcon(location);
                                 Map<String, Object> coordhashmap = new HashMap<>();
                                 coordhashmap.put("usercoordinates", usercoords);
@@ -202,9 +221,12 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         currentmap = mapNameList.get(position);
         Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
         imageDotLayout.removeAllIcon();
-        if (currentmap.equals(usermap)) {
-            initIcon();
-        }
+        refreshispressed = false;
+        dataValues = new HashMap<>();
+        errortextmsg.setText("Press the refresh button to populate\\nwifi list before presing locate me");
+        errortextmsg.setTextAppearance(R.style.TextAppearance_AppCompat_Small);
+        errortextmsg.setVisibility(View.VISIBLE);
+        initIcon();
 
     }
 
@@ -252,13 +274,18 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                     if(document.exists()){
                         UserClass userClass = document.toObject(UserClass.class);
                         usermap = userClass.getCurrentmap();
-                        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, userClass.getUsercoordinates().get(0), userClass.getUsercoordinates().get(1), null);
-                        imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
-                            @Override
-                            public void onLayoutReady() {
-                                imageDotLayout.addIcon(bean);
+                        if(usermap!=null) {
+                            if(userClass.getUsercoordinates()!=null && usermap.equals(currentmap)) {
+                                ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, userClass.getUsercoordinates().get(0), userClass.getUsercoordinates().get(1), null);
+                                imageDotLayout.setOnLayoutReadyListener(new ImageDotLayout.OnLayoutReadyListener() {
+                                    @Override
+                                    public void onLayoutReady() {
+                                        imageDotLayout.addIcon(bean);
+                                    }
+                                });
                             }
-                        });
+                        }
+
                     }
 
 
