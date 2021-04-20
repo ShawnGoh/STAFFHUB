@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class FingerprintAlgo {
 
+    // dataset refers to document
     private ArrayList<dbdatapoint> dataSet = new ArrayList<>();
     private dbdatapoint wifiResults;
 
@@ -50,19 +51,11 @@ public class FingerprintAlgo {
         double FLAG = getFLAG();
 
         ArrayList<String> nearbyAPs = new ArrayList<>();
-        HashMap<String, Double> topThree = new HashMap<>();
 
         // only include MAC address of APs near the user
         for (HashMap.Entry<String, ArrayList<Double>> accessPoint : wifiResults.getAccesspoints().entrySet()) {
             if (accessPoint.getValue().get(0) > FLAG) {
-                topThree.put(accessPoint.getKey(), accessPoint.getValue().get(0));
-            }
-        }
-        topThree = sortByValues(topThree);
-        System.out.println("Top Three HashMap: " + topThree);
-        for (HashMap.Entry<String, Double> closestThree : topThree.entrySet()) {
-            if (nearbyAPs.size() < 5) {
-                nearbyAPs.add(closestThree.getKey());
+                nearbyAPs.add(accessPoint.getKey());
             }
         }
 
@@ -70,14 +63,50 @@ public class FingerprintAlgo {
         return nearbyAPs;
     }
 
-    public class positionCoordinates {
-        //to interface with ZC's point setting
+    public double percentageScore(dbdatapoint dataPoint) {
+
+        ArrayList<String> nearbyAPs = sortMAC();
+
+        if (nearbyAPs.size() == 0) {
+            return 0.0;
+        }
+
+        int counter  = 0;
+        ArrayList<String> floorMacAdd = new ArrayList<>();
+
+        for (HashMap.Entry<String, ArrayList<Double>> dbaccessPoint : dataPoint.getAccesspoints().entrySet()) {
+            floorMacAdd.add(dbaccessPoint.getKey());
+        }
+
+        for (String macAdd : nearbyAPs) {
+            if (floorMacAdd.contains(macAdd)) {
+                counter++;
+            }
+        }
+
+        return (double) counter/nearbyAPs.size();
+    }
+
+    public void topKPercentage() {
+
+        int k = 3;
+
+        HashMap<dbdatapoint, Double> dataScore = new HashMap<>();
+
+        for (int i = 0; i < dataSet.size(); i++) {
+            double eachScore = percentageScore(dataSet.get(i));
+            dataScore.put(dataSet.get(i), eachScore);
+        }
+
+        HashMap sortedDataScore = sortByValues(dataScore);
+//        for ()
     }
 
     public double getEuclideanDistance(dbdatapoint dataPoint, dbdatapoint wifiResults) {
-        // to be run on individual datapoints in the databased
+        // to be run on individual datapoints in the database
         ArrayList<String> nearbyAPs = sortMAC();
 
+        // for distance
         double total = 0;
         for (HashMap.Entry<String, ArrayList<Double>> dbaccessPoint : dataPoint.getAccesspoints().entrySet()) {
             for (int j = 0; j < nearbyAPs.size(); j++) {
