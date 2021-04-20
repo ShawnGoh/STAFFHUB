@@ -51,7 +51,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
 
     String url;
-    String currentmap = "Building 2 Level 1";
+    String currentmap = "Auditorium";
 
     private Context mcontext;
     private WifiScanner wifiScanner;

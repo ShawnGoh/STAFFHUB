@@ -13,12 +13,15 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class FingerprintAlgo {
 
     // dataset refers to document
     private ArrayList<dbdatapoint> dataSet = new ArrayList<>();
     private dbdatapoint wifiResults;
+    private double rssiThreshold = 20;
+    private ArrayList<String> nearbyAPs;
 
     public FingerprintAlgo(ArrayList dataSet, dbdatapoint wifiResults) {
         // from Firebase
@@ -50,7 +53,7 @@ public class FingerprintAlgo {
 
         double FLAG = getFLAG();
 
-        ArrayList<String> nearbyAPs = new ArrayList<>();
+        nearbyAPs = new ArrayList<>();
 
         // only include MAC address of APs near the user
         for (HashMap.Entry<String, ArrayList<Double>> accessPoint : wifiResults.getAccesspoints().entrySet()) {
@@ -63,7 +66,7 @@ public class FingerprintAlgo {
         return nearbyAPs;
     }
 
-    public double percentageScore(dbdatapoint dataPoint) {
+    public double percentageScore(dbdatapoint dataPoint, dbdatapoint wifiResults) {
 
         ArrayList<String> nearbyAPs = sortMAC();
 
@@ -72,15 +75,23 @@ public class FingerprintAlgo {
         }
 
         int counter  = 0;
-        ArrayList<String> floorMacAdd = new ArrayList<>();
+        HashMap<String, ArrayList<Double>> floorMacAdd = new HashMap<>();
 
         for (HashMap.Entry<String, ArrayList<Double>> dbaccessPoint : dataPoint.getAccesspoints().entrySet()) {
-            floorMacAdd.add(dbaccessPoint.getKey());
+            floorMacAdd.put(dbaccessPoint.getKey(), dbaccessPoint.getValue());
         }
 
-        for (String macAdd : nearbyAPs) {
-            if (floorMacAdd.contains(macAdd)) {
-                counter++;
+        ArrayList<Double> nearbyAPsRSSI = new ArrayList<>();
+
+        for (int j = 0; j < nearbyAPs.size(); j++) {
+            nearbyAPsRSSI.add(wifiResults.getAccesspoints().get(nearbyAPs.get(j)).get(0));
+        }
+
+        for (int i = 0; i < nearbyAPs.size(); i++) {
+            if (floorMacAdd.containsKey(nearbyAPs.get(i))) {
+                if (Math.abs(floorMacAdd.get(nearbyAPs.get(i)).get(0) - nearbyAPsRSSI.get(i)) <= rssiThreshold) {
+                    counter++;
+                }
             }
         }
 
@@ -91,29 +102,42 @@ public class FingerprintAlgo {
 
         int k = 3;
 
-        HashMap<dbdatapoint, Double> dataScore = new HashMap<>();
+        HashMap<Double, dbdatapoint> dataScore = new HashMap<>();
+
+        System.out.println("DataSet: " + dataSet);
+        System.out.println("DataSet size: " + dataSet.size());
 
         for (int i = 0; i < dataSet.size(); i++) {
-            double eachScore = percentageScore(dataSet.get(i));
-            dataScore.put(dataSet.get(i), eachScore);
+            double eachScore = percentageScore(dataSet.get(i), wifiResults);
+            System.out.println("eachScore: " + eachScore);
+            dataScore.put(eachScore, dataSet.get(i));
         }
 
-        HashMap<dbdatapoint, Double> sortedDataScore = sortByValues(dataScore);
+        System.out.println("datascore: "+dataScore);
+
+        LinkedHashMap<Double, dbdatapoint> sortedDataScore = sortByValues(dataScore);
+        System.out.println("sortedDataScore: " + sortedDataScore);
+
+        TreeMap<Double, dbdatapoint> treeSortedScore = new TreeMap<>(sortedDataScore);
+        sortedDataScore.clear();
+        sortedDataScore.putAll(treeSortedScore.descendingMap());
 
         ArrayList<dbdatapoint> topKScores = new ArrayList<>();
+        System.out.println("sortedDataScore: " + sortedDataScore);
 
-        for (dbdatapoint key : sortedDataScore.keySet()) {
+        for (dbdatapoint i : sortedDataScore.values()) {
             if (topKScores.size() < k) {
-                topKScores.add(key);
+                topKScores.add(i);
             }
         }
 
+        System.out.println("Database BSSIDs used: " + topKScores);
         return topKScores;
     }
 
     public double getEuclideanDistance(dbdatapoint dataPoint, dbdatapoint wifiResults) {
         // to be run on individual datapoints in the database
-        ArrayList<String> nearbyAPs = sortMAC();
+//        ArrayList<String> nearbyAPs = sortMAC();
 
         // for distance
         double total = 0;
@@ -169,7 +193,7 @@ public class FingerprintAlgo {
         return coordinates;
     }
 
-    public static HashMap sortByValues(HashMap map) {
+    public static LinkedHashMap sortByValues(HashMap map) {
         List list = new LinkedList(map.entrySet());
 
         Collections.sort(list, new Comparator() {
@@ -179,7 +203,7 @@ public class FingerprintAlgo {
             }
         });
 
-        HashMap sortedHashMap = new LinkedHashMap();
+        LinkedHashMap sortedHashMap = new LinkedHashMap();
         for (Iterator it = list.iterator(); it.hasNext();) {
             Map.Entry entry = (Map.Entry) it.next();
             sortedHashMap.put(entry.getKey(), entry.getValue());
