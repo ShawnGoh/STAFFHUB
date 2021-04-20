@@ -29,6 +29,8 @@
     <color name="gradient_start">#BF0000</color>
     <color name="gradient_end">#FF4D4D</color>
 
+    <color name="sucess">#00C714</color>
+
 
     <!-- tab and screen text color-->
     <color name="tab_indicator_grey">#c0c0c0</color>

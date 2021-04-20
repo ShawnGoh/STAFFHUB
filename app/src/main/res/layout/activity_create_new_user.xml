@@ -1,9 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminWorld.CreateNewUser">
+    tools:context=".AdminWorld.CreateNewUser"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:fitsSystemWindows="true"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:id="@+id/layout_create_new_user"
+    android:transitionName="screentransit"
+    android:theme="@style/SignupinTheme">
+
+
+    <ImageButton
+        android:id="@+id/signupbackbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/transparent"
+        android:tint="@color/black"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+    <TextView
+        android:id="@+id/welcomesignin"
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/sign_in"
+        android:text="Create a new \nemployee Account"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="30sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="40dp"
+        android:transitionName="WelcomeSignInUp"/>
+    <EditText
+        android:id="@+id/Namesignup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/signintextbubble"
+        android:drawableStart="@drawable/ic_baseline_person_24"
+        android:drawablePadding="10dp"
+        android:hint="Name"
+        android:layout_marginHorizontal="40dp"
+        android:elevation="10dp"
+        android:padding="20dp"/>
+
+
+    <EditText
+        android:id="@+id/Emailsignup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/signintextbubble"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:drawablePadding="10dp"
+        android:hint="Email"
+        android:layout_marginHorizontal="40dp"
+        android:elevation="10dp"
+        android:padding="20dp"/>
+
+
+
+
+    <Button
+        android:id="@+id/signupconfirmbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Create new employee account"
+        android:padding="10dp"
+        android:background="@drawable/checkinbutton"
+        android:layout_gravity="end"
+        android:textColor="@color/white"
+        android:elevation="10dp"
+        android:layout_marginHorizontal="40dp"
+        />
+
+    <TextView
+        android:id="@+id/signuperrormessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Forgot your pasword?"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        android:textAppearance="@style/loginerror"/>
+
+
+    <ProgressBar
+        android:id="@+id/signupprogressBar"
+        android:visibility="gone"
+        android:indeterminateDrawable="@drawable/progressbarstyle"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/signupsuccessicon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:src="@drawable/ic_baseline_check_circle_outline_24" />
+
+</LinearLayout>

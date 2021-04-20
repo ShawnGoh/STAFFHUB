@@ -73,6 +73,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> mapUrlList;
     private ArrayAdapter<String> mAdapter;
 
+
     Boolean refreshispressed = false;
 
 
@@ -99,6 +100,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         errortextmsg = view.findViewById(R.id.errortextnavigation);
 
 
+
         initMapList();
         initIcon();
 
@@ -108,6 +110,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         mapDropdown = view.findViewById(R.id.map_dropdown_user);
         mapDropdown.setAdapter(mAdapter);
         mapDropdown.setOnItemSelectedListener(this);
+
 
 
         wifirefreshbutton.setOnClickListener(new View.OnClickListener() {
@@ -129,21 +132,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
             }
         });
 
-        final DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w(TAG, "Listen failed.", e);
-                    return;
-                }
 
-                if (snapshot != null && snapshot.exists()) {
-                    initIcon();
-                }
-            }
-        });
 
         return view;
     }
@@ -219,7 +208,6 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         imageDotLayout.setImage(mapUrlList.get(position));
         currentmap = mapNameList.get(position);
-        Toast.makeText(mcontext, currentmap, Toast.LENGTH_LONG).show();
         imageDotLayout.removeAllIcon();
         refreshispressed = false;
         dataValues = new HashMap<>();

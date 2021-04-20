@@ -1,6 +1,7 @@
 package com.example.blewifiterm5project.AdminWorld;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.blewifiterm5project.Adapter.StaffListReyclerAdapter;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -38,6 +41,7 @@ public class StaffListFragment extends Fragment {
     RecyclerView recyclerView;
     TextView usercounttext;
     ArrayList<String> staffnamelist, staffstatuslist, stafficonstauslist, docidlist = new ArrayList<>();
+    FloatingActionButton addnewuserbutton;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -59,6 +63,7 @@ public class StaffListFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mcontext = getActivity();
+        addnewuserbutton = view.findViewById(R.id.addnewemployee);
 
 
 
@@ -73,6 +78,14 @@ public class StaffListFragment extends Fragment {
                 initstafflists();
             }
         }) ;
+
+        addnewuserbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mcontext, CreateNewUser.class);
+                mcontext.startActivity(intent);
+            }
+        });
 
 
         return view;
