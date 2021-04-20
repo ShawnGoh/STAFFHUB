@@ -13,14 +13,13 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class FingerprintAlgo {
 
     // dataset refers to document
     private ArrayList<dbdatapoint> dataSet = new ArrayList<>();
     private dbdatapoint wifiResults;
-    private double rssiThreshold = 20;
+    private double rssiThreshold = 5;
     private ArrayList<String> nearbyAPs;
 
     public FingerprintAlgo(ArrayList dataSet, dbdatapoint wifiResults) {
@@ -68,6 +67,7 @@ public class FingerprintAlgo {
 
     public double percentageScore(dbdatapoint dataPoint, dbdatapoint wifiResults) {
 
+        System.out.println("Datapoint being evaluated: "+ dataPoint.getCoordinates());
         ArrayList<String> nearbyAPs = sortMAC();
 
         if (nearbyAPs.size() == 0) {
@@ -89,43 +89,49 @@ public class FingerprintAlgo {
 
         for (int i = 0; i < nearbyAPs.size(); i++) {
             if (floorMacAdd.containsKey(nearbyAPs.get(i))) {
+                System.out.println("Difference in RSSI values: " + (Math.abs(floorMacAdd.get(nearbyAPs.get(i)).get(0) - nearbyAPsRSSI.get(i))));
                 if (Math.abs(floorMacAdd.get(nearbyAPs.get(i)).get(0) - nearbyAPsRSSI.get(i)) <= rssiThreshold) {
                     counter++;
+//                    System.out.println("Difference in RSSI values: " + (Math.abs(floorMacAdd.get(nearbyAPs.get(i)).get(0) - nearbyAPsRSSI.get(i)));
+                    System.out.println("Adding counter to value: " + counter);
                 }
             }
         }
+        System.out.println("Final counter value: " + counter);
 
+        System.out.println("Ravv Score: "+((double) counter/nearbyAPs.size()));
         return (double) counter/nearbyAPs.size();
     }
 
     public ArrayList<dbdatapoint> topKPercentage() {
 
         int k = 3;
+        double eachScore = 0;
 
-        HashMap<Double, dbdatapoint> dataScore = new HashMap<>();
+        HashMap<dbdatapoint, Double> dataScore = new HashMap<>();
 
         System.out.println("DataSet: " + dataSet);
         System.out.println("DataSet size: " + dataSet.size());
 
         for (int i = 0; i < dataSet.size(); i++) {
-            double eachScore = percentageScore(dataSet.get(i), wifiResults);
+            eachScore = percentageScore(dataSet.get(i), wifiResults);
             System.out.println("eachScore: " + eachScore);
-            dataScore.put(eachScore, dataSet.get(i));
+            dataScore.put(dataSet.get(i), eachScore);
         }
 
         System.out.println("datascore: "+dataScore);
 
-        LinkedHashMap<Double, dbdatapoint> sortedDataScore = sortByValues(dataScore);
+        LinkedHashMap<dbdatapoint, Double> sortedDataScore = sortByValues(dataScore);
         System.out.println("sortedDataScore: " + sortedDataScore);
 
-        TreeMap<Double, dbdatapoint> treeSortedScore = new TreeMap<>(sortedDataScore);
-        sortedDataScore.clear();
-        sortedDataScore.putAll(treeSortedScore.descendingMap());
+//        TreeMap<Double, dbdatapoint> treeSortedScore = new TreeMap<>(sortedDataScore);
+//        sortedDataScore.clear();
+//        sortedDataScore.putAll(treeSortedScore.descendingMap());
 
         ArrayList<dbdatapoint> topKScores = new ArrayList<>();
         System.out.println("sortedDataScore: " + sortedDataScore);
 
-        for (dbdatapoint i : sortedDataScore.values()) {
+        for (dbdatapoint i : sortedDataScore.keySet()) {
             if (topKScores.size() < k) {
                 topKScores.add(i);
             }
@@ -168,7 +174,7 @@ public class FingerprintAlgo {
         for (int i = 0; i < clearedPercentagePoints.size(); i++) {
             //System.out.println(dataSet.get(i));
             double di = getEuclideanDistance(clearedPercentagePoints.get(i), wifiResults);
-            //System.out.println(dataSet.get(i).getAccesspoints());
+            System.out.println("Coordinates of point being used: "+ clearedPercentagePoints.get(i).getCoordinates());
             //System.out.println(wifiResults.getCoordinates());
             System.out.println("EuclideanDistance is: " + di);
             double w = 0;
@@ -176,8 +182,8 @@ public class FingerprintAlgo {
                 w = 1 / di;
             }
             sum_w += w;
-            sum_wx += w*dataSet.get(i).getCoordinates().get(0);
-            sum_wy += w*dataSet.get(i).getCoordinates().get(1);
+            sum_wx += w*clearedPercentagePoints.get(i).getCoordinates().get(0);
+            sum_wy += w*clearedPercentagePoints.get(i).getCoordinates().get(1);
         }
 
 //        double wj = 1 / getEuclideanDistance();
@@ -198,8 +204,8 @@ public class FingerprintAlgo {
 
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
-                return ((Comparable) ((Map.Entry) (o1)).getValue())
-                        .compareTo(((Map.Entry) (o2)).getValue());
+                return ((Comparable) ((Map.Entry) (o2)).getValue())
+                        .compareTo(((Map.Entry) (o1)).getValue());
             }
         });
 
