@@ -1,7 +1,6 @@
 package com.example.blewifiterm5project.UserWorld;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.blewifiterm5project.Adapter.UserActivityLogRecyclerAdapter;
-import com.example.blewifiterm5project.AdminWorld.AdminHome;
-import com.example.blewifiterm5project.Models.ActivityLog;
 import com.example.blewifiterm5project.Models.UserClass;
-import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
-import com.example.blewifiterm5project.SignInSignup.SignIn;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,7 +30,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 public class CheckInCheckOutFragment extends Fragment {
 
@@ -72,11 +62,6 @@ public class CheckInCheckOutFragment extends Fragment {
         activitylog = view.findViewById(R.id.useractivitylog);
 
         initwidgets();
-
-        notificationsdateList.add(String.valueOf(new Date().getTime()));
-        notificationsList.add("Hello");
-
-
 
         activitylog.setLayoutManager(new LinearLayoutManager(view.getContext()));
         activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, notificationsdateList, mcontext);
@@ -112,7 +97,6 @@ public class CheckInCheckOutFragment extends Fragment {
     private void initwidgets(){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
-        System.out.println(email);
         final UserClass[] newuser = {new UserClass()};
         db.collection("users")
                 .get()
@@ -126,13 +110,17 @@ public class CheckInCheckOutFragment extends Fragment {
                                 newuser[0] = userClass;
 
                                 if(userClass.getEmail().equals(email)){
-                                    System.out.println(newuser[0].getPaid_leave());
                                     paidleave.setText(String.valueOf(newuser[0].getPaid_leave()));
                                     sickleave.setText(String.valueOf(newuser[0].getSick_leave()));
                                     notificationsList = newuser[0].getActivitylist();
-                                    System.out.println(notificationsList);
                                     notificationsdateList = newuser[0].getActivitydatelist();
-                                    System.out.println(notificationsdateList);
+                                    if (notificationsList.size()>0){
+                                        if(notificationsList.get(notificationsList.size()-1).contains("Clocked in")){
+                                            clockin.setVisibility(View.GONE);
+                                            clockout.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+
 
                                     UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
                                     activitylog.setAdapter(newadapter);
@@ -148,7 +136,6 @@ public class CheckInCheckOutFragment extends Fragment {
     private void checkinout(String statustobeset, Date date){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
-        System.out.println(email);
         final UserClass[] newuser = {new UserClass()};
         db.collection("users")
                 .get()
@@ -169,15 +156,17 @@ public class CheckInCheckOutFragment extends Fragment {
 
                                     notificationsList = newuser[0].getActivitylist();
                                     notificationsList.add(statustobeset);
-                                    System.out.println(notificationsList);
 
                                     notificationsdateList = newuser[0].getActivitydatelist();
                                     notificationsdateList.add(String.valueOf(date.getTime()));
-                                    System.out.println(notificationsdateList);
 
                                     UserActivityLogRecyclerAdapter newadapter = new UserActivityLogRecyclerAdapter(notificationsList,notificationsdateList,mcontext);
                                     activitylog.setAdapter(newadapter);
 
+                                    if(statustobeset.contains("Clocked out")){
+                                        long timediff = date.getTime()-new Date(Long.parseLong(notificationsdateList.get(notificationsdateList.size()-2))).getTime();
+                                        newuser[0].setHoursthismonth(newuser[0].getHoursthismonth()+(float)timediff/3600000);
+                                    }
 
                                     newuser[0].setActivitydatelist(notificationsdateList);
                                     newuser[0].setActivitylist(notificationsList);

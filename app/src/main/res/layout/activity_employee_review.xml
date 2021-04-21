@@ -2,57 +2,331 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/employeereview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AdminWorld.EmployeeReviewActivity">
 
 
-    <TextView
-        android:id="@+id/employeereviewname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Name"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/employeereviewprofilepic"
-        app:layout_constraintStart_toStartOf="@+id/employeereviewprofilepic"
-        app:layout_constraintTop_toBottomOf="@+id/employeereviewprofilepic" />
+    <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/employeereviewemail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="email"
-        android:textAlignment="center"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/purple_500"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/employeereviewprofilepic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="profilepic"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/employeereviewemail"
-        app:layout_constraintStart_toStartOf="@+id/employeereviewemail"
-        app:layout_constraintTop_toBottomOf="@+id/employeereviewemail" />
-
-    <ImageButton
-        android:id="@+id/employeereviewbackbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/transparent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/profilepagebackboard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/employeereviewmanagewindow">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/userbreakdownconstraint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/roundedrectanglewhite"
+                android:elevation="10dp"
+                android:gravity="center_horizontal"
+                android:padding="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/employeereviewhoursworked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arial_rounded_mt_bold_font"
+                        android:text="10.6 hours"
+                        android:textSize="25sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/employeereviewpay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="45dp"
+                        android:layout_toRightOf="@id/employeereviewhoursworked"
+                        android:fontFamily="@font/arial_rounded_mt_bold_font"
+                        android:text="$169.69"
+                        android:textSize="25sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/employeereviewhoursworked"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/userprofilehoursworkedtext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/employeereviewhoursworked"
+                        android:layout_marginTop="8dp"
+                        android:text="Number of hours\nworked this month"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="@+id/employeereviewhoursworked"
+                        app:layout_constraintStart_toStartOf="@+id/employeereviewhoursworked"
+                        app:layout_constraintTop_toBottomOf="@+id/employeereviewhoursworked" />
+
+                    <TextView
+                        android:id="@+id/userprofilepaytext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/employeereviewpay"
+                        android:layout_marginTop="8dp"
+                        android:layout_toRightOf="@id/userprofilehoursworkedtext"
+                        android:text="Entitled Pay\n this month"
+                        app:layout_constraintEnd_toEndOf="@+id/employeereviewpay"
+                        app:layout_constraintStart_toStartOf="@+id/employeereviewpay"
+                        app:layout_constraintTop_toBottomOf="@+id/employeereviewpay" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userbreakdownconstraint">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+
+                            android:fontFamily="@font/arial_rounded_mt_bold_font"
+                            android:text="Activity Log"
+                            app:layout_constraintStart_toStartOf="@+id/employeereviewuseractivitylog"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/employeereviewuseractivitylog"
+                            android:layout_width="0dp"
+                            android:layout_height="150dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="24dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                        <TextView
+                            android:id="@+id/curretlocationtext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Current Location"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/employeereviewuseractivitylog" />
+
+                        <com.example.blewifiterm5project.Layout.ImageDotLayout
+                            android:id="@+id/employeereviewuserlocation"
+                            android:layout_width="0dp"
+                            android:layout_height="380dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="24dp"
+                            android:layout_marginBottom="32dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/curretlocationtext"
+                            app:layout_constraintVertical_bias="1.0"
+                            tools:srcCompat="@drawable/floorplantemp" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/employeereviewmanagewindow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/employeereviewname">
+
+            <EditText
+                android:id="@+id/editTextpayrate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/roundedrectanglepurplewhitestroke"
+                android:ems="10"
+                android:hint="Pay Rate"
+                android:inputType="textPersonName"
+                android:padding="6dp"
+                android:textColor="@color/white"
+                android:textColorHint="#8DFFFFFF"
+                app:layout_constraintEnd_toStartOf="@+id/textView5"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Pay Rate"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextpayrate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/editTextpayrate" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="per hour"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextpayrate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/editTextpayrate"
+                app:layout_constraintVertical_bias="0.555" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/statusindicatoruseritemoffline2"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="8dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:visibility="gone"
+            app:civ_border_color="#bfbfbf"
+            app:civ_border_width="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/employeereviewbackbutton"
+            app:layout_constraintStart_toEndOf="@+id/employeereviewbackbutton"
+            app:layout_constraintTop_toTopOf="@+id/employeereviewbackbutton" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/statusindicatoruseritemonline2"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="8dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:visibility="gone"
+            app:civ_border_color="#05df29"
+            app:civ_border_width="10dp"
+            app:civ_circle_background_color="#05df29"
+            app:layout_constraintBottom_toBottomOf="@+id/employeereviewbackbutton"
+            app:layout_constraintStart_toEndOf="@+id/employeereviewbackbutton"
+            app:layout_constraintTop_toTopOf="@+id/employeereviewbackbutton" />
+
+        <ImageButton
+            android:id="@+id/employeereviewbackbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/transparent"
+            android:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+        <!--        <TextView-->
+<!--            android:id="@+id/employeereviewemail"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:text="email"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/employeereviewname"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/employeereviewname" />-->
+
+        <TextView
+            android:id="@+id/employeereviewname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="31dp"
+            android:fontFamily="@font/arial_rounded_mt_bold_font"
+            android:text="Name"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="@+id/employeereviewbackbutton"
+            app:layout_constraintStart_toEndOf="@+id/employeereviewbackbutton"
+            app:layout_constraintTop_toTopOf="@+id/employeereviewbackbutton"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/employeereviewmanagebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/managebutton"
+            android:paddingHorizontal="30dp"
+            android:text="Manage"
+            android:textColor="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="@+id/employeereviewname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/employeereviewname" />
+
+        <!--        <TextView-->
+<!--            android:id="@+id/employeereviewprofilepic"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="profilepic"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/white"-->
+<!--            tools:layout_editor_absoluteX="337dp"-->
+<!--            tools:layout_editor_absoluteY="70dp" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

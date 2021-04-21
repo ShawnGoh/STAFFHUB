@@ -97,7 +97,6 @@
         android:textColor="@color/white"
         android:elevation="10dp"
         android:layout_marginHorizontal="40dp"
-        android:transitionName="signupsigninbutton"
         />
 
     <TextView
@@ -111,7 +110,7 @@
         android:textAppearance="@style/forgot_your"/>
 
     <TextView
-        android:id="@+id/errormessage"
+        android:id="@+id/signuperrormessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Forgot your pasword?"
@@ -134,7 +133,7 @@
 
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/signupprogressBar"
         android:indeterminateDrawable="@drawable/progressbarstyle"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"

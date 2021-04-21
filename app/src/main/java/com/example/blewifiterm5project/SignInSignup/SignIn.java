@@ -3,11 +3,11 @@ package com.example.blewifiterm5project.SignInSignup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +23,6 @@ import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.UserWorld.UserHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,7 +35,7 @@ public class SignIn extends AppCompatActivity {
     private static final String TAG = "SignIn";
 
     Button signinbutton;
-    TextView welcomesignin, errormessage, attemptmessage;
+    TextView welcomesignin, errormessage, attemptmessage, forgotpassword;
     EditText emailsignin, passwordsignin;
     ImageView Logoimage;
     LinearLayout signinscreen;
@@ -50,22 +49,26 @@ public class SignIn extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    Context mcontext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        mcontext = getApplicationContext();
 
         //initialize UI elements
         signinbutton = findViewById(R.id.signinconfirmbutton);
         emailsignin = findViewById(R.id.Emailsignin);
         passwordsignin = findViewById(R.id.Passwordsignin);
         welcomesignin = findViewById(R.id.welcomesignin);
+        forgotpassword = findViewById(R.id.forgotpassword);
 
         signinscreen = findViewById(R.id.signinscreen);
-        loadingwheel = findViewById(R.id.progressBar);
-        errormessage = findViewById(R.id.errormessage);
+        loadingwheel = findViewById(R.id.signupprogressBar);
+        errormessage = findViewById(R.id.signuperrormessage);
         attemptmessage = findViewById(R.id.attemptsleft);
         Log.d(TAG, "onCreate Started");
 
@@ -74,6 +77,16 @@ public class SignIn extends AppCompatActivity {
         setupfirebaseauth();
 
         init();
+
+        forgotpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mcontext, PasswordResetActivity.class).putExtra("Emailfill", emailsignin.getText().toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mcontext.startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
 
 
 
@@ -137,24 +150,26 @@ public class SignIn extends AppCompatActivity {
                                                             //Checking if user is admin or normal user
                                                             userClass[0] = document.toObject(UserClass.class);
 
-
-                                                            if(userClass[0].getEmail().equals(email) && userClass[0].getAdmin().equals("N")){
-                                                                Log.d(TAG, "admin = " + userClass[0].getAdmin());
-                                                                Toast.makeText(getApplicationContext(), "Authentication Passed.", Toast.LENGTH_SHORT).show();
-                                                                startActivity(new Intent(getApplicationContext(), UserHome.class));
-                                                                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                finish();
-                                                            }
-
-
-                                                            else if(userClass[0].getEmail().equals(email) && userClass[0].getAdmin().equals("Y")){
-                                                                Log.d(TAG, "admin = " + userClass[0].getAdmin());
-                                                                Log.d(TAG, "email = " + userClass[0].getEmail());
-                                                                Log.d(TAG, "entered email = " + email);
-                                                                Toast.makeText(getApplicationContext(), "Authentication Passed.", Toast.LENGTH_SHORT).show();
-                                                                startActivity(new Intent(getApplicationContext(), AdminHome.class));
-                                                                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                finish();
+                                                            if(userClass[0].getStatus().equals("offline")) {
+                                                                if (userClass[0].getEmail().equals(email) && userClass[0].getAdmin().equals("N")) {
+                                                                    Log.d(TAG, "admin = " + userClass[0].getAdmin());
+                                                                    Toast.makeText(getApplicationContext(), "Authentication Passed.", Toast.LENGTH_SHORT).show();
+                                                                    userClass[0].setStatus("online");
+                                                                    startActivity(new Intent(getApplicationContext(), UserHome.class));
+                                                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                    finish();
+                                                                } else if (userClass[0].getEmail().equals(email) && userClass[0].getAdmin().equals("Y")) {
+                                                                    Log.d(TAG, "admin = " + userClass[0].getAdmin());
+                                                                    Log.d(TAG, "email = " + userClass[0].getEmail());
+                                                                    Log.d(TAG, "entered email = " + email);
+                                                                    Toast.makeText(getApplicationContext(), "Authentication Passed.", Toast.LENGTH_SHORT).show();
+                                                                    startActivity(new Intent(getApplicationContext(), AdminHome.class));
+                                                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                    finish();
+                                                                }
+                                                            }else{
+                                                                errormessage.setText("Account already logged in");
+                                                                errormessage.setVisibility(View.VISIBLE);
                                                             }
 
                                                         }

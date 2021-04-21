@@ -33,7 +33,6 @@ public class WifiScanner {
     public WifiScanner(Context context){
         mcontext = context;
         wifiManager = (WifiManager) mcontext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        adapter = new ArrayAdapter<>(mcontext, android.R.layout.simple_list_item_1, arrayList);
     }
 
     public ListAdapter getWifiAdapter(){
@@ -52,16 +51,16 @@ public class WifiScanner {
         macRssi.clear();
         mcontext.registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
-        Log.i("Testing", "94554278 scanning for WIFI!");
+        Log.i("Testing", "scanning for WIFI!");
         Toast.makeText(mcontext,"Scanning WiFi ...", Toast.LENGTH_SHORT).show();
     }
 
-    final BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
+    BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             results = wifiManager.getScanResults();
             context.unregisterReceiver(this);
-            Log.i("Testing", "94554278 wifiReceiver !!!");
+            Log.i("Testing", "wifiReceiver !!!");
 
             // for every result found via scanWifi, store the wifi SSID and approximate distance to it in an array
             for (ScanResult scanResult : results) {
@@ -77,8 +76,9 @@ public class WifiScanner {
                 arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
                 wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
                 macRssi.put(scanResult.SSID + " (" + scanResult.BSSID + ")", rssiValue);
-                adapter.notifyDataSetChanged();
             }
+
+            Toast.makeText(mcontext, "Wifi list populated", Toast.LENGTH_SHORT).show();
         }
     };
 

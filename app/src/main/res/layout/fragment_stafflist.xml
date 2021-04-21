@@ -11,15 +11,13 @@
 
     <TextView
         android:id="@+id/welcome_bac"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="24dp"
         android:fontFamily="@font/arial_rounded_mt_bold_font"
         android:text="Staff List"
         android:textAppearance="@style/welcome_bac"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="20dp"
+        android:singleLine="true"
         android:background="@drawable/signintextbubble"
         android:drawableStart="@drawable/ic_baseline_search_24"
         android:drawablePadding="10dp"
@@ -49,7 +48,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintVertical_bias="0.46" />
+
+    <TextView
+        android:id="@+id/adminsignoutbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Active Employees: 0"
+        android:textColor="@color/white"
+        android:background="@drawable/managebuttonpurple"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/welcome_bac"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/welcome_bac"
+        android:fontFamily="@font/arial_rounded_mt_bold_font"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addnewemployee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/purple_500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_baseline_person_add_24"
+        app:rippleColor="@color/purple_700" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

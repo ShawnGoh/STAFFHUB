@@ -12,8 +12,13 @@ public class UserClass {
     private String statusmessage;
     private int paid_leave;
     private int sick_leave;
+    private float payrate = 10;
+    private float hoursthismonth = 0;
     private ArrayList<String> Activitylist = new ArrayList<>();
     private ArrayList<String> Activitydatelist = new ArrayList<>();
+
+    private String currentmap = "";
+    private ArrayList<Float> usercoordinates;
 
     public UserClass(String name, String profile_picture, String email) {
         this.name = name;
@@ -29,6 +34,42 @@ public class UserClass {
         this.profile_picture = userClass.getProfile_picture();
         this.email = userClass.getEmail();
         this.admin = userClass.getAdmin();
+        this.payrate = userClass.getPayrate();
+        this.hoursthismonth = userClass.getHoursthismonth();
+        this.Activitylist = userClass.getActivitylist();
+        this.Activitydatelist = userClass.getActivitydatelist();
+    }
+
+    public ArrayList<Float> getUsercoordinates() {
+        return usercoordinates;
+    }
+
+    public void setUsercoordinates(ArrayList<Float> usercoordinates) {
+        this.usercoordinates = usercoordinates;
+    }
+
+    public String getCurrentmap() {
+        return currentmap;
+    }
+
+    public void setCurrentmap(String currentmap) {
+        this.currentmap = currentmap;
+    }
+
+    public float getPayrate() {
+        return payrate;
+    }
+
+    public void setPayrate(float payrate) {
+        this.payrate = payrate;
+    }
+
+    public float getHoursthismonth() {
+        return hoursthismonth;
+    }
+
+    public void setHoursthismonth(float hoursthismonth) {
+        this.hoursthismonth = hoursthismonth;
     }
 
     public void setActivitylist(ArrayList<String> activitylist) {

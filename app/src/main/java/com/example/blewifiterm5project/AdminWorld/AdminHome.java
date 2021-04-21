@@ -70,17 +70,5 @@ public class AdminHome extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ChooseImageActivity.REQUEST_APPLY) {
-            if (resultCode == ChooseImageActivity.RESULT_DONE) {
-                System.out.println("URL: "+data.getStringExtra("URL"));
-                // Change fragment
-                fragmentManager.beginTransaction()
-                            .replace(R.id.adminhome_fragment_container, new MappingFragment(data.getStringExtra("URL")))
-                            .commit();
-            }
-        }
-    }
+
 }
