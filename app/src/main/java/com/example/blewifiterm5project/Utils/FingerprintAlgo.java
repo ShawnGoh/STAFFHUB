@@ -126,10 +126,6 @@ public class FingerprintAlgo {
         LinkedHashMap<dbdatapoint, Double> sortedDataScore = sortByValues(dataScore, "descending");
         System.out.println("sortedDataScore: " + sortedDataScore);
 
-//        TreeMap<Double, dbdatapoint> treeSortedScore = new TreeMap<>(sortedDataScore);
-//        sortedDataScore.clear();
-//        sortedDataScore.putAll(treeSortedScore.descendingMap());
-
         ArrayList<dbdatapoint> topKScores = new ArrayList<>();
         System.out.println("sortedDataScore: " + sortedDataScore);
 
@@ -207,12 +203,6 @@ public class FingerprintAlgo {
             sum_wx += w*topCFilteredDist.get(i).getCoordinates().get(0);
             sum_wy += w*topCFilteredDist.get(i).getCoordinates().get(1);
         }
-
-//        double wj = 1 / getEuclideanDistance();
-//        for (int j = 0; j < dataSet.size(); j++) {
-//            double Xj = dataSet.get(j).X;
-//            double Yj = dataSet.get(j).Y;
-//        }
 
         X1 = sum_wx / sum_w;
         Y1 = sum_wy / sum_w;
