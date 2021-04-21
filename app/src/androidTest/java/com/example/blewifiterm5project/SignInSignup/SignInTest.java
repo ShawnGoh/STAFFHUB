@@ -63,7 +63,7 @@ public class SignInTest {
         onView((withId(R.id.Emailsignin))).check(matches(isDisplayed()));
         onView((withId(R.id.Passwordsignin))).check(matches(isDisplayed()));
         onView((withId(R.id.signinconfirmbutton))).check(matches(isDisplayed()));
-        onView((withId(R.id.errormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
+        onView((withId(R.id.signuperrormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         onView((withId(R.id.attemptsleft))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
     }
 
@@ -114,9 +114,9 @@ public class SignInTest {
         onView(withId(R.id.Passwordsignin)).check(matches(withText(passwordtobetyped)));
         onView(withId(R.id.signinconfirmbutton)).perform(click());
         Thread.sleep(1500);
-        onView((withId(R.id.errormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        onView((withId(R.id.signuperrormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         onView((withId(R.id.attemptsleft))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-        onView(withId(R.id.errormessage)).check(matches(withText("Incorrect Password")));
+        onView(withId(R.id.signuperrormessage)).check(matches(withText("Incorrect Password")));
         onView(withId(R.id.attemptsleft)).check(matches(withText("Attempts left: 4")));
     }
 
@@ -130,9 +130,9 @@ public class SignInTest {
         onView(withId(R.id.Passwordsignin)).check(matches(withText(passwordtobetyped)));
         onView(withId(R.id.signinconfirmbutton)).perform(click());
         Thread.sleep(1500);
-        onView((withId(R.id.errormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        onView((withId(R.id.signuperrormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         onView((withId(R.id.attemptsleft))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-        onView(withId(R.id.errormessage)).check(matches(withText("Incorrect Password")));
+        onView(withId(R.id.signuperrormessage)).check(matches(withText("Incorrect Password")));
         onView(withId(R.id.attemptsleft)).check(matches(withText("Attempts left: 4")));
     }
 
@@ -146,9 +146,9 @@ public class SignInTest {
         onView(withId(R.id.Passwordsignin)).check(matches(withText(passwordtobetyped)));
         onView(withId(R.id.signinconfirmbutton)).perform(click());
         Thread.sleep(1500);
-        onView((withId(R.id.errormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        onView((withId(R.id.signuperrormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         onView((withId(R.id.attemptsleft))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
-        onView(withId(R.id.errormessage)).check(matches(withText("Account not in system. Contact Admin")));
+        onView(withId(R.id.signuperrormessage)).check(matches(withText("Account not in system. Contact Admin")));
     }
 
     @Test
@@ -161,9 +161,9 @@ public class SignInTest {
         onView(withId(R.id.Passwordsignin)).check(matches(withText(passwordtobetyped)));
         onView(withId(R.id.signinconfirmbutton)).perform(click());
         Thread.sleep(1500);
-        onView((withId(R.id.errormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        onView((withId(R.id.signuperrormessage))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         onView((withId(R.id.attemptsleft))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-        onView(withId(R.id.errormessage)).check(matches(withText("Incorrect Password")));
+        onView(withId(R.id.signuperrormessage)).check(matches(withText("Incorrect Password")));
         onView(withId(R.id.attemptsleft)).check(matches(withText("Attempts left: 4")));
         onView(withId(R.id.signinconfirmbutton)).perform(click());
         Thread.sleep(1500);
