@@ -57,10 +57,4 @@ public class TestingFragmentTest {
         onData(is(spinnerData[1])).perform(click());
         onView(withId(R.id.map_dropdown_testing)).check(matches(withSpinnerText(spinnerData[1])));
     }
-
-    @Test
-    public void testTesting() throws InterruptedException{
-        Thread.sleep(1000);
-        // TODO: Testing function test
-    }
 }

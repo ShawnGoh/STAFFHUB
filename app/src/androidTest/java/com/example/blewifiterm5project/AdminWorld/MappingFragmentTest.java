@@ -37,8 +37,7 @@ public class MappingFragmentTest {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Rule
-    public ActivityTestRule mActivityRule = new ActivityTestRule<>(
-            AdminHome.class);
+    public ActivityTestRule mActivityRule = new ActivityTestRule<>(AdminHome.class);
 
     @Before
     public void setUp(){
@@ -59,11 +58,5 @@ public class MappingFragmentTest {
         onView(withId(R.id.map_dropdown)).perform(click());
         onData(is(spinnerData[1])).perform(click());
         onView(withId(R.id.map_dropdown)).check(matches(withSpinnerText(spinnerData[1])));
-    }
-
-    @Test
-    public void testMapping() throws InterruptedException{
-        Thread.sleep(1000);
-        // TODO: Mapping function test
     }
 }
