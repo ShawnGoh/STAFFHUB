@@ -6,49 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".AdminWorld.ChildMappingFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <TextView
+        android:id="@+id/welcome_bac"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/arial_rounded_mt_bold_font"
+        android:text="Set Up Area Mapping"
+        android:textAppearance="@style/welcome_bac"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/map_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="36dp"
-        android:layout_marginBottom="36dp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-
-        <TextView
-            android:id="@+id/welcome_bac"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/arial_rounded_mt_bold_font"
-            android:text="Set Up Area Mapping"
-            android:textAppearance="@style/welcome_bac" />
-
-        <Spinner
-            android:id="@+id/map_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:spinnerMode="dropdown"/>
-
-        <!--        <Button-->
-        <!--            android:id="@+id/mappingbutton"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="choose"-->
-        <!--            android:layout_marginTop="20dp"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/welcome_bac" />
 
     <com.example.blewifiterm5project.Layout.ImageDotLayout
         android:id="@+id/map"
@@ -62,8 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/map_dropdown"
         tools:srcCompat="@drawable/floorplantemp" />
 
     <Button
@@ -84,4 +63,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/map"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/visiblebuttonchildmapping"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/ic_baseline_visibility_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/welcome_bac"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/welcome_bac" />
+
+    <ImageView
+        android:id="@+id/invisiblebuttonchildmapping"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/ic_baseline_visibility_off_24"
+        app:layout_constraintBottom_toBottomOf="@+id/welcome_bac"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/welcome_bac" />
 </androidx.constraintlayout.widget.ConstraintLayout>

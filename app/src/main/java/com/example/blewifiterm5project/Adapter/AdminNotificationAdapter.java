@@ -23,7 +23,7 @@ import java.util.TreeMap;
 
 import static android.content.ContentValues.TAG;
 
-public class AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotificationAdapter.Viewholder> {
+public class  AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotificationAdapter.Viewholder> {
     private ArrayList<String> notificationList;
     private ArrayList<String> notificationDateList;
     private LinkedHashMap<String, String> compiledNotificationLog;
