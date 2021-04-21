@@ -11,20 +11,21 @@
 
     <ImageView
         android:id="@+id/splashimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="229dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/hotel_logo" />
+        app:srcCompat="@drawable/staffhubiconpurple" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        android:text="Powered by SUTD WIFI BLE Navigation"
+        android:fontFamily="@font/arial_rounded_mt_bold_font"
+        android:text="Powered by SUTD Wi-Fi Indoor Navigation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
