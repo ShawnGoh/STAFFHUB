@@ -20,6 +20,9 @@ public class FingerprintAlgo {
     private ArrayList<dbdatapoint> dataSet = new ArrayList<>();
     private dbdatapoint wifiResults;
     private double rssiThreshold = 5;
+    private double flagCap = -70;
+    private int k = 5;
+    private int c = 3;
     private ArrayList<String> nearbyAPs;
 
     public FingerprintAlgo(ArrayList dataSet, dbdatapoint wifiResults) {
@@ -37,7 +40,7 @@ public class FingerprintAlgo {
         int flagCounter = 0;
         for (HashMap.Entry<String, ArrayList<Double>> accessPoint : wifiResults.getAccesspoints().entrySet()) {
             RSSI_value = accessPoint.getValue().get(0);
-            if (RSSI_value > -70) {
+            if (RSSI_value > flagCap) {
                 total += RSSI_value;
                 flagCounter++;
             }
@@ -105,7 +108,6 @@ public class FingerprintAlgo {
 
     public ArrayList<dbdatapoint> topKPercentage() {
 
-        int k = 3;
         double eachScore = 0;
 
         HashMap<dbdatapoint, Double> dataScore = new HashMap<>();
@@ -121,7 +123,7 @@ public class FingerprintAlgo {
 
         System.out.println("datascore: "+dataScore);
 
-        LinkedHashMap<dbdatapoint, Double> sortedDataScore = sortByValues(dataScore);
+        LinkedHashMap<dbdatapoint, Double> sortedDataScore = sortByValues(dataScore, "descending");
         System.out.println("sortedDataScore: " + sortedDataScore);
 
 //        TreeMap<Double, dbdatapoint> treeSortedScore = new TreeMap<>(sortedDataScore);
@@ -156,6 +158,8 @@ public class FingerprintAlgo {
                 }
             }
         }
+
+
         System.out.println("Finishing getting Euclidean Distance!");
         return Math.sqrt(total);
     }
@@ -170,11 +174,29 @@ public class FingerprintAlgo {
 //        System.out.println(dataSet.size());
 
         ArrayList<dbdatapoint> clearedPercentagePoints = topKPercentage();
+        HashMap<dbdatapoint, Double> euclidFilteredData = new HashMap<>();
 
         for (int i = 0; i < clearedPercentagePoints.size(); i++) {
-            //System.out.println(dataSet.get(i));
             double di = getEuclideanDistance(clearedPercentagePoints.get(i), wifiResults);
-            System.out.println("Coordinates of point being used: "+ clearedPercentagePoints.get(i).getCoordinates());
+            euclidFilteredData.put(clearedPercentagePoints.get(i), di);
+        }
+        System.out.println("Euclidean Distance Pre-Filtered Hashmap: " + euclidFilteredData);
+
+        LinkedHashMap<dbdatapoint, Double> sortedEuclidFilteredData = sortByValues(euclidFilteredData, "ascending");
+        System.out.println("Sorted Euclidean Filtered Hashmap: " + sortedEuclidFilteredData);
+        ArrayList<dbdatapoint> topCFilteredDist = new ArrayList<>();
+
+        for (dbdatapoint i : sortedEuclidFilteredData.keySet()) {
+            if (topCFilteredDist.size() < c) {
+                topCFilteredDist.add(i);
+            }
+        }
+        System.out.println("Euclidean Distance Post-Filtered List: " + topCFilteredDist);
+
+        for (int i = 0; i < topCFilteredDist.size(); i++) {
+            //System.out.println(dataSet.get(i));
+            double di = getEuclideanDistance(topCFilteredDist.get(i), wifiResults);
+            System.out.println("Coordinates of point being used: "+ topCFilteredDist.get(i).getCoordinates());
             //System.out.println(wifiResults.getCoordinates());
             System.out.println("EuclideanDistance is: " + di);
             double w = 0;
@@ -182,8 +204,8 @@ public class FingerprintAlgo {
                 w = 1 / di;
             }
             sum_w += w;
-            sum_wx += w*clearedPercentagePoints.get(i).getCoordinates().get(0);
-            sum_wy += w*clearedPercentagePoints.get(i).getCoordinates().get(1);
+            sum_wx += w*topCFilteredDist.get(i).getCoordinates().get(0);
+            sum_wy += w*topCFilteredDist.get(i).getCoordinates().get(1);
         }
 
 //        double wj = 1 / getEuclideanDistance();
@@ -199,15 +221,25 @@ public class FingerprintAlgo {
         return coordinates;
     }
 
-    public static LinkedHashMap sortByValues(HashMap map) {
+    public static LinkedHashMap sortByValues(HashMap map, String type) {
         List list = new LinkedList(map.entrySet());
 
-        Collections.sort(list, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                return ((Comparable) ((Map.Entry) (o2)).getValue())
-                        .compareTo(((Map.Entry) (o1)).getValue());
-            }
-        });
+        if (type == "descending") {
+            Collections.sort(list, new Comparator() {
+                public int compare(Object o1, Object o2) {
+                    return ((Comparable) ((Map.Entry) (o2)).getValue())
+                            .compareTo(((Map.Entry) (o1)).getValue());
+                }
+            });
+        }
+        else if (type == "ascending") {
+            Collections.sort(list, new Comparator() {
+                public int compare(Object o1, Object o2) {
+                    return ((Comparable) ((Map.Entry) (o1)).getValue())
+                            .compareTo(((Map.Entry) (o2)).getValue());
+                }
+            });
+        }
 
         LinkedHashMap sortedHashMap = new LinkedHashMap();
         for (Iterator it = list.iterator(); it.hasNext();) {
