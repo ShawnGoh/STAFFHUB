@@ -53,18 +53,13 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
 
     // Components
     ImageDotLayout imageDotLayout;
-    PhotoView photoView;
     Spinner mapDropdown;
 
-    String url;
     String currentmap = "Building 2 Level 1";
 
     Context mcontext;
     TextView signoutbutton;
-    AdminNotificationAdapter myAdapter;
     RecyclerView recyclerView;
-    ArrayList<String> notificationsList;
-    ArrayList<String> notificationsDateList;
 
     private ArrayList<String> mapNameList;
     private ArrayList<String> mapUrlList;
@@ -111,11 +106,6 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
             }
         }) ;
 
-
-
-//        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-//        myAdapter = new AdminNotificationAdapter(notificationsList, notificationsDateList, mcontext);
-//        recyclerView.setAdapter(myAdapter);
 
 
 

@@ -46,11 +46,9 @@ public class CreateNewUser extends AppCompatActivity {
     Button confirmbutton;
 
     Context mcontext = this;
-    String tint="00C714";
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore  db = FirebaseFirestore.getInstance();
-    FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

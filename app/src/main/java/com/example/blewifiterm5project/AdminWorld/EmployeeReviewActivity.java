@@ -58,7 +58,6 @@ public class EmployeeReviewActivity extends AppCompatActivity {
     ArrayList<String> notificationsdateList = new ArrayList<>();
 
     String docid;
-    String currentmap;
     String mapURL;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
