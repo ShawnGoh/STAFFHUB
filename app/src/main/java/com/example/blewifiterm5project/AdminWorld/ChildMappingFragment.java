@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     Button button;
     Button confirmscanbutton;
     Spinner mapDropdown;
+    ImageView visiblebutton, invisiblebutton;
 
 
     String url;
@@ -88,6 +90,8 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
 
         // Instantiating Resources
+        visiblebutton = view.findViewById(R.id.visiblebuttonchildmapping);
+        invisiblebutton = view.findViewById(R.id.invisiblebuttonchildmapping);
         imageDotLayout = view.findViewById(R.id.map);
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
@@ -124,6 +128,24 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                 x_coordinates = bean.sx;
                 y_coordinates = bean.sy;
                 wifiScanner.scanWifi();
+            }
+        });
+
+        visiblebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invisiblebutton.setVisibility(View.VISIBLE);
+                visiblebutton.setVisibility(View.GONE);
+                imageDotLayout.addIcons(iconBeanList);
+            }
+        });
+
+        invisiblebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invisiblebutton.setVisibility(View.GONE);
+                visiblebutton.setVisibility(View.VISIBLE);
+                imageDotLayout.removeAllIcon();
             }
         });
 

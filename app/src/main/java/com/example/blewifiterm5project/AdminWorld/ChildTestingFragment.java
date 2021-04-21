@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,7 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
 import static com.google.firebase.firestore.Query.Direction.ASCENDING;
 
 
@@ -50,6 +50,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
     PhotoView photoView;
     Button button, locatemebutton;
     Spinner mapDropdown;
+    ImageView visiblebutton, invisiblebutton;
 
     private Context mcontext;
     private WifiScanner wifiScanner;
@@ -79,8 +80,9 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         View view = inflater.inflate(R.layout.fragment_child_testing, container, false);
 
         imageDotLayout = view.findViewById(R.id.map);
-//        button = view.findViewById(R.id.mappingbutton);
         locatemebutton = view.findViewById(R.id.Locatemebutton);
+        visiblebutton = view.findViewById(R.id.visiblebuttonchildtesting);
+        invisiblebutton = view.findViewById(R.id.invisiblebuttonchildtesting);
         mcontext = getActivity();
         wifiScanner = new WifiScanner(mcontext);
 
@@ -109,6 +111,24 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 initIcon(currentmap);
             }
         }) ;
+
+        visiblebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invisiblebutton.setVisibility(View.VISIBLE);
+                visiblebutton.setVisibility(View.GONE);
+                imageDotLayout.addIcons(iconBeanList);
+            }
+        });
+
+        invisiblebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invisiblebutton.setVisibility(View.GONE);
+                visiblebutton.setVisibility(View.VISIBLE);
+                imageDotLayout.removeAllIcon();
+            }
+        });
 
         // Set click listener to imageDotLayout
         imageDotLayout.setOnImageClickListener(new ImageDotLayout.OnImageClickListener() {
