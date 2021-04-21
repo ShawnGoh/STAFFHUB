@@ -55,7 +55,7 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
     ImageDotLayout imageDotLayout;
     Spinner mapDropdown;
 
-    String currentmap = "Building 2 Level 1";
+    String currentmap = "Auditorium";
 
     Context mcontext;
     TextView signoutbutton;
@@ -91,7 +91,7 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
         mapDropdown.setAdapter(mAdapter);
         mapDropdown.setOnItemSelectedListener(this);
 
-        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
+        //imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         CollectionReference collectionReference = db.collection("users");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {

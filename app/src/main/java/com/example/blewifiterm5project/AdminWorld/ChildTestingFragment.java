@@ -95,7 +95,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         mapDropdown.setOnItemSelectedListener(this);
 
 
-        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
+        //imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
 
         initIcon(currentmap);
 
