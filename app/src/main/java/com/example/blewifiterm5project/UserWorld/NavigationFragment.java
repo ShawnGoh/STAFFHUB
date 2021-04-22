@@ -111,8 +111,6 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         mapDropdown.setAdapter(mAdapter);
         mapDropdown.setOnItemSelectedListener(this);
 
-
-
         wifirefreshbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,6 +269,11 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                                         imageDotLayout.addIcon(bean);
                                     }
                                 });
+                            }
+                            System.out.println("user map: "+ usermap);
+                            if (!usermap.equals("")) {
+                                int initial_selected = mAdapter.getPosition(usermap);
+                                mapDropdown.setSelection(initial_selected);
                             }
                         }
 
