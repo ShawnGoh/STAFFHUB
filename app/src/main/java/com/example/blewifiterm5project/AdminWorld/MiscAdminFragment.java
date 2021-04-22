@@ -55,7 +55,7 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
     ImageDotLayout imageDotLayout;
     Spinner mapDropdown;
 
-    String currentmap = "Building 2 Level 1";
+    String currentmap = "Auditorium";
 
     Context mcontext;
     TextView signoutbutton;
