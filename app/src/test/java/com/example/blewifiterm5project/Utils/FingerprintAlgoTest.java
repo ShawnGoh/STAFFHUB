@@ -89,14 +89,13 @@ public class FingerprintAlgoTest {
     @Test
     public void getFLAG() {
         fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-        assertEquals(-63.0, fingerprintAlgo.getFLAG());
+        assertEquals(-55.0, fingerprintAlgo.getFLAG());
     }
 
     @Test
     public void sortMAC() {
         fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
         ArrayList<String> nearbyAPs = new ArrayList<>();
-        nearbyAPs.add("SUTD_Guest");
         nearbyAPs.add("SUTD_Wifi");
         assertEquals(nearbyAPs, fingerprintAlgo.sortMAC());
     }
