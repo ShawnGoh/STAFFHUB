@@ -12,13 +12,8 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class WifiScanner {
 
@@ -39,8 +34,10 @@ public class WifiScanner {
         return adapter;
     }
 
+    // executes a single wifi scan
     public void scanWifi() {
 
+        // turn on wifi on phone if disabled, no need to connect to any wifi to work
         if (!wifiManager.isWifiEnabled()) {
             Toast.makeText(mcontext,"WiFi is disabled ... enabling it now", Toast.LENGTH_LONG).show();
             wifiManager.setWifiEnabled(true);
@@ -64,14 +61,12 @@ public class WifiScanner {
 
             // for every result found via scanWifi, store the wifi SSID and approximate distance to it in an array
             for (ScanResult scanResult : results) {
-                //int signalLevel = wifiManager.calculateSignalLevel(scanResult.level);
                 double signalLevel = scanResult.level; //RSSI value of wifi
                 double frequency = scanResult.frequency;
                 double distanceInM = calculateDistance(signalLevel, frequency);
                 ArrayList<Double> rssiValue = new ArrayList<>();
                 rssiValue.add(signalLevel);
                 rssiValue.add(distanceInM);
-                //arrayList.add(scanResult.SSID + " - " + scanResult.capabilities);
                 Log.i("Testing", scanResult.SSID);
                 arrayList.add(scanResult.SSID + " (" + scanResult.BSSID + ") - " + distanceInM + "m");
                 wifiDataAPs.put(scanResult.SSID + " (" + scanResult.BSSID + ")", distanceInM);
@@ -94,28 +89,6 @@ public class WifiScanner {
 
     public HashMap<String, ArrayList<Double>> getMacRssi() {
         return macRssi;
-    }
-
-    public HashMap<String, Double> sortWiFiData(HashMap<String, Double> wifiDataAPs) {
-
-        HashMap<String, Double> sortedWiFiData = new LinkedHashMap<>();
-
-        // create a list "wifiDataList" from elements of HashMap "wifiDataAPs"
-        List<Map.Entry<String, Double>> wifiDataList = new LinkedList<>(wifiDataAPs.entrySet());
-
-        // sort the list "wifiDataList"
-        Collections.sort(wifiDataList, new Comparator<Map.Entry<String, Double>>() {
-            @Override
-            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
-                return (o1.getValue().compareTo(o2.getValue()));
-            }
-        });
-
-        // put data from sorted list to new HashMap "sortedWiFiData"
-        for (Map.Entry<String, Double> dataPoint : wifiDataList) {
-            sortedWiFiData.put(dataPoint.getKey(), dataPoint.getValue());
-        }
-        return sortedWiFiData;
     }
 
 }
