@@ -104,7 +104,6 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         imageDotLayout = view.findViewById(R.id.mappingimage);
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
-        System.out.println("Testing mode: "+testing);
 
         // if not in testing mode, instantiate WifiScanner
         if (!testing) {
