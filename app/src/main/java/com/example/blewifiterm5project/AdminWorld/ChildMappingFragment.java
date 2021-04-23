@@ -23,7 +23,6 @@ import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.Utils.FirebaseMethods;
 import com.example.blewifiterm5project.Utils.WifiScanner;
-import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -189,7 +188,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                     Log.w(TAG, "listen:error", error);
                     return;
                 }
-                System.out.println("change in database detected");
+                //System.out.println("change in database detected");
                 initIcon(currentmap);
             }
         }) ;
@@ -280,7 +279,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                                 dbdatapointFromDoc.setDocid(document.getId());
                                 allData.add(dbdatapointFromDoc);
                             }
-                            System.out.println(allData);
+                            //System.out.println(allData);
                             int count = 0;
                             for(int i = 0; i<allData.size(); i++){
                                 dbdatapoint dbdatapoint = allData.get(i);
@@ -304,8 +303,8 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                     }
                 });
 
-        System.out.println("finished populating");
-        System.out.println(iconBeanList.size());
+        //System.out.println("finished populating");
+        //System.out.println(iconBeanList.size());
     }
 
     @Override
@@ -334,15 +333,15 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        System.out.println("The task is: "+task.isSuccessful());
+                        //System.out.println("The task is: "+task.isSuccessful());
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                System.out.println(document.getId() + " => " + document.getData());
+                                //System.out.println(document.getId() + " => " + document.getData());
                                 mapNameList.add((String)document.getData().get("name"));
                                 mapUrlList.add((String)document.getData().get("url"));
                             }
-                            System.out.println("NameList: "+ mapNameList);
-                            System.out.println("UrlList: "+ mapUrlList);
+                            //System.out.println("NameList: "+ mapNameList);
+                            //System.out.println("UrlList: "+ mapUrlList);
                             mAdapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

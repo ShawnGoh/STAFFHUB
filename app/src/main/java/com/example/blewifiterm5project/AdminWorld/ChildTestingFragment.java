@@ -25,7 +25,6 @@ import com.example.blewifiterm5project.R;
 import com.example.blewifiterm5project.Utils.FingerprintAlgo;
 import com.example.blewifiterm5project.Utils.FirebaseMethods;
 import com.example.blewifiterm5project.Utils.WifiScanner;
-import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -173,7 +172,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
 
                 coordarray.add(x_coordinates);
                 coordarray.add(y_coordinates);
-                System.out.println("Coordinate Array of clicked point: "+coordarray);
+                //System.out.println("Coordinate Array of clicked point: "+coordarray);
                 dbdatapoint wifiResults = new dbdatapoint();
                 wifiResults.setCoordinates(coordarray);
                 wifiResults.setAccesspoints(dataValues);
@@ -190,12 +189,12 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                                         com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
                                         dataSet.add(dbdatapointFromDoc);
                                     }
-                                    System.out.println(dataSet);
+                                    //System.out.println(dataSet);
                                     FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
                                     Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
                                     float sx = resultCoordinates.first.floatValue();
                                     float sy = resultCoordinates.second.floatValue();
-                                    System.out.println("Result Coordinates are: "+resultCoordinates);
+                                    //System.out.println("Result Coordinates are: "+resultCoordinates);
                                     ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, getResources().getDrawable(R.drawable.ic_baseline_location_on_24_testingbean));
                                     imageDotLayout.addIcon(location);
 
@@ -230,7 +229,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                             }
                             int count = 0;
                             for (dbdatapoint dbdatapoint : allData){
-                                System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
+                                //System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
                                 ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
                                 iconBeanList.add(bean);
                                 count++;
@@ -281,12 +280,12 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                         System.out.println("The task is: "+task.isSuccessful());
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                System.out.println(document.getId() + " => " + document.getData());
+                                //System.out.println(document.getId() + " => " + document.getData());
                                 mapNameList.add((String)document.getData().get("name"));
                                 mapUrlList.add((String)document.getData().get("url"));
                             }
-                            System.out.println("NameList: "+ mapNameList);
-                            System.out.println("UrlList: "+ mapUrlList);
+                            //System.out.println("NameList: "+ mapNameList);
+                            //System.out.println("UrlList: "+ mapUrlList);
                             mAdapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
