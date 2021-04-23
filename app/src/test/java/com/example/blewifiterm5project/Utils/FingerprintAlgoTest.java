@@ -99,17 +99,5 @@ public class FingerprintAlgoTest {
         nearbyAPs.add("SUTD_Wifi");
         assertEquals(nearbyAPs, fingerprintAlgo.sortMAC());
     }
-
-//    @Test
-//    public void getEuclideanDistance() {
-//        FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-//        assertEquals(23, fingerprintAlgo.getEuclideanDistance());
-//    }
-
-//    @Test
-//    public void estimateCoordinates() {
-//        fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-//        Pair<Double, Double> coord = new Pair<>(5.0, 7.0);
-//        assertEquals(coord, fingerprintAlgo.estimateCoordinates());
-//    }
+    
 }
