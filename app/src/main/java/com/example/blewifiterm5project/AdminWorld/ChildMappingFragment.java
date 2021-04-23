@@ -43,14 +43,11 @@ import static android.content.ContentValues.TAG;
 import static com.google.firebase.firestore.Query.Direction.ASCENDING;
 
 public class ChildMappingFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    // Components
+
     ImageDotLayout imageDotLayout;
-    PhotoView photoView;
-    Button button;
     Button confirmscanbutton;
     Spinner mapDropdown;
     ImageView visiblebutton, invisiblebutton;
-
 
     String url;
     String currentmap = "Auditorium";
@@ -65,7 +62,6 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     private String documentName;
     private HashMap<String, ArrayList<Double>> dataValues;
     private HashMap<ArrayList<Float>, HashMap<String, ArrayList<Double>>> dataPoint;
-    //    SpinnerAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private ArrayList<String> mapNameList;
     private ArrayList<String> mapUrlList;
@@ -82,6 +78,11 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     public ChildMappingFragment(String url) {
         this.url = url;
     }
+
+    /**
+     * Get icon infomation
+     * @return list contains all icons in Iconbean
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -197,10 +198,12 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         return view;
     }
 
-
-
     // ==================================================== Start of custom methods ==============================================================================
 
+    /**
+     * Adds icon to the imageDotLayout.
+     * @param dbdatapoint
+     */
     private void addicon(dbdatapoint dbdatapoint){
         db.collection(currentmap).add(dbdatapoint).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -217,6 +220,10 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         });
     }
 
+    /**
+     * Removes an icon from the imageDotLayout
+     * @param beanid The id of specific icon
+     */
     private void removeicon(String beanid){
         int postoremove = -1;
         for(int i = 0; i< iconBeanList.size(); i++){
@@ -240,6 +247,10 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    /**
+     * Initialize icons from database.
+     * @param collectionname The collection name in database.
+     */
     private void initIcon(String collectionname) {
 
         iconBeanList.clear();
@@ -298,6 +309,9 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
     }
 
+    /**
+     * Initialize map list from database.
+     */
     public void initMapList(){
         mapNameList = new ArrayList<>();
         mapUrlList = new ArrayList<>();

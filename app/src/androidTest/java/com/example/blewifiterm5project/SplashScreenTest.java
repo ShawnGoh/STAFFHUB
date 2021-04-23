@@ -65,7 +65,7 @@ public class SplashScreenTest {
 
     @Test
     public void user_account_logged_in_test() throws InterruptedException {
-        emailtobetyped = "usertest@blewifi.com";
+        emailtobetyped = "user@blewifi.com";
         passwordtobetyped = "user123";
         ActivityScenario currentscenario = ActivityScenario.launch(SignIn.class);
         onView(withId(R.id.Emailsignin)).perform(typeText(emailtobetyped));

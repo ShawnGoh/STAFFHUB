@@ -50,7 +50,9 @@ public class MappingFragment extends Fragment  {
         return view;
     }
 
-
+    /**
+     * ViewPager Adapter.
+     */
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private ArrayList<Fragment> fragments;

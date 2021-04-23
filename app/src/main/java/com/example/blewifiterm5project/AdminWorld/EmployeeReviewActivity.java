@@ -86,9 +86,6 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         imageDotLayout = findViewById(R.id.employeereviewuserlocation);
         activitylog = findViewById(R.id.employeereviewuseractivitylog);
 
-//        imageDotLayout.setImage("https://firebasestorage.googleapis.com/v0/b/floorplan-dc25f.appspot.com/o/Floor_WAP_1.png?alt=media&token=778a33c4-f7a3-4f8b-8b14-b3171df3bdc2");
-
-
         CollectionReference collectionReference = db.collection("users");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -135,10 +132,12 @@ public class EmployeeReviewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Download map image url from database.
+     * @param currentmap Name of the map.
+     * @param coordinates Coordinates of beans.
+     */
     private void setMapURL(String currentmap, ArrayList<Float> coordinates) {
-
-        // hello i changed hereee
-
         db.collection("maps")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -172,7 +171,9 @@ public class EmployeeReviewActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Initializes widgets.
+     */
     private void initwidgets(){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
@@ -220,6 +221,10 @@ public class EmployeeReviewActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Update payrate to user once the admin changes it.
+     * @param payrate
+     */
     private void updateuser(String payrate){
         final UserClass[] newuser = {new UserClass()};
         DocumentReference docRef = db.collection("users").document(docid);

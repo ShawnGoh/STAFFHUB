@@ -52,8 +52,6 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
 
     public Bitmap bitmap;
 
-
-
     public ImageDotLayout(@NonNull Context context) {
         this(context, null);
     }
@@ -80,6 +78,10 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
 
     private Drawable mIconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_location_on_24);
 
+    /**
+     * Initializes a imageDotLayout view.
+     * @param context
+     */
     void initView(final Context context) {
         photoView = new PhotoView(context);
         LayoutParams layoutParams =
@@ -125,10 +127,19 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         });
     }
 
+    /**
+     * Sets the appearance of icon.
+     * @param drawable
+     */
     public void setIconDrawable(Drawable drawable) {
         mIconDrawable = drawable;
     }
 
+    /**
+     * Adds an icon to the map.
+     * @param bean
+     * @see IconBean
+     */
     public void addIcon(IconBean bean) {
         //Save current matrix
         if (photoViewMatrix == null) {
@@ -152,15 +163,26 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         iconList.add(icon);
     }
 
+    /**
+     * Changes the appearance of a specific icon.
+     * @param icon
+     * @param drawable
+     */
     public void updateIconResource(ImageView icon, Drawable drawable) {
         icon.setImageDrawable(drawable);
     }
 
+    /**
+     * Adds an icon to the map.
+     * @param id
+     * @param sx
+     * @param sy
+     * @param drawable
+     */
     public void addIcon(int id, float sx, float sy, Drawable drawable) {
         IconBean iconBean = new IconBean(id, sx, sy, drawable);
         addIcon(iconBean);
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -191,7 +213,9 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         return true;
     }
 
-
+    /**
+     * Inner class containing all attributes of an icon
+     */
     public static class IconBean {
         public int id;
         public float sx;
@@ -249,7 +273,6 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
 
     /**
      * Set image to photoView
-     *
      * @param url url of image in string
      */
     public void setImage(String url) {
@@ -261,6 +284,7 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
 
     /**
      * Remove icon
+     * @param bean
      */
     public void removeIcon(IconBean bean) {
         iconList.remove(findViewWithTag(bean));
@@ -281,8 +305,7 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
 
     /**
      * Get icon infomation
-     *
-     * @return
+     * @return list contains all icons in Iconbean
      */
     public List<IconBean> getAllIconInfos() {
         List<IconBean> rectBeans = new ArrayList<>();
@@ -295,6 +318,10 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         return rectBeans;
     }
 
+    /**
+     * Adds icons to the map.
+     * @param iconBeanList list contains icons in Iconbean
+     */
     public void addIcons(List<IconBean> iconBeanList) {
         if (iconBeanList != null && iconBeanList.size() > 0) {
             for (IconBean bean : iconBeanList) {
@@ -303,7 +330,9 @@ public class ImageDotLayout extends FrameLayout implements View.OnClickListener,
         }
     }
 
-    // Working thread to download the image from url and apply to photoView
+    /**
+     * Thread which download image from url
+     */
     private class DownloadImageThread extends Thread{
         String url;
 

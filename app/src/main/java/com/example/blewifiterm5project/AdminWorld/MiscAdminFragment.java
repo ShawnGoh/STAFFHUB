@@ -121,6 +121,10 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
         return view;
     }
 
+    /**
+     * Initialize icons from database.
+     * @param currentmap The name of map.
+     */
     private void initIcon(String currentmap) {
         final List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
 //        List<ImageDotLayout.IconBean> iconBeanList = new ArrayList<>();
@@ -167,6 +171,9 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
+    /**
+     * Initialize widgets.
+     */
     private void initwidgets(){
 
         ArrayList<String> notificationsList = new ArrayList<>();
@@ -240,6 +247,9 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
+    /**
+     * Initialize map list from database.
+     */
     public void initMapList(){
         mapNameList = new ArrayList<>();
         mapUrlList = new ArrayList<>();
@@ -266,5 +276,4 @@ public class MiscAdminFragment extends Fragment implements AdapterView.OnItemSel
                     }
                 });
     }
-
 }

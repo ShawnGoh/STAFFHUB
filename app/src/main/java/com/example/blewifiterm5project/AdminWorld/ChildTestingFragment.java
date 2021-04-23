@@ -44,9 +44,7 @@ import static com.google.firebase.firestore.Query.Direction.ASCENDING;
 
 public class ChildTestingFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    // Components
     ImageDotLayout imageDotLayout;
-    PhotoView photoView;
     Button button, locatemebutton;
     Spinner mapDropdown;
     ImageView visiblebutton, invisiblebutton;
@@ -179,11 +177,6 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                 dbdatapoint wifiResults = new dbdatapoint();
                 wifiResults.setCoordinates(coordarray);
                 wifiResults.setAccesspoints(dataValues);
-//                System.out.println("datasetpos0: "+dataSet.get(0).getAccesspoints());
-//                FirebaseMethods firebaseMethods = new FirebaseMethods(mcontext);
-//                ArrayList<dbdatapoint> dataSet = firebaseMethods.getData();
-
-                // START OF LONG METHOD
 
                 ArrayList<dbdatapoint> dataSet = new ArrayList<>();
                 db.collection(currentmap)
@@ -195,9 +188,6 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d(TAG, document.getId() + " => " + document.getData());
                                         com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
-
-//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
-//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
                                         dataSet.add(dbdatapointFromDoc);
                                     }
                                     System.out.println(dataSet);
@@ -214,24 +204,16 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                                 }
                             }
                         });
-
-
-                // END OF LONG METHOD
-
-
-//                FingerprintAlgo fingerprintAlgo = new FingerprintAlgo(dataSet, wifiResults);
-//                Pair<Double, Double> resultCoordinates = fingerprintAlgo.estimateCoordinates();
-//                float sx = resultCoordinates.first.floatValue();
-//                float sy = resultCoordinates.second.floatValue();
-//                System.out.println(resultCoordinates);
-//                ImageDotLayout.IconBean location = new ImageDotLayout.IconBean(0, sx, sy, null);
-//                imageDotLayout.addIcon(location);
             }
         });
 
         return view;
     }
 
+    /**
+     * Initialize icons from database.
+     * @param collectionname The collection name in database.
+     */
     private void initIcon(String collectionname) {
         iconBeanList.clear();
         ArrayList<dbdatapoint> allData = new ArrayList<>();
@@ -244,9 +226,6 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
-
-//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
-//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
                                 allData.add(dbdatapointFromDoc);
                             }
                             int count = 0;
@@ -269,28 +248,7 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
                         }
                     }
                 });
-
         System.out.println("finished populating");
-
-//        ArrayList<dbdatapoint> datapoints = firebaseMethods.getData();
-//        System.out.println(datapoints);
-//        int count = 0;
-//        System.out.println("testing124u3ty89304t1");
-
-//        for (dbdatapoint dbdatapoint : datapoints){
-//            System.out.println("coordinates: "+dbdatapoint.getCoordinates().get(0)+", "+dbdatapoint.getCoordinates().get(1));
-//            ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(count, dbdatapoint.getCoordinates().get(0), dbdatapoint.getCoordinates().get(1), null);
-//            iconBeanList.add(bean);
-//            count++;
-//        }
-
-
-//        ImageDotLayout.IconBean bean = new ImageDotLayout.IconBean(0, 0.3f, 0.4f, null);
-//        iconBeanList.add(bean);
-//        bean = new ImageDotLayout.IconBean(1, 0.5f, 0.4f, null);
-//        iconBeanList.add(bean);
-
-
     }
 
     @Override
@@ -302,38 +260,14 @@ public class ChildTestingFragment extends Fragment implements AdapterView.OnItem
         initIcon(currentmap);
     }
 
-
-//    public ArrayList<dbdatapoint> getData() {
-//        dbdatapoint dbdatapoint = new dbdatapoint();
-//        ArrayList<dbdatapoint> allData = new ArrayList<>();
-//        db.collection("datapoints")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                                com.example.blewifiterm5project.Models.dbdatapoint dbdatapointFromDoc = document.toObject(com.example.blewifiterm5project.Models.dbdatapoint.class);
-//
-//                                dbdatapoint.setAccesspoints(dbdatapointFromDoc.getAccesspoints());
-//                                dbdatapoint.setCoordinates(dbdatapointFromDoc.getCoordinates());
-//                                allData.add(dbdatapoint);
-//                                // break;
-//                            }
-//                        } else {
-//                            Log.d(TAG, "Error getting documents: ", task.getException());
-//                        }
-//                    }
-//                });
-//        return allData;
-//    }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
+    /**
+     * Initialize map list from database.
+     */
     public void initMapList(){
         mapNameList = new ArrayList<>();
         mapUrlList = new ArrayList<>();

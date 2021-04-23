@@ -91,6 +91,9 @@ public class StaffListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Initialize staff list from database.
+     */
     private void initstafflists(){
 
         stafficonstauslist = new ArrayList<>();
@@ -128,7 +131,4 @@ public class StaffListFragment extends Fragment {
                 });
 
     }
-
-
-
 }
