@@ -53,7 +53,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
     String currentmap = "Auditorium";
 
     private Context mcontext;
-    private WifiScanner wifiScanner;
+    private static WifiScanner wifiScanner;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseMethods firebaseMethods;
@@ -74,6 +74,13 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
     CollectionReference collectionReference;
 
+    static boolean testing = false;
+
+    public static void setWifiScanner(WifiScanner testWifiScanner) {
+        wifiScanner = testWifiScanner;
+        testing = true;
+    }
+
     // Initialize the fragment with url of the default image
     public ChildMappingFragment(String url) {
         this.url = url;
@@ -93,10 +100,13 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         // Instantiating Resources
         visiblebutton = view.findViewById(R.id.visiblebuttonchildmapping);
         invisiblebutton = view.findViewById(R.id.invisiblebuttonchildmapping);
-        imageDotLayout = view.findViewById(R.id.map);
+        imageDotLayout = view.findViewById(R.id.mappingimage);
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
-        wifiScanner = new WifiScanner(mcontext);
+        System.out.println("Testing mode: "+testing);
+        if (!testing) {
+            wifiScanner = new WifiScanner(mcontext);
+        }
         firebaseMethods = new FirebaseMethods(mcontext);
 
         mapDropdown = view.findViewById(R.id.map_dropdown);
