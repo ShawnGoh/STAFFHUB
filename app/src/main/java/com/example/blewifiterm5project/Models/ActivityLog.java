@@ -2,6 +2,7 @@ package com.example.blewifiterm5project.Models;
 
 import java.util.Date;
 
+// class to get time and date of an activity
 public class ActivityLog {
     Date time;
     String message;

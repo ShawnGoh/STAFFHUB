@@ -2,7 +2,6 @@ package com.example.blewifiterm5project.Utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -10,9 +9,7 @@ import com.example.blewifiterm5project.Models.UserClass;
 import com.example.blewifiterm5project.Models.dbdatapoint;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +30,7 @@ public class FirebaseMethods {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    // constructor
     public FirebaseMethods(Context context){
         mAuth = FirebaseAuth.getInstance();
         mContext = context;
@@ -45,7 +43,7 @@ public class FirebaseMethods {
         }
     }
 
-
+    // method to obtain information about exisitng users in the database
     public UserClass getuserinfo(){
         UserClass userClass = new UserClass();
         db.collection("users")
@@ -76,7 +74,7 @@ public class FirebaseMethods {
         return userClass;
     }
 
-
+    // method to obtain information about wifi AP datapoints stored in the database
     public ArrayList<dbdatapoint> getData() {
         dbdatapoint dbdatapoint = new dbdatapoint();
         ArrayList<dbdatapoint> allData = new ArrayList<>();
