@@ -76,6 +76,7 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
 
     static boolean testing = false;
 
+    // setter method used in Mockito Instrumented Testing (MappingFunctionTest)
     public static void setWifiScanner(WifiScanner testWifiScanner) {
         wifiScanner = testWifiScanner;
         testing = true;
@@ -104,6 +105,8 @@ public class ChildMappingFragment extends Fragment implements AdapterView.OnItem
         confirmscanbutton = view.findViewById(R.id.confirmlocation_button);
         mcontext = getActivity();
         System.out.println("Testing mode: "+testing);
+
+        // if not in testing mode, instantiate WifiScanner
         if (!testing) {
             wifiScanner = new WifiScanner(mcontext);
         }

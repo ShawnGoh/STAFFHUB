@@ -110,7 +110,7 @@ public class MappingFunctionTest {
         mActivityRule.finishActivity();
     }
 
-    // expected result: datapoint created at 0,0 with empty accesspoint hashmap (wifi scan did not return)
+    // expected result: datapoint created at 0,0 with empty accesspoint hashmap (wifi scan returned empty map)
     @Test
     public void testEmptyWifiScan() throws InterruptedException {
         // click on the map at coordinates 0,0
