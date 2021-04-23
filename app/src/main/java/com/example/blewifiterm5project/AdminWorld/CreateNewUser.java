@@ -74,6 +74,7 @@ public class CreateNewUser extends AppCompatActivity {
 
     }
 
+    // Check if the edittext name field is valid with no numbers and is not empty
     private Boolean validatename(){
         String val = name.getText().toString();
         String checknumbers =".*\\d.*";
@@ -91,6 +92,7 @@ public class CreateNewUser extends AppCompatActivity {
         }
     }
 
+    // Checks if the edittext email field is valid with a valid email. Calls isValidEmailId method.
     private Boolean validateemail(){
         final String emailval = email.getText().toString().trim();
 
@@ -132,6 +134,7 @@ public class CreateNewUser extends AppCompatActivity {
         return output[0];
     }
 
+    // Regex check for valid email formatting
     private boolean isValidEmailId(String email){
         return Pattern.compile("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
                 + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
@@ -142,6 +145,7 @@ public class CreateNewUser extends AppCompatActivity {
     }
 
 
+    // confirmbuttom listener that calls validatename and validateemail methods
     private void init(){
         confirmbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +167,7 @@ public class CreateNewUser extends AppCompatActivity {
         });
     }
 
+    // Registers an account using email in firebase auth
     private void registerNewEmail(final String name, final String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
