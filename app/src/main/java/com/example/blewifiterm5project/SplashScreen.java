@@ -50,8 +50,6 @@ public class SplashScreen extends AppCompatActivity {
 
         setupfirebaseauth();
 
-
-
         //Animation
         fadein = AnimationUtils.loadAnimation(this, R.anim.fadein);
         Splashimg = findViewById(R.id.splashimage);
@@ -61,11 +59,6 @@ public class SplashScreen extends AppCompatActivity {
         Splashimg.setAnimation(fadein);
     }
 
-    private boolean restorePrefData(){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("myPref",MODE_PRIVATE);
-        Boolean isuserintroed = pref.getBoolean("isIntroed", false);
-        return isuserintroed;
-    }
 
     //------------------------------------------ Firebase ----------------------------------------------------------------------------------------------------
 
@@ -85,6 +78,8 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
+    // If user is already logged in, check if is admin or employee and load the correct home
+    // Else, load the login screen
     private void checkCurrentUser(FirebaseUser user){
         Log.d(TAG, "checkCurrentuser: checking if user is logged in");
 

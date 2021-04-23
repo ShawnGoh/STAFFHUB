@@ -30,7 +30,8 @@ public class StaffListReyclerAdapter extends RecyclerView.Adapter<StaffListReycl
     private Context mcontext;
     private ArrayList<String> docid;
 
-
+    // Constructor for the adapter. Requires inputs of staffnamelist, staffstatuslist, stafficonstatuslist, staff corresponding documentid and activity context
+    // Mainly used on admin stafflist page
     public StaffListReyclerAdapter(ArrayList<String> staffnamelist, ArrayList<String> staffstatuslist, ArrayList<String> stafficonstauslist, Context mcontext, ArrayList<String> docid) {
         this.staffnamelist = staffnamelist;
         this.staffstatuslist = staffstatuslist;

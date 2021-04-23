@@ -20,15 +20,20 @@ public class UserClass {
     private String currentmap = "";
     private ArrayList<Float> usercoordinates;
 
+    // Constructor that creates object with default values and input name, profile_pic and email
+    // Mainly used in account creation on admin side.
     public UserClass(String name, String profile_picture, String email) {
         this.name = name;
         this.profile_picture = profile_picture;
         this.email = email;
     }
 
+    // Empty Constructor that creates object with default values
     public UserClass() {
     }
 
+    // Constructor using a UserClass object
+    // Mainly called when getting user information from firestore.
     public UserClass(UserClass userClass){
         this.name = userClass.getName();
         this.profile_picture = userClass.getProfile_picture();
@@ -40,6 +45,7 @@ public class UserClass {
         this.Activitydatelist = userClass.getActivitydatelist();
     }
 
+    // Basic Getter and setter methods for all attributes of UserClass
     public ArrayList<Float> getUsercoordinates() {
         return usercoordinates;
     }
@@ -84,13 +90,9 @@ public class UserClass {
         return Activitydatelist;
     }
 
-
-
     public ArrayList<String> getActivitylist() {
         return Activitylist;
     }
-
-
 
     public String getStatusmessage() {
         return statusmessage;

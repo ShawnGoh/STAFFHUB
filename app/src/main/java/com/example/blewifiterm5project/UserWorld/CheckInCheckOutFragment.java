@@ -67,12 +67,13 @@ public class CheckInCheckOutFragment extends Fragment {
         activityLogRecyclerAdapter = new UserActivityLogRecyclerAdapter(notificationsList, notificationsdateList, mcontext);
         activitylog.setAdapter(activityLogRecyclerAdapter);
 
+
+
         clockin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar clockincal = Calendar.getInstance();
                 String newstring = String.format("Clocked in on %s", clockincal.getTime());
-//                notificationsList.add(0,newstring);
                 clockout.setVisibility(View.VISIBLE);
                 clockin.setVisibility(View.GONE);
                 checkinout(newstring, clockincal.getTime());
@@ -84,7 +85,6 @@ public class CheckInCheckOutFragment extends Fragment {
             public void onClick(View v) {
                 Calendar clockoutcal = Calendar.getInstance();
                 String newstring = String.format("Clocked out on %s", clockoutcal.getTime());
-//                notificationsList.add(0,newstring);
                 clockin.setVisibility(View.VISIBLE);
                 clockout.setVisibility(View.GONE);
                 checkinout(newstring, clockoutcal.getTime());
@@ -93,7 +93,7 @@ public class CheckInCheckOutFragment extends Fragment {
         return view;
     }
 
-
+    // Initialize widget contents on this screen by getting values from firestore
     private void initwidgets(){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
@@ -133,6 +133,7 @@ public class CheckInCheckOutFragment extends Fragment {
                     }
                 });}
 
+    // Writes to firestore the check in out message when pressing the check in out button
     private void checkinout(String statustobeset, Date date){
         FirebaseUser user = mAuth.getCurrentUser();
         String email = user.getEmail();
@@ -145,18 +146,15 @@ public class CheckInCheckOutFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                //Checking if user is admin or normal user
                                 String docid = document.getId();
                                 UserClass userClass = document.toObject(UserClass.class);
                                 newuser[0] = userClass;
-
                                 if(userClass.getEmail().equals(email)){
                                     newuser[0].setStatusmessage(statustobeset);
                                     Toast.makeText(mcontext, statustobeset, Toast.LENGTH_SHORT).show();
 
                                     notificationsList = newuser[0].getActivitylist();
                                     notificationsList.add(statustobeset);
-
                                     notificationsdateList = newuser[0].getActivitydatelist();
                                     notificationsdateList.add(String.valueOf(date.getTime()));
 
@@ -167,11 +165,9 @@ public class CheckInCheckOutFragment extends Fragment {
                                         long timediff = date.getTime()-new Date(Long.parseLong(notificationsdateList.get(notificationsdateList.size()-2))).getTime();
                                         newuser[0].setHoursthismonth(newuser[0].getHoursthismonth()+(float)timediff/3600000);
                                     }
-
                                     newuser[0].setActivitydatelist(notificationsdateList);
                                     newuser[0].setActivitylist(notificationsList);
                                     db.collection("users").document(docid).set(newuser[0]);
-
 
                                     break;
                                 }

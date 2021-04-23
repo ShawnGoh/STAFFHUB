@@ -28,7 +28,6 @@ public class  AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotific
     private ArrayList<String> notificationDateList;
     private LinkedHashMap<String, String> compiledNotificationLog;
     Context mcontext;
-//    private StorageReference storageReference,projectref;
 
     public boolean isEmpty;
 
@@ -36,13 +35,8 @@ public class  AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotific
         this.notificationList = notificationList;
         this.notificationDateList = notificationDateList;
         this.mcontext = mcontext;
-
         compileNotifications();
     }
-//    public void setNotificationList(List<String> notificationList) {
-//        this.notificationList = notificationList;
-//        notifyDataSetChanged();
-//    }
 
     public class Viewholder extends RecyclerView.ViewHolder{
 
@@ -55,18 +49,15 @@ public class  AdminNotificationAdapter extends RecyclerView.Adapter<AdminNotific
         }
     }
 
+    // Sorts the compiled staff notifcation list to be in chronological order
     public void compileNotifications() {
         HashMap<String, String> notifLog = new HashMap<String, String>();
         for (int i=0; i<notificationList.size(); i++){
-            // index 0 is date, index 1 is notif content
             notifLog.put(notificationDateList.get(i), notificationList.get(i));
         }
 
-        // sort values chronologically
         TreeMap<String, String> sorted = new TreeMap<>(Collections.reverseOrder());
         sorted.putAll(notifLog);
-//        Set<Map.Entry<String, String>> mappings = sorted.entrySet();
-
         LinkedHashMap<String, String> orderedMap = new LinkedHashMap<>();
         ArrayList<String> orderedNotificationList = new ArrayList<>();
         ArrayList<String> orderedNotificationDateList = new ArrayList<>();

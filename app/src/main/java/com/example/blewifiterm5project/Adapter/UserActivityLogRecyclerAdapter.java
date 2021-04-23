@@ -21,7 +21,8 @@ public class UserActivityLogRecyclerAdapter extends RecyclerView.Adapter<UserAct
     private ArrayList<String> activitydateLogs;
     private Context mcontext;
 
-
+    // Constructor for the adapter. Requires userlogm usertimelog and activity context.
+    // Mainly used when recycler of user time records displayed.
     public UserActivityLogRecyclerAdapter(ArrayList<String> userlog, ArrayList<String> usertimelog, Context mcontext) {
         this.activityLogs = userlog;
         this.activitydateLogs = usertimelog;

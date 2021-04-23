@@ -81,6 +81,8 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
+    // Changes user status to be offline and updates firestore
     private void offline(String status){
         FirebaseUser user = mAuth.getCurrentUser();
         if(user==null){
@@ -115,6 +117,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });}
 
+    // Initializes all widgets on screen by grabbing values from firestore.
     private void initwidgets(){
         db.collection("users")
                 .get()

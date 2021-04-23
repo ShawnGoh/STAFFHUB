@@ -97,6 +97,7 @@ public class UserHome extends AppCompatActivity {
         offline("online");
     }
 
+    // Changes user status to be offline and updates firestore
     private void offline(String status){
         FirebaseUser user = mAuth.getCurrentUser();
         if(user==null){

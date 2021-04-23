@@ -73,12 +73,9 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> mapUrlList;
     private ArrayAdapter<String> mAdapter;
 
-
     Boolean refreshispressed = false;
 
-
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference collectionReference;
     float x_coordinates = 0;
     float y_coordinates = 0;
 
@@ -98,8 +95,6 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         mcontext = getActivity();
         wifirefreshbutton = view.findViewById(R.id.wifirefreshbutton);
         errortextmsg = view.findViewById(R.id.errortextnavigation);
-
-
 
         initMapList();
         initIcon();
@@ -151,6 +146,8 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
         dataValues = new HashMap<>();
     }
 
+    // Called when locate me button is pressed. Checks if wifi list has finished populating. If it has, then executes the fingerprintalgo to locate the user.
+    // Puts the result into firebase and drops a pin on the map
     private void locatememethod() {
         if(dataValues.isEmpty()){
             if(refreshispressed) {
@@ -201,7 +198,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
     }
 
 
-
+    // For spinner/dropdown menu, onitemselected function
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         imageDotLayout.setImage(mapUrlList.get(position));
@@ -221,6 +218,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
 
     }
 
+    // Grabs list of map names from firestore maps collections and populates the dropdown/spinner menu
     public void initMapList(){
         mapNameList = new ArrayList<>();
         mapUrlList = new ArrayList<>();
@@ -248,6 +246,7 @@ public class NavigationFragment extends Fragment implements AdapterView.OnItemSe
                 });
     }
 
+    // Grabs the user location from firestore and intializes the icon on the map.
     private void initIcon() {
         FirebaseUser user = mAuth.getCurrentUser();
         ArrayList<dbdatapoint> allData = new ArrayList<>();
