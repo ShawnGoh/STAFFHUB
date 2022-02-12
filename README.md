@@ -5,13 +5,13 @@ Goh Shao Cong Shawn
 Pang Zichen  
 Seah Qi Yan  
 Tjoa Jing Sen  
-![](Images/case_diagram.PNG)
-![plot](..\Images\slides_1.JPG)
-![plot](Images\slides_2.JPG)
-![plot](Images\slides_3.JPG)
-![plot](Images\slides_4.JPG)
-![plot](Images\slides_5.JPG)
-![plot](Images\slides_6.JPG)
+
+![plot](Images/slides_1.JPG)
+![plot](Images/slides_2.JPG)
+![plot](Images/slides_3.JPG)
+![plot](Images/slides_4.JPG)
+![plot](Images/slides_5.JPG)
+![plot](Images/slides_6.JPG)
 
 ## **1 | Overview**
 ### **Context**  
