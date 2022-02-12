@@ -37,27 +37,27 @@ https://whimsical.com/VveJp7UWgrZk9Kyde9nbC4@3CRerdhrAw7dgH4HXCh4MFKC
 ### **Sequence Diagram**
 For more interactive sequence diagrams, please visit the link below:   
 https://whimsical.com/VveJp7UWgrZk9Kyde9nbC4@3CRerdhrAw7dgH4HXCh4MFKC 
-![plot](Images\sequence_diagram_1.JPG)
-![plot](Images\sequence_diagram_2.JPG)
-![plot](Images\sequence_diagram_3.JPG)
-![plot](Images\sequence_diagram_4.JPG)
+![plot](Images/sequence_diagram_1.JPG)
+![plot](Images/sequence_diagram_2.JPG)
+![plot](Images/sequence_diagram_3.JPG)
+![plot](Images/sequence_diagram_4.JPG)
 
 ### **Class Diagrams**
 For more interactive class diagrams, please visit the link below:   
 https://whimsical.com/VveJp7UWgrZk9Kyde9nbC4@3CRerdhrAw7dgH4HXCh4MFKC 
 
-![plot](Images\class_diagram.JPG)
+![plot](Images/class_diagram.JPG)
 
 ## **3 | Implementation Challenges**
 ### **Algorithmic Challenges**
 #### **Formulae Constraints**
 Our algorithm was adapted from a research paper found on indoor positioning using the fingerprinting algorithm. However, we found from testing our algorithm that the results were highly susceptible to inaccurate data points, which is quite common in the use of WiFi data retrieved from the Android WiFi Scanner. Thus, upon inspection of the algorithm within the research paper, we found that the original algorithm given considers the WiFi APs of all datapoints which contain the same AP as detected at the user’s current location, even from data points much further away from the user as long as they had the same BSSID/MAC address. This severely impacted the accuracy of our testing results whereby results would be accurate sometimes, and completely inaccurate on other times. Hence, we made the following change to the original algorithm mentioned in the research paper:
-![plot](Images\formula_constraints.JPG)
+![plot](Images/formula_constraints.JPG)
 
 As seen above, rather than taking all RSSI values of identical BSSID WiFi AP addresses detected at the user’s location and within the database of previously mapped data points, we would first run a percentage checker method which computes the percentage similarity between the WiFi data at the user’s location as well as the data points in the database. This allows for only the top 3 data points with highest percentage similarity to be included in our computation of euclidean distance and thus estimation of the user’s coordinates on the map.
 
 However, upon further testing with this improved algorithm, we found that there were occurrences whereby several data points in the database which actually scored 100% similarity to the user’s location WiFi data due to the difference in their WiFi AP RSSI values being within the threshold which we set (which was already very stringent at 5 dbm). However, despite the 100% similarity, some data points that passed the similarity checker were actually not the nearest datapoint to the user’s location but were selected as the top 3 to predict user coordinates, causing other data points which were nearer to the user’s actual location to be unintentionally ignored. This caused our results to still be slightly inaccurate due to the wrong prioritisation of data points to be used in the final step of the algorithm. Hence, we then decided to introduce an additional and final filtering before computing Euclidean distance and generating the user’s position coordinates, which can be seen in the method below:  
-![plot](Images\formula_constraints_2.JPG)
+![plot](Images/formula_constraints_2.JPG)
 
 Hence, the initial topKPercentage method defined was modified such that the top five data points with the highest percentage similarity to the user’s current location’s WiFi data would be used in the estimateCoordinates method. Within estimateCoordinates itself, we would then perform further filtering by first computing the Euclidean distance from each of the five data points to the user’s current location, sorting the distances in ascending order, then obtaining the top 3 data points nearest to the user’s current position to perform estimation of coordinates to display the user’s current location on the floor plan within the map. This final improvement proved to be most effective and led to a very high level of accuracy in our positioning algorithm such that the predicted position of the user would be within 2 metres of their actual position on the floor plan.
 
@@ -83,7 +83,7 @@ The unit testing in the android programming system is quite limited. In our proj
 ### **Instrumented Testing**
 Instrumented testing simulates operations of users and matches the content displayed on the screen with the expected value. However, actions on specific views are still limited. For example, to test the image dot layout, a test case should contain simulations touching a specific position on the screen, but there’s no such existing ViewAction provided. Hence, we defined a custom ViewAction click method that takes in the percentage coordinates of the click scaled to the actual size of the View being clicked, as referenced from Stack Overflow, shown below.
 
-![plot](Images\instrumented_testing.JPG)
+![plot](Images/instrumented_testing.JPG)
 
 While we were still able to carry out Instrumented tests on most of our app’s UI, this ViewAction method was vital for testing our mapping function within the ChildMappingFragment to ensure that tapping a specific location on the floor plan would generate a datapoint in the database of the same coordinates and resultant WiFi scan data.
 
