@@ -32,7 +32,7 @@ The objective of this project is to create a hotel staff management app (which w
 For more clearer view of our use case diagram, please visit the link below:   
 https://whimsical.com/VveJp7UWgrZk9Kyde9nbC4@3CRerdhrAw7dgH4HXCh4MFKC
 
-![plot](Images\case_diagram.PNG)
+![plot](Images/case_diagram.PNG)
 
 ### **Sequence Diagram**
 For more interactive sequence diagrams, please visit the link below:   
