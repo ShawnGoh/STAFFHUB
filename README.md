@@ -6,7 +6,7 @@ Pang Zichen
 Seah Qi Yan  
 Tjoa Jing Sen  
 
-![plot](Images\slides_1.JPG)
+![plot](..\Images\slides_1.JPG)
 ![plot](Images\slides_2.JPG)
 ![plot](Images\slides_3.JPG)
 ![plot](Images\slides_4.JPG)
